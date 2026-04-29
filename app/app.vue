@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
@@ -22,17 +22,48 @@ useSeoMeta({
   ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
   twitterCard: 'summary_large_image'
 })
+
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+const route = useRoute()
+
+const items = computed<NavigationMenuItem[]>(() => [
+  {
+    label: 'Docs',
+    to: '/docs/getting-started',
+    active: route.path.startsWith('/docs/getting-started')
+  },
+  {
+    label: 'Components',
+    to: '/docs/components',
+    active: route.path.startsWith('/docs/components')
+  },
+  {
+    label: 'Figma',
+    to: 'https://go.nuxt.com/figma-ui',
+    target: '_blank'
+  },
+  {
+    label: 'Releases',
+    to: 'https://github.com/nuxt/ui/releases',
+    target: '_blank'
+  }
+])
 </script>
 
 <template>
   <UApp>
     <UHeader>
-      <template #left>
+      <template #title>
         <NuxtLink to="/">
-          <AppLogo class="w-auto h-6 shrink-0" />
+        Roll & Roll
         </NuxtLink>
+      </template>
 
-        <TemplateMenu />
+      <UNavigationMenu :items="items" />
+
+      <template #body>
+        <UNavigationMenu :items="items" orientation="vertical" />
       </template>
 
       <template #right>
