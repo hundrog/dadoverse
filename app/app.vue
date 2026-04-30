@@ -80,7 +80,7 @@ const items = computed<NavigationMenuItem[]>(() => [
       </template>
     </UHeader>
 
-    <UMain class="px-4">
+    <UMain class="px-4 max-w-xl mx-auto">
       <NuxtPage />
     </UMain>
 

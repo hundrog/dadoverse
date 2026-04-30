@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { breakpointsTailwind } from '@vueuse/core'
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isDesktop = breakpoints.greaterOrEqual('md')
+
 const cards = ref([
   {
     id: 'duality',
@@ -35,17 +40,16 @@ const selectCard = (id: string) => {
 </script>
 
 <template>
-  <UPageGrid>
+  <UPageGrid :ui="{ base: 'lg:grid-cols-2' }">
     <UPageCard
       v-for="(card, index) in cards"
       :key="index"
       v-bind="card"
       :highlight="selected === index"
       highlight-color="primary"
-      spotlight
+      :spotlight="isDesktop"
       spotlight-color="secondary"
       @click="selectCard(card.id)"
     />
   </UPageGrid>
 </template>
-
