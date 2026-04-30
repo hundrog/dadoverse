@@ -54,17 +54,23 @@ export const useSessionStore = defineStore("session", () => {
       tray_type.value = data.tray_type as "standard" | "collaborative";
       config.value = data.config as unknown as SessionConfig;
     } else {
-      await navigateTo('/error')
-      return
+      await navigateTo("/error");
+      return;
     }
   }
 
   async function createSession(payload: SessionInsert) {
     const supabase = useSupabaseClient<Database>();
+    const user = useSupabaseUser();
+
+    if (!user.value) {
+      await navigateTo("/error");
+      return;
+    }
 
     const { data, error } = await supabase
       .from("sessions")
-      .insert(payload)
+      .insert({ ...payload, owner_id: user.value.sub })
       .select()
       .single();
 
@@ -76,7 +82,7 @@ export const useSessionStore = defineStore("session", () => {
       tray_type.value = data.tray_type as "standard" | "collaborative";
       config.value = data.config as unknown as SessionConfig;
 
-      await navigateTo(`/session/${data.slug}`)
+      await navigateTo(`/session/${data.slug}`);
     } else if (error) {
       console.error(error);
       createError({
@@ -84,8 +90,8 @@ export const useSessionStore = defineStore("session", () => {
         statusMessage: "Error al crear sesión",
       });
     } else {
-      await navigateTo('/error')
-      return
+      await navigateTo("/error");
+      return;
     }
   }
 
