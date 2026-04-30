@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TabsItem } from "@nuxt/ui";
 const dices = useDiceLogic()
+const sessionStore = useSessionStore();
 
 const items: TabsItem[] = [
   {
@@ -21,10 +22,18 @@ const getResult = () => {
   alert(JSON.stringify(result));
 
 }
+
+onMounted(async ()=>{
+  try {
+    await sessionStore.initializeSession(route.params.slug as string)
+  } catch (e) {
+    throw e
+  }
+})
 </script>
 <template>
   <UPage>
-    <UPageBody>
+    <UPageBody v-if="sessionStore.id">
       <p class="text-lg font-bold uppercase">{{ route.params.slug }}</p>
       <UTabs :items="items" class="w-full">
         <template #roll>
