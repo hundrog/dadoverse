@@ -1,23 +1,25 @@
 export const useDiceStore = defineStore('dice', () => {
   // State
+  const session = useSessionStore()
   const rolls = ref<any[]>([])
   const lastRoll = ref<any | null>(null)
   const activeSystem = ref<DiceSystem>('duality')
   const isRolling = ref(false)
 
-  // Actions
-  function addRollToLog(roll: any) {
-    rolls.value.unshift(roll) // El más reciente arriba
-    if (rolls.value.length > 50) rolls.value.pop() // Limpieza de memoria
+  // Private: añade al log local
+  function _addRollToLog(roll: any) {
+    rolls.value.unshift(roll)
+    if (rolls.value.length > 50) rolls.value.pop()
   }
 
-  async function broadcastRoll(payload: { rawValues: number[], system: DiceSystem, options: any }) {
-    const sessionStore = useSessionStore()
-    const sessionId = sessionStore.id
+  // Private: broadcast a otros clientes para animar
+  async function _broadcastRoll(payload: {
+    rawValues: number[]
+    system: DiceSystem
+    options: any
+  }) {
     const supabase = useSupabaseClient<Database>()
-    const channel = supabase.channel(`session:${sessionId}`)
-
-    // 1. Avisar a otros para animar (Broadcast)
+    const channel = supabase.channel(`session:${session.id}`)
     await channel.send({
       type: 'broadcast',
       event: 'dice_anim',
@@ -25,27 +27,71 @@ export const useDiceStore = defineStore('dice', () => {
     })
   }
 
-  async function saveRoll(interpretedRoll: any) {
-    const sessionStore = useSessionStore()
-    const sessionId = sessionStore.id
+  // Private: persiste en DB con identidad y sesión correctas
+  async function _saveRoll(interpretedRoll: any) {
     const supabase = useSupabaseClient<Database>()
-
-    // 2. Persistir en DB
     await supabase.from('rolls').insert({
-      session_id: sessionId,
+      session_id: session.id,
       system_type: interpretedRoll.system,
       raw_result: interpretedRoll,
-      user_name: 'Usuario' // Aquí iría el nombre del member
+      user_name: session.activeIdentity ?? 'Anónimo'
     })
   }
 
+  // Public: única acción expuesta para ejecutar una tirada completa
+  async function executeRoll(payload: {
+    rawValues: number[]
+    system: DiceSystem
+    interpretedRoll: any
+    options?: any
+  }) {
+    if (!session.id) {
+      console.warn('[DiceStore] No hay sesión activa')
+      return
+    }
+    if (!session.activeIdentity) {
+      console.warn('[DiceStore] No hay identidad activa')
+      return
+    }
+
+    isRolling.value = true
+
+    try {
+      // Asociar identidad y sesión al resultado antes de procesarlo
+      const enrichedRoll = {
+        ...payload.interpretedRoll,
+        user_name: session.activeIdentity,
+        session_id: session.id,
+        timestamp: new Date().toISOString()
+      }
+
+      // 1. Log local inmediato
+      _addRollToLog(enrichedRoll)
+      lastRoll.value = enrichedRoll
+
+      // 2. Broadcast para animaciones en otros clientes
+      await _broadcastRoll({
+        rawValues: payload.rawValues,
+        system: payload.system,
+        options: payload.options ?? {}
+      })
+
+      // 3. Persistir en DB
+      await _saveRoll(enrichedRoll)
+    } catch (err) {
+      console.error('[DiceStore] Error al ejecutar tirada:', err)
+    } finally {
+      isRolling.value = false
+    }
+  }
+
   return {
+    // State
     rolls,
     lastRoll,
     activeSystem,
     isRolling,
-    addRollToLog,
-    broadcastRoll,
-    saveRoll
+    // Actions (solo la orquestadora es pública)
+    executeRoll
   }
 })

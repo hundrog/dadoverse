@@ -13,7 +13,28 @@ export const useSessionStore = defineStore('session', () => {
   const members = ref<string[]>([])
   const role = ref<'owner' | 'player' | 'spectator'>('spectator')
 
+  const characterName = ref(useCookie('pc_name').value || '')
+
+  const generateObserverName = () => {
+    const adjectives = ['Sombrío', 'Etéreo', 'Vigilante', 'Silencioso']
+    const nouns = ['Vagabundo', 'Espíritu', 'Cuervo', 'Guardián']
+    const rand = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)]
+    return `${rand(adjectives)} ${rand(nouns)} #${Math.floor(Math.random() * 900 + 100)}`
+  }
+
+  const observerName = ref(generateObserverName())
+
   // --- Actions ---
+  const activeIdentity = computed(() => {
+    // Si el usuario escribió un nombre, usamos ese. Si no, es un observador.
+    return characterName.value || observerName.value
+  })
+
+  const setCharacterName = (name: string) => {
+    characterName.value = name
+    useCookie('pc_name').value = name
+  }
+
   async function initializeSession(sessionSlug: string) {
     const supabase = useSupabaseClient<Database>()
 
@@ -67,7 +88,9 @@ export const useSessionStore = defineStore('session', () => {
     config,
     members,
     role,
+    activeIdentity,
     // Actions
+    setCharacterName,
     initializeSession,
     updateRoomSettings
   }
