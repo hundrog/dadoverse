@@ -1,10 +1,12 @@
+import type { SessionInsert } from "~~/shared/types/session.types";
+
 export const useSessionStore = defineStore("session", () => {
   // --- State ---
   const id = ref<string | null>(null);
   const slug = ref<string | null>(null);
   const name = ref<string | null>(null);
-  const systemType = ref<DiceSystem>("duality");
-  const trayType = ref<"standard" | "collaborative">("standard");
+  const system_type = ref<DiceSystem>("duality");
+  const tray_type = ref<"standard" | "collaborative">("standard");
   const config = ref<SessionConfig>({
     theme: "default",
     allow_spectators: true,
@@ -48,9 +50,39 @@ export const useSessionStore = defineStore("session", () => {
       id.value = data.id;
       slug.value = data.slug;
       name.value = data.name;
-      systemType.value = data.system_type as DiceSystem;
-      trayType.value = data.tray_type as "standard" | "collaborative";
+      system_type.value = data.system_type as DiceSystem;
+      tray_type.value = data.tray_type as "standard" | "collaborative";
       config.value = data.config as unknown as SessionConfig;
+    } else {
+      await navigateTo('/error')
+      return
+    }
+  }
+
+  async function createSession(payload: SessionInsert) {
+    const supabase = useSupabaseClient<Database>();
+
+    const { data, error } = await supabase
+      .from("sessions")
+      .insert(payload)
+      .select()
+      .single();
+
+    if (data) {
+      id.value = data.id;
+      slug.value = data.slug;
+      name.value = data.name;
+      system_type.value = data.system_type as DiceSystem;
+      tray_type.value = data.tray_type as "standard" | "collaborative";
+      config.value = data.config as unknown as SessionConfig;
+
+      await navigateTo(`/session/${data.slug}`)
+    } else if (error) {
+      console.error(error);
+      createError({
+        statusCode: 500,
+        statusMessage: "Error al crear sesión",
+      });
     } else {
       await navigateTo('/error')
       return
@@ -76,8 +108,8 @@ export const useSessionStore = defineStore("session", () => {
       .eq("id", id.value);
 
     if (!error) {
-      if (updates.system) systemType.value = updates.system;
-      if (updates.tray) trayType.value = updates.tray;
+      if (updates.system) system_type.value = updates.system;
+      if (updates.tray) tray_type.value = updates.tray;
     }
   }
 
@@ -86,14 +118,15 @@ export const useSessionStore = defineStore("session", () => {
     id,
     slug,
     name,
-    systemType,
-    trayType,
+    system_type,
+    tray_type,
     config,
     members,
     role,
     activeIdentity,
     // Actions
     setCharacterName,
+    createSession,
     initializeSession,
     updateRoomSettings,
   };
