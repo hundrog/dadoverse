@@ -10,7 +10,7 @@
           Find Session
         </UButton>
         <USeparator label="Or" />
-        <UButton class="w-full justify-center md:w-auto" to="new">
+        <UButton class="w-full justify-center md:w-auto" to="/session/new">
           Create Session
         </UButton>
       </div>

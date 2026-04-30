@@ -30,12 +30,12 @@ const route = useRoute()
 const items = computed<NavigationMenuItem[]>(() => [
   {
     label: 'Docs',
-    to: '/docs/getting-started',
+    // to: '/docs/getting-started',
     active: route.path.startsWith('/docs/getting-started')
   },
   {
     label: 'Components',
-    to: '/docs/components',
+    // to: '/docs/components',
     active: route.path.startsWith('/docs/components')
   },
   {
@@ -52,6 +52,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 </script>
 
 <template>
+  <NuxtLoadingIndicator />
   <UApp>
     <UHeader>
       <template #title>
