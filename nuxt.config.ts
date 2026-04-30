@@ -4,7 +4,8 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@pinia/nuxt',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@nuxtjs/supabase'
   ],
 
   devtools: {
@@ -26,5 +27,10 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
+  },
+
+  supabase: {
+    // Options
+    redirect: false,
   }
 })

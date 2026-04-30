@@ -14,6 +14,7 @@
     "@iconify-json/lucide": "^1.2.104",
     "@iconify-json/simple-icons": "^1.2.80",
     "@nuxt/ui": "^4.7.0",
+    "@nuxtjs/supabase": "2.0.6",
     "@pinia/nuxt": "0.11.3",
     "@vueuse/core": "^14.2.1",
     "@vueuse/nuxt": "14.2.1",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
     "eslint": "^10.2.1",
+    "supabase": "^2.96.0",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.2.7"
   },
