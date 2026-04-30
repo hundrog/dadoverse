@@ -11,7 +11,6 @@ const items: StepperItem[] = [
     slot: 'system' as const,
     title: "System",
     icon: "i-lucide-settings-2",
-    component: resolveComponent("SystemGrid"),
   },
   {
     slot: 'create' as const,
@@ -30,12 +29,12 @@ const items: StepperItem[] = [
           <UInput size="xl" placeholder="The Great Adventure" class="w-full"/>
         </template>
         <template #system>
-          <SystemGrid />
+          <SessionSystemGrid />
         </template>
         <template #create>
           <p>Review your session details before creating it.</p>
           <div class="flex mt-4">
-            <UButton class="w-full justify-center md:w-auto">
+            <UButton class="w-full justify-center" size="xl">
               Create Session
             </UButton>
           </div>

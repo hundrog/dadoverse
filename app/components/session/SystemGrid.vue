@@ -24,7 +24,7 @@ const cards = ref([
     icon: 'i-lucide-dices',
   },
   {
-    id: 'modiphius',
+    id: '2d20',
     title: 'Modiphius 2D20',
     description: 'The Modiphius 2D20 system uses two d20 dice to determine the outcome of actions, with the difference between the dice determining the degree of success.',
     icon: 'i-lucide-dices',
@@ -33,7 +33,7 @@ const cards = ref([
 
 const selected = ref<number | null>(null)
 
-const selectCard = (id: string) => {
+const selectSystem = (id: string) => {
   const index = cards.value.findIndex(card => card.id === id)
   selected.value = index === selected.value ? null : index
 }
@@ -49,7 +49,7 @@ const selectCard = (id: string) => {
       highlight-color="primary"
       :spotlight="isDesktop"
       spotlight-color="secondary"
-      @click="selectCard(card.id)"
+      @click="selectSystem(card.id)"
     />
   </UPageGrid>
 </template>
