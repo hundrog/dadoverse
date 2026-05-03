@@ -38,6 +38,25 @@ export const useDiceStore = defineStore('dice', () => {
     })
   }
 
+  async function getSessionRolls() {
+    const supabase = useSupabaseClient<Database>()
+    const { data, error } = await supabase
+      .from('rolls')
+      .select('*')
+      .eq('session_id', session.id as string)
+      .order('timestamp', { ascending: false })
+
+    if (error) {
+      console.error(error)
+      createError({
+        statusCode: 500,
+        statusMessage: "Error al leer datos",
+      });
+    } else {
+      rolls.value = data
+    }
+  }
+
   // Public: única acción expuesta para ejecutar una tirada completa
   async function executeRoll(payload: {
     rawValues: number[]
@@ -93,6 +112,7 @@ export const useDiceStore = defineStore('dice', () => {
     isRolling,
     // Actions (solo la orquestadora es pública)
     addRollToLog,
-    executeRoll
+    executeRoll,
+    getSessionRolls
   }
 })

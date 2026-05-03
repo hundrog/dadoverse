@@ -2,7 +2,6 @@
 import type { TabsItem } from "@nuxt/ui";
 const dices = useDiceLogic();
 const sessionStore = useSessionStore();
-const diceStore = useDiceStore();
 const route = useRoute();
 const supabase = useSupabaseClient();
 
@@ -55,18 +54,18 @@ onMounted(async () => {
         // Aquí conectaremos con el componente 3D más adelante
         console.log("Dados rodando de:", payload.user_name);
       })
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "rolls",
-          filter: `session_id=eq.${sessionStore.id}`,
-        },
-        (payload) => {
-          diceStore.addRollToLog(payload.new);
-        },
-      )
+      // .on(
+      //   "postgres_changes",
+      //   {
+      //     event: "INSERT",
+      //     schema: "public",
+      //     table: "rolls",
+      //     filter: `session_id=eq.${sessionStore.id}`,
+      //   },
+      //   (payload) => {
+      //     diceStore.addRollToLog(payload.new);
+      //   },
+      // )
       .subscribe(async (status) => {
         if (status === "SUBSCRIBED") {
           // "Track" anuncia nuestra presencia a los demás
@@ -87,9 +86,6 @@ onMounted(async () => {
       <p class="text-lg font-bold uppercase">{{ slug }}</p>
       <UTabs :items="items" class="w-full">
         <template #roll>
-          <img
-            src="https://placehold.co/600x400/transparent/00F?text=Hello+World"
-          />
           <div class="flex mt-4">
             <UButton class="w-full justify-center" size="xl" @click="getResult">
               Roll Dice
