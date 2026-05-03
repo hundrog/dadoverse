@@ -1,51 +1,85 @@
 <script setup lang="ts">
 import type { TabsItem } from "@nuxt/ui";
-const dices = useDiceLogic()
+const dices = useDiceLogic();
 const sessionStore = useSessionStore();
-const diceStore = useDiceStore()
-const route = useRoute()
+const diceStore = useDiceStore();
+const route = useRoute();
+const supabase = useSupabaseClient();
 
-const slug = route.params.slug as string
+const slug = route.params.slug as string;
 
 const items: TabsItem[] = [
   {
-    slot: 'roll' as const,
+    slot: "roll" as const,
     label: "Roll",
     icon: "i-lucide-dices",
   },
   {
-    slot: 'history' as const,
+    slot: "history" as const,
     label: "History",
     icon: "i-lucide-clock-fading",
   },
 ];
 
 const getResult = () => {
-  const result = dices.parseRoll('duality', [10, 4, 5], { modifier: 'advantage' });
+  const result = dices.parseRoll("duality", [10, 4, 5], {
+    modifier: "advantage",
+  });
   alert(JSON.stringify(result));
+};
 
-}
+onMounted(async () => {
+  await sessionStore.initializeSession(slug);
 
-onMounted(async ()=>{
-  await sessionStore.initializeSession(slug)
-  const supabase = useSupabaseClient()
-  const channel = supabase.channel(`session:${sessionStore.id}`)
+  if (sessionStore.id) {
+    const channel = supabase.channel(`session:${sessionStore.id}`, {
+      config: {
+        presence: {
+          key: sessionStore.activeIdentity, // Usamos el nombre del PC como clave única
+        },
+      },
+    });
 
-  channel
-    .on('broadcast', { event: 'dice_anim' }, (payload) => {
-      // Aquí conectaremos con el componente 3D más adelante
-      console.log('Dados rodando de:', payload.user_name)
-    })
-    .on('postgres_changes', {
-      event: 'INSERT',
-      schema: 'public',
-      table: 'rolls',
-      filter: `session_id=eq.${sessionStore.id}`
-    }, (payload) => {
-      diceStore.addRollToLog(payload.new)
-    })
-    .subscribe()
-  })
+    channel
+      .on("presence", { event: "sync" }, () => {
+        const newState = channel.presenceState();
+        sessionStore.updateOnlineMembers(newState);
+      })
+      .on("presence", { event: "join" }, ({ key, newPresences }) => {
+        console.log(`${key} se ha unido a la sesion`);
+      })
+      .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
+        console.log(`${key} se ha ido`);
+      })
+      .on("broadcast", { event: "dice_anim" }, (payload) => {
+        // Aquí conectaremos con el componente 3D más adelante
+        console.log("Dados rodando de:", payload.user_name);
+      })
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "rolls",
+          filter: `session_id=eq.${sessionStore.id}`,
+        },
+        (payload) => {
+          diceStore.addRollToLog(payload.new);
+        },
+      )
+      .subscribe(async (status) => {
+        if (status === "SUBSCRIBED") {
+          // "Track" anuncia nuestra presencia a los demás
+          await channel.track({
+            name: sessionStore.activeIdentity,
+            isOwner: sessionStore.role === "owner", // Útil para pintar una corona en la UI
+            joinedAt: new Date().toISOString(),
+          });
+        }
+      })
+
+  }
+});
 </script>
 <template>
   <UPage>
@@ -53,7 +87,9 @@ onMounted(async ()=>{
       <p class="text-lg font-bold uppercase">{{ slug }}</p>
       <UTabs :items="items" class="w-full">
         <template #roll>
-          <img src="https://placehold.co/600x400/transparent/00F?text=Hello+World" />
+          <img
+            src="https://placehold.co/600x400/transparent/00F?text=Hello+World"
+          />
           <div class="flex mt-4">
             <UButton class="w-full justify-center" size="xl" @click="getResult">
               Roll Dice

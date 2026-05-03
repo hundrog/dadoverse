@@ -12,7 +12,7 @@ export const useSessionStore = defineStore("session", () => {
   });
   const members = ref<string[]>([]);
   const role = ref<"owner" | "player" | "spectator">("spectator");
-
+  const onlineMembers = ref<any[]>([])
   const characterName = ref(useCookie("pc_name").value || "");
 
   const generateObserverName = () => {
@@ -25,6 +25,12 @@ export const useSessionStore = defineStore("session", () => {
   const observerName = ref(generateObserverName());
 
   // --- Actions ---
+  const updateOnlineMembers = (presenceState: any) => {
+    // Presence devuelve un objeto con IDs de socket, los aplanamos
+    const members = Object.values(presenceState).flat()
+    onlineMembers.value = members
+  }
+
   const activeIdentity = computed(() => {
     // Si el usuario escribió un nombre, usamos ese. Si no, es un observador.
     return characterName.value || observerName.value;
@@ -127,8 +133,10 @@ export const useSessionStore = defineStore("session", () => {
     members,
     role,
     activeIdentity,
+    onlineMembers,
     // Actions
     setCharacterName,
+    updateOnlineMembers,
     createSession,
     initializeSession,
     updateRoomSettings,
