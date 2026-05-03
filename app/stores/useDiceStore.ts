@@ -7,7 +7,7 @@ export const useDiceStore = defineStore('dice', () => {
   const isRolling = ref(false)
 
   // Private: añade al log local
-  function _addRollToLog(roll: any) {
+  function addRollToLog(roll: any) {
     rolls.value.unshift(roll)
     if (rolls.value.length > 50) rolls.value.pop()
   }
@@ -66,7 +66,7 @@ export const useDiceStore = defineStore('dice', () => {
       }
 
       // 1. Log local inmediato
-      _addRollToLog(enrichedRoll)
+      addRollToLog(enrichedRoll)
       lastRoll.value = enrichedRoll
 
       // 2. Broadcast para animaciones en otros clientes
@@ -92,6 +92,7 @@ export const useDiceStore = defineStore('dice', () => {
     activeSystem,
     isRolling,
     // Actions (solo la orquestadora es pública)
+    addRollToLog,
     executeRoll
   }
 })

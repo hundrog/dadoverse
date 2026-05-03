@@ -1,5 +1,3 @@
-import type { SessionInsert } from "~~/shared/types/session.types";
-
 export const useSessionStore = defineStore("session", () => {
   // --- State ---
   const id = ref<string | null>(null);
@@ -54,8 +52,7 @@ export const useSessionStore = defineStore("session", () => {
       tray_type.value = data.tray_type as "standard" | "collaborative";
       config.value = data.config as unknown as SessionConfig;
     } else {
-      await navigateTo("/error");
-      return;
+      return navigateTo("/error");
     }
   }
 
