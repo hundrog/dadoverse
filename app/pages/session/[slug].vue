@@ -31,7 +31,7 @@ const items: TabsItem[] = [
   },
 ];
 
-const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
+const rollDuality = (mod: RollModifier = "none", bonus: number = 0) => {
   const diceConfig = [
     { qty: 1, sides: 12, themeColor: COLORS.hope },
     { qty: 1, sides: 12, themeColor: COLORS.fear },
@@ -108,7 +108,7 @@ onMounted(async () => {
 </script>
 <template>
   <UPage>
-    <UPageBody v-if="sessionStore.id" :ui="{base: 'space-y-4'}">
+    <UPageBody v-if="sessionStore.id" :ui="{ base: 'space-y-4' }">
       <p class="text-lg font-bold uppercase">{{ slug }}</p>
       <div
         id="dice-container"
@@ -121,20 +121,23 @@ onMounted(async () => {
       >
         Roll Dice
       </UButton>
-      <div class="flex justify-center text-center">
-        <span v-if="diceStore.lastRoll.interpreted.isCritical" class="text-bold">Critical!</span>
+      <div class="flex justify-center text-center" v-if="diceStore.lastRoll">
+        <span v-if="diceStore.lastRoll.interpreted.isCritical" class="text-bold"
+          >Critical!</span
+        >
         {{ diceStore.lastRoll.interpreted.total }}
         {{ diceStore.lastRoll.interpreted.outcome }}
       </div>
       <UTabs :items="items" class="w-full">
         <template #settings>
-          <UPageCard>
+          <UPageCard
+            :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }"
+          >
             <template #header>
               <span class="text-bold">Rolling Duality Dice</span>
             </template>
 
             <template #body>
-            <div class="flex flex-col justify-center text-center gap-4">
               <SessionThreeStateToggle v-model="rollMod" />
               Bonus: {{ bonus > 0 ? "+" + bonus : bonus }}
               <USlider
@@ -143,27 +146,28 @@ onMounted(async () => {
                 :max="10"
                 :default-value="0"
               />
-            </div>
             </template>
+            <!-- TODO: Add more dice for damage and stuff
             <template #footer>
-              <UCollapsible class="flex flex-col gap-2 w-48">
-    <UButton
-      class="group w-full"
-      label="Open"
-      color="neutral"
-      variant="subtle"
-      trailing-icon="i-lucide-chevron-down"
-      :ui="{
-        trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
-      }"
-      block
-    />
-
-    <template #content>
-      <Placeholder class="h-48" />
-    </template>
-  </UCollapsible>
+              <UCollapsible class="flex flex-col gap-2">
+                <UButton
+                  class="group w-full"
+                  label="More Dice"
+                  color="neutral"
+                  variant="ghost"
+                  trailing-icon="i-lucide-chevron-down"
+                  :ui="{
+                    trailingIcon:
+                      'group-data-[state=open]:rotate-180 transition-transform duration-200',
+                  }"
+                  block
+                />
+                <template #content>
+                  <Placeholder class="h-48" />
+                </template>
+              </UCollapsible>
             </template>
+          -->
           </UPageCard>
         </template>
         <template #history>
