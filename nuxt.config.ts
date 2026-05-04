@@ -31,5 +31,13 @@ export default defineNuxtConfig({
 
   supabase: {
     // Options
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@3d-dice/dice-box',
+      ]
+    }
   }
 })

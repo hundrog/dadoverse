@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import type { TabsItem } from "@nuxt/ui";
-const dices = useDiceLogic();
+const diceStore = useDiceStore()
 const sessionStore = useSessionStore();
 const route = useRoute();
 const supabase = useSupabaseClient();
+const { $createDiceBox } = useNuxtApp()
 
 const slug = route.params.slug as string;
 
+const COLORS = {
+  hope: "#e7c74b",
+  fear: "#22135f",
+  mod: "#17b1c8"
+}
+
 const items: TabsItem[] = [
   {
-    slot: "roll" as const,
-    label: "Roll",
-    icon: "i-lucide-dices",
+    slot: "settings" as const,
+    label: "settings",
+    icon: "i-lucide-settings",
   },
   {
     slot: "history" as const,
@@ -20,17 +27,33 @@ const items: TabsItem[] = [
   },
 ];
 
-const getResult = () => {
-  const result = dices.parseRoll("duality", [10, 4, 5], {
-    modifier: "advantage",
-  });
-  alert(JSON.stringify(result));
-};
+const rollDuality = (mod: 'advantage' | 'disadvantage' | 'none') => {
+  const diceConfig = [
+    { qty: 1, sides: 12, themeColor: COLORS.hope },
+    { qty: 1, sides: 12, themeColor: COLORS.fear }
+  ]
+
+  // Si hay ventaja/desventaja, añadimos el tercer dado (D6)
+  if (mod !== 'none') {
+    diceConfig.push({
+      qty: 1,
+      sides: 6,
+      themeColor: mod === 'advantage' ? '#10b981' : '#f59e0b'
+    })
+  }
+
+  diceStore.executeRoll(diceConfig, { modifier: mod })
+}
 
 onMounted(async () => {
   await sessionStore.initializeSession(slug);
 
   if (sessionStore.id) {
+    const box = $createDiceBox('#dice-container')
+    await box.init()
+
+    diceStore.setDiceBox(box)
+
     const channel = supabase.channel(`session:${sessionStore.id}`, {
       config: {
         presence: {
@@ -84,13 +107,13 @@ onMounted(async () => {
   <UPage>
     <UPageBody v-if="sessionStore.id">
       <p class="text-lg font-bold uppercase">{{ slug }}</p>
+        <div id="dice-container" class="min-h-62 w-full bg-neutral-950 rounded-xl" />
+      <UButton class="w-full justify-center" size="xl" @click="rollDuality('advantage')">
+          Roll Dice
+        </UButton>
       <UTabs :items="items" class="w-full">
-        <template #roll>
-          <div class="flex mt-4">
-            <UButton class="w-full justify-center" size="xl" @click="getResult">
-              Roll Dice
-            </UButton>
-          </div>
+        <template #settings>
+          <div class="py-4"></div>
         </template>
         <template #history>
           <div class="py-4"></div>
@@ -99,3 +122,9 @@ onMounted(async () => {
     </UPageBody>
   </UPage>
 </template>
+
+<style scoped>
+#dice-container {
+  pointer-events: none; /* Para que puedas clickear los botones de abajo */
+}
+</style>

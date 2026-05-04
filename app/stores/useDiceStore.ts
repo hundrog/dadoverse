@@ -1,22 +1,33 @@
+import { defineStore } from 'pinia'
+import { useDiceLogic } from '@/composables/useDiceLogic'
+
 export const useDiceStore = defineStore('dice', () => {
-  // State
   const session = useSessionStore()
+  const { parseRoll } = useDiceLogic() // Importamos el motor lógico
+  const diceBoxInstance = ref<any>(null)
+
+  function setDiceBox(instance: any) {
+    if (diceBoxInstance.value) return
+    diceBoxInstance.value = markRaw(instance)
+  }
+
+  // State
   const rolls = ref<any[]>([])
   const lastRoll = ref<any | null>(null)
-  const activeSystem = ref<DiceSystem>('duality')
   const isRolling = ref(false)
 
-  // Private: añade al log local
+  // --- MÉTODOS PRIVADOS ---
+
   function addRollToLog(roll: any) {
     rolls.value.unshift(roll)
     if (rolls.value.length > 50) rolls.value.pop()
   }
 
-  // Private: broadcast a otros clientes para animar
   async function _broadcastRoll(payload: {
     rawValues: number[]
     system: DiceSystem
     options: any
+    user_name: string
   }) {
     const supabase = useSupabaseClient<Database>()
     const channel = supabase.channel(`session:${session.id}`)
@@ -27,16 +38,18 @@ export const useDiceStore = defineStore('dice', () => {
     })
   }
 
-  // Private: persiste en DB con identidad y sesión correctas
   async function _saveRoll(interpretedRoll: any) {
     const supabase = useSupabaseClient<Database>()
+    // Nota: El objeto interpretedRoll ya viene con la estructura de RollResult
     await supabase.from('rolls').insert({
       session_id: session.id,
       system_type: interpretedRoll.system,
-      raw_result: interpretedRoll,
+      raw_result: interpretedRoll, // El JSON interpretado completo
       user_name: session.activeIdentity ?? 'Anónimo'
     })
   }
+
+  // --- MÉTODOS PÚBLICOS ---
 
   async function getSessionRolls() {
     const supabase = useSupabaseClient<Database>()
@@ -44,75 +57,72 @@ export const useDiceStore = defineStore('dice', () => {
       .from('rolls')
       .select('*')
       .eq('session_id', session.id as string)
-      .order('timestamp', { ascending: false })
+      .order('created_at', { ascending: false }) // Cambié timestamp por created_at (estándar Supabase)
 
-    if (error) {
-      console.error(error)
-      createError({
-        statusCode: 500,
-        statusMessage: "Error al leer datos",
-      });
-    } else {
-      rolls.value = data
-    }
+    if (!error) rolls.value = data
   }
 
-  // Public: única acción expuesta para ejecutar una tirada completa
-  async function executeRoll(payload: {
-    rawValues: number[]
-    system: DiceSystem
-    interpretedRoll: any
-    options?: any
-  }) {
-    if (!session.id) {
-      console.warn('[DiceStore] No hay sesión activa')
-      return
-    }
-    if (!session.activeIdentity) {
-      console.warn('[DiceStore] No hay identidad activa')
-      return
-    }
+  /**
+   * ORQUESTADOR PRINCIPAL
+   * @param diceConfig Configuración para DiceBox (ej: [{sides:6, theme:'attr'}, ...])
+   * @param options Opciones para parseRoll (modifier, yzeClusters, etc.)
+   */
+  async function executeRoll(diceConfig: any[], options: any = {}) {
+    if (!session.id || !session.activeIdentity || !diceBoxInstance.value) return
 
     isRolling.value = true
 
     try {
-      // Asociar identidad y sesión al resultado antes de procesarlo
+      // 1. Física: Tirar dados en el Canvas 3D
+      // Esperamos a que los dados dejen de rodar
+
+      const boxResults = await diceBoxInstance.value.roll(diceConfig)
+
+      // Extraemos solo los valores numéricos para la lógica
+      const rawValues = boxResults.map((d: any) => d.value)
+
+      // 2. Lógica: Interpretar según el sistema de la sesión
+      const interpreted = parseRoll(session.system_type, rawValues, options)
+
+      // 3. Enriquecer: Añadimos metadata de la sesión
       const enrichedRoll = {
-        ...payload.interpretedRoll,
+        ...interpreted,
         user_name: session.activeIdentity,
         session_id: session.id,
-        timestamp: new Date().toISOString()
+        created_at: new Date().toISOString()
       }
 
-      // 1. Log local inmediato
+      console.log(enrichedRoll)
+
+      // 4. UI Local: Actualizar log inmediatamente
       addRollToLog(enrichedRoll)
       lastRoll.value = enrichedRoll
 
-      // 2. Broadcast para animaciones en otros clientes
-      await _broadcastRoll({
-        rawValues: payload.rawValues,
-        system: payload.system,
-        options: payload.options ?? {}
-      })
+      // 5. Red: Notificar a otros y persistir
+      await Promise.all([
+        _broadcastRoll({
+          rawValues,
+          system: session.system_type,
+          options,
+          user_name: session.activeIdentity
+        }),
+        _saveRoll(enrichedRoll)
+      ])
 
-      // 3. Persistir en DB
-      await _saveRoll(enrichedRoll)
     } catch (err) {
-      console.error('[DiceStore] Error al ejecutar tirada:', err)
+      console.error('[DiceStore] Fallo en la tirada:', err)
     } finally {
       isRolling.value = false
     }
   }
 
   return {
-    // State
     rolls,
     lastRoll,
-    activeSystem,
     isRolling,
-    // Actions (solo la orquestadora es pública)
     addRollToLog,
     executeRoll,
-    getSessionRolls
+    getSessionRolls,
+    setDiceBox
   }
 })

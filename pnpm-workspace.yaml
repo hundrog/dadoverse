@@ -5,4 +5,5 @@ ignoredBuiltDependencies:
   - unrs-resolver
   - vue-demi
 onlyBuiltDependencies:
+  - '@3d-dice/dice-box'
   - supabase
