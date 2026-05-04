@@ -1,62 +1,62 @@
 <script setup lang="ts">
-import * as z from "zod";
-import type { FormSubmitEvent, AuthFormField } from "@nuxt/ui";
-const supabase = useSupabaseClient()
+  import * as z from 'zod'
+  import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
+  const supabase = useSupabaseClient()
 
-const toast = useToast();
+  const toast = useToast()
 
-const fields: AuthFormField[] = [
-  {
-    name: "email",
-    type: "email",
-    label: "Email",
-    placeholder: "Enter your email",
-    required: true,
-  },
-];
+  const fields: AuthFormField[] = [
+    {
+      name: 'email',
+      type: 'email',
+      label: 'Email',
+      placeholder: 'Enter your email',
+      required: true
+    }
+  ]
 
-const providers = [
-  {
-    label: "Google",
-    icon: "i-simple-icons-google",
-    onClick: () => {
-      toast.add({ title: "Google", description: "Login with Google" });
+  const providers = [
+    {
+      label: 'Google',
+      icon: 'i-simple-icons-google',
+      onClick: () => {
+        toast.add({ title: 'Google', description: 'Login with Google' })
+      }
     },
-  },
-  {
-    label: "Facebook",
-    icon: "i-simple-icons-facebook",
-    onClick: () => {
-      toast.add({ title: "Facebook", description: "Login with Facebook" });
-    },
-  },
-];
+    {
+      label: 'Facebook',
+      icon: 'i-simple-icons-facebook',
+      onClick: () => {
+        toast.add({ title: 'Facebook', description: 'Login with Facebook' })
+      }
+    }
+  ]
 
-const schema = z.object({
-  email: z.email("Invalid email"),
-});
+  const schema = z.object({
+    email: z.email('Invalid email')
+  })
 
-type Schema = z.output<typeof schema>;
+  type Schema = z.output<typeof schema>
 
-async function onSubmit(payload: FormSubmitEvent<Schema>) {
-  const { error } = await supabase.auth.signInWithOtp(payload.data)
-  if (error) {
+  async function onSubmit(payload: FormSubmitEvent<Schema>) {
+    const { error } = await supabase.auth.signInWithOtp(payload.data)
+    if (error) {
+      toast.add({
+        title: 'Error signing in',
+        description: error.message,
+        color: 'error'
+      })
+      return
+    }
     toast.add({
-      title: "Error signing in",
-      description: error.message,
-      color: "error",
-    });
-    return;
+      title: 'Email sent',
+      description: 'Check your inbox for the magic link.'
+    })
   }
-  toast.add({
-    title: "Email sent",
-    description: "Check your inbox for the magic link.",
-  });
-}
 </script>
 
 <template>
-  <div class="flex items-center justify-center mt-8 md:h-screen md:mt-0">
+  <div class="mt-8 flex items-center justify-center md:mt-0 md:h-screen">
     <div class="flex flex-col items-center justify-center gap-4 p-4">
       <UPageCard class="w-full max-w-md">
         <UAuthForm

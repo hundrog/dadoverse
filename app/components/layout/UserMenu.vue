@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import type { DropdownMenuItem } from "@nuxt/ui";
-const user = useSupabaseUser();
-const supabase = useSupabaseClient();
+  import type { DropdownMenuItem } from '@nuxt/ui'
+  const user = useSupabaseUser()
+  const supabase = useSupabaseClient()
 
-const items = ref<DropdownMenuItem[]>([
-  {
-    label: "LogOut",
-    icon: "i-lucide-log-out",
-    onSelect(e: Event) {
-      e.preventDefault();
-      logout();
-    },
-  },
-]);
+  const items = ref<DropdownMenuItem[]>([
+    {
+      label: 'LogOut',
+      icon: 'i-lucide-log-out',
+      onSelect(e: Event) {
+        e.preventDefault()
+        logout()
+      }
+    }
+  ])
 
-const logout = async () => {
-  await supabase.auth.signOut();
+  const logout = async () => {
+    await supabase.auth.signOut()
 
-  return navigateTo("/login");
-};
+    return navigateTo('/login')
+  }
 </script>
 
 <template>
@@ -27,10 +27,10 @@ const logout = async () => {
     :content="{
       align: 'start',
       side: 'bottom',
-      sideOffset: 8,
+      sideOffset: 8
     }"
     :ui="{
-      content: 'w-48',
+      content: 'w-48'
     }"
     v-if="user"
   >

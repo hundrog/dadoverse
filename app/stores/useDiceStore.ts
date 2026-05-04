@@ -106,7 +106,6 @@ export const useDiceStore = defineStore('dice', () => {
         }),
         _saveRoll(enrichedRoll)
       ])
-
     } catch (err) {
       console.error('[DiceStore] Fallo en la tirada:', err)
     } finally {

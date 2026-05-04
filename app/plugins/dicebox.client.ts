@@ -9,10 +9,10 @@ export default defineNuxtPlugin(() => {
         return new DiceBox({
           container: selector,
           assetPath: '/dice-box/',
-          theme: "default",
+          theme: 'default',
           scale: 9,
           offscreen: true,
-          settleTimeout: 3500,
+          settleTimeout: 3500
         })
       }
     }

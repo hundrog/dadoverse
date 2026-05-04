@@ -1,18 +1,18 @@
 <script setup lang="ts">
-const sessionSlug = ref("");
-const name = ref("");
+  const sessionSlug = ref('')
+  const name = ref('')
 
-const sessionStore = useSessionStore()
+  const sessionStore = useSessionStore()
 
-const goToSession = async (slug: string) => {
- if (!slug.trim()) return
+  const goToSession = async (slug: string) => {
+    if (!slug.trim()) return
 
-  if (name.value.trim()) {
-    sessionStore.setCharacterName(name.value.trim())
+    if (name.value.trim()) {
+      sessionStore.setCharacterName(name.value.trim())
+    }
+
+    await navigateTo(`/session/${slug}`)
   }
-
-  await navigateTo(`/session/${slug}`);
-};
 </script>
 
 <template>
@@ -42,7 +42,11 @@ const goToSession = async (slug: string) => {
           Find Session
         </UButton>
         <USeparator label="Or" />
-        <UButton class="w-full justify-center md:w-auto" size="xl" to="/session/new">
+        <UButton
+          class="w-full justify-center md:w-auto"
+          size="xl"
+          to="/session/new"
+        >
           Create Session
         </UButton>
       </div>
