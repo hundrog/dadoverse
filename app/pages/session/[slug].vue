@@ -77,18 +77,18 @@ onMounted(async () => {
         // Aquí conectaremos con el componente 3D más adelante
         console.log("Dados rodando de:", payload.user_name);
       })
-      // .on(
-      //   "postgres_changes",
-      //   {
-      //     event: "INSERT",
-      //     schema: "public",
-      //     table: "rolls",
-      //     filter: `session_id=eq.${sessionStore.id}`,
-      //   },
-      //   (payload) => {
-      //     diceStore.addRollToLog(payload.new);
-      //   },
-      // )
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "rolls",
+          filter: `session_id=eq.${sessionStore.id}`,
+        },
+        (payload) => {
+          diceStore.addRollToLog(payload.new);
+        },
+      )
       .subscribe(async (status) => {
         if (status === "SUBSCRIBED") {
           // "Track" anuncia nuestra presencia a los demás
@@ -113,7 +113,7 @@ onMounted(async () => {
         </UButton>
       <UTabs :items="items" class="w-full">
         <template #settings>
-          <div class="py-4"></div>
+          <SessionRollSettings />
         </template>
         <template #history>
           <div class="py-4"></div>
