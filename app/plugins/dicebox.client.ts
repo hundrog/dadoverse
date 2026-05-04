@@ -1,6 +1,6 @@
 // plugins/dicebox.client.ts
 // @ts-expect-error - @3d-dice/dice-box does not provide type definitions
-import DiceBox from "@3d-dice/dice-box";
+import DiceBox from '@3d-dice/dice-box'
 
 export default defineNuxtPlugin(() => {
   // Solo devolvemos la clase o una función constructora

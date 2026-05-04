@@ -37,14 +37,14 @@
 </template>
 
 <script setup lang="ts">
-  import type { RollModifier } from '~/types/dice.types'
+import type { RollModifier } from '~/types/dice.types'
 
-  const states: RollModifier[] = ['disadvantage', 'none', 'advantage']
+const states: RollModifier[] = ['disadvantage', 'none', 'advantage']
 
-  const state = defineModel<RollModifier>({ default: 'none' })
+const state = defineModel<RollModifier>({ default: 'none' })
 
-  function cycle() {
-    const idx = states.indexOf(state.value)
-    state.value = states[(idx + 1) % states.length] as RollModifier
-  }
+function cycle() {
+  const idx = states.indexOf(state.value)
+  state.value = states[(idx + 1) % states.length] as RollModifier
+}
 </script>

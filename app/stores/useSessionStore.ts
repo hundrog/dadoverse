@@ -107,7 +107,7 @@ export const useSessionStore = defineStore('session', () => {
 
     const supabase = useSupabaseClient<Database>()
 
-    const payload: { system_type?: string; tray_type?: string } = {}
+    const payload: { system_type?: string, tray_type?: string } = {}
     if (updates.system) payload.system_type = updates.system
     if (updates.tray) payload.tray_type = updates.tray
 

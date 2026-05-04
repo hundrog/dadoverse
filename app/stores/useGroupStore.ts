@@ -1,7 +1,7 @@
 export const useGroupStore = defineStore('group', () => {
   // State
   const isGroupRollActive = ref(false)
-  const contributions = ref<{ user: string; value: number }[]>([])
+  const contributions = ref<{ user: string, value: number }[]>([])
   const groupGoal = ref<number | null>(null)
 
   // Getters

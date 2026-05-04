@@ -14,6 +14,18 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-01-15',
 
+  nitro: {
+    prerender: {
+      autoSubfolderIndex: false
+    }
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ['@3d-dice/dice-box', 'zod']
+    }
+  },
+
   eslint: {
     config: {
       stylistic: {
@@ -31,12 +43,6 @@ export default defineNuxtConfig({
       include: ['/session/new'],
       exclude: [],
       saveRedirectToCookie: false
-    }
-  },
-
-  vite: {
-    optimizeDeps: {
-      include: ['@3d-dice/dice-box', 'zod']
     }
   }
 })

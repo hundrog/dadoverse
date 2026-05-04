@@ -1,38 +1,38 @@
 <script setup lang="ts">
-  useHead({
-    meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
-    link: [{ rel: 'icon', href: '/favicon.ico' }],
-    htmlAttrs: {
-      lang: 'en'
+useHead({
+  meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
+  link: [{ rel: 'icon', href: '/favicon.ico' }],
+  htmlAttrs: {
+    lang: 'en'
+  }
+})
+
+const title = 'Nuxt Starter Template'
+const description
+  = 'A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.'
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
+  twitterCard: 'summary_large_image'
+})
+const toast = useToast()
+
+function handleError(error: Error, clearError: () => void) {
+  toast.add({
+    'title': 'Something went wrong',
+    'description': error.message,
+    'color': 'error',
+    'icon': 'i-lucide-alert-circle',
+    'duration': 5000,
+    'onUpdate:open': (open: boolean) => {
+      if (!open) clearError()
     }
   })
-
-  const title = 'Nuxt Starter Template'
-  const description =
-    'A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.'
-
-  useSeoMeta({
-    title,
-    description,
-    ogTitle: title,
-    ogDescription: description,
-    ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
-    twitterCard: 'summary_large_image'
-  })
-  const toast = useToast()
-
-  function handleError(error: Error, clearError: () => void) {
-    toast.add({
-      title: 'Something went wrong',
-      description: error.message,
-      color: 'error',
-      icon: 'i-lucide-alert-circle',
-      duration: 5000,
-      'onUpdate:open': (open: boolean) => {
-        if (!open) clearError()
-      }
-    })
-  }
+}
 </script>
 
 <template>
@@ -65,7 +65,9 @@
 
       <UFooter>
         <template #left>
-          <p class="text-muted text-sm">Built with Nuxt UI • © {{ new Date().getFullYear() }}</p>
+          <p class="text-muted text-sm">
+            Built with Nuxt UI • © {{ new Date().getFullYear() }}
+          </p>
         </template>
 
         <template #right>

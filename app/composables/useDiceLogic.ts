@@ -93,7 +93,7 @@ export const useDiceLogic = () => {
     const gearSuccesses = gear.filter(v => v >= 6).length
 
     let artifactSuccesses = 0
-    artifacts.forEach(v => {
+    artifacts.forEach((v) => {
       artifactSuccesses += calculateArtifactSuccesses(v)
     })
 
@@ -129,7 +129,7 @@ export const useDiceLogic = () => {
     let successes = 0
     let complications = 0
 
-    dice.forEach(d => {
+    dice.forEach((d) => {
       if (d === 1) successes += 2
       else if (d <= tn) successes += 1
       else if (d === 20) complications += 1

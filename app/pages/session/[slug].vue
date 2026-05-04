@@ -1,126 +1,130 @@
 <!-- app/pages/session/[slug].vue -->
 <script setup lang="ts">
-  import type { TabsItem } from '@nuxt/ui'
-  import type { RollModifier } from '~/types/dice.types'
-  const diceStore = useDiceStore()
-  const sessionStore = useSessionStore()
-  const route = useRoute()
-  const supabase = useSupabaseClient()
-  const { $createDiceBox } = useNuxtApp()
-  let channel: any = null
+import type { TabsItem } from '@nuxt/ui'
+import type { RollModifier } from '~/types/dice.types'
 
-  const rollMod = ref<RollModifier>('none')
-  const bonus = ref(0)
-  const slug = route.params.slug as string
+const diceStore = useDiceStore()
+const sessionStore = useSessionStore()
+const route = useRoute()
+const supabase = useSupabaseClient()
+const { $createDiceBox } = useNuxtApp()
+let channel: any = null
 
-  const COLORS = {
-    hope: '#e7c74b',
-    fear: '#22135f',
-    mod: '#17b1c8'
+const rollMod = ref<RollModifier>('none')
+const bonus = ref(0)
+const slug = route.params.slug as string
+
+const COLORS = {
+  hope: '#e7c74b',
+  fear: '#22135f',
+  mod: '#17b1c8'
+}
+
+const items: TabsItem[] = [
+  {
+    slot: 'settings' as const,
+    label: 'settings',
+    icon: 'i-lucide-settings'
+  },
+  {
+    slot: 'history' as const,
+    label: 'History',
+    icon: 'i-lucide-clock-fading'
   }
+]
 
-  const items: TabsItem[] = [
-    {
-      slot: 'settings' as const,
-      label: 'settings',
-      icon: 'i-lucide-settings'
-    },
-    {
-      slot: 'history' as const,
-      label: 'History',
-      icon: 'i-lucide-clock-fading'
-    }
+const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
+  const diceConfig = [
+    { qty: 1, sides: 12, themeColor: COLORS.hope },
+    { qty: 1, sides: 12, themeColor: COLORS.fear }
   ]
 
-  const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
-    const diceConfig = [
-      { qty: 1, sides: 12, themeColor: COLORS.hope },
-      { qty: 1, sides: 12, themeColor: COLORS.fear }
-    ]
-
-    // Si hay ventaja/desventaja, añadimos el tercer dado (D6)
-    if (mod !== 'none') {
-      diceConfig.push({
-        qty: 1,
-        sides: 6,
-        themeColor: mod === 'advantage' ? '#00dc82' : '#ff6467'
-      })
-    }
-
-    diceStore.executeRoll(diceConfig, { modifier: mod, bonus: bonus })
+  // Si hay ventaja/desventaja, añadimos el tercer dado (D6)
+  if (mod !== 'none') {
+    diceConfig.push({
+      qty: 1,
+      sides: 6,
+      themeColor: mod === 'advantage' ? '#00dc82' : '#ff6467'
+    })
   }
 
-  onMounted(async () => {
-    await sessionStore.initializeSession(slug)
+  diceStore.executeRoll(diceConfig, { modifier: mod, bonus: bonus })
+}
 
-    if (sessionStore.id) {
-      const box = $createDiceBox('#dice-container')
-      await box.init()
+onMounted(async () => {
+  await sessionStore.initializeSession(slug)
 
-      diceStore.setDiceBox(box)
+  if (sessionStore.id) {
+    const box = $createDiceBox('#dice-container')
+    await box.init()
 
-      channel = supabase.channel(`session:${sessionStore.id}`, {
-        config: {
-          presence: {
-            key: sessionStore.activeIdentity // Usamos el nombre del PC como clave única
-          }
+    diceStore.setDiceBox(box)
+
+    channel = supabase.channel(`session:${sessionStore.id}`, {
+      config: {
+        presence: {
+          key: sessionStore.activeIdentity // Usamos el nombre del PC como clave única
+        }
+      }
+    })
+
+    channel
+      .on('presence', { event: 'sync' }, () => {
+        const newState = channel.presenceState()
+        sessionStore.updateOnlineMembers(newState)
+      })
+      .on('presence', { event: 'join' }, ({ key }: { key: string }) => {
+        console.log(`${key} se ha unido a la sesion`)
+      })
+      .on('presence', { event: 'leave' }, ({ key }: { key: string }) => {
+        console.log(`${key} se ha ido`)
+      })
+      .on('broadcast', { event: 'dice_anim' }, (payload: { user_name: string }) => {
+        // Aquí conectaremos con el componente 3D más adelante
+        console.log('Dados rodando de:', payload.user_name)
+      })
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'rolls',
+          filter: `session_id=eq.${sessionStore.id}`
+        },
+        (payload: { new: any }) => {
+          diceStore.addRollToLog(payload.new)
+        }
+      )
+      .subscribe(async (status: string) => {
+        if (status === 'SUBSCRIBED') {
+          // "Track" anuncia nuestra presencia a los demás
+          await channel.track({
+            name: sessionStore.activeIdentity,
+            isOwner: sessionStore.role === 'owner', // Útil para pintar una corona en la UI
+            joinedAt: new Date().toISOString()
+          })
         }
       })
+  }
+})
 
-      channel
-        .on('presence', { event: 'sync' }, () => {
-          const newState = channel.presenceState()
-          sessionStore.updateOnlineMembers(newState)
-        })
-        .on('presence', { event: 'join' }, ({ key }: { key: string }) => {
-          console.log(`${key} se ha unido a la sesion`)
-        })
-        .on('presence', { event: 'leave' }, ({ key }: { key: string }) => {
-          console.log(`${key} se ha ido`)
-        })
-        .on('broadcast', { event: 'dice_anim' }, (payload: { user_name: string }) => {
-          // Aquí conectaremos con el componente 3D más adelante
-          console.log('Dados rodando de:', payload.user_name)
-        })
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'rolls',
-            filter: `session_id=eq.${sessionStore.id}`
-          },
-          (payload: { new: any }) => {
-            diceStore.addRollToLog(payload.new)
-          }
-        )
-        .subscribe(async (status: string) => {
-          if (status === 'SUBSCRIBED') {
-            // "Track" anuncia nuestra presencia a los demás
-            await channel.track({
-              name: sessionStore.activeIdentity,
-              isOwner: sessionStore.role === 'owner', // Útil para pintar una corona en la UI
-              joinedAt: new Date().toISOString()
-            })
-          }
-        })
-    }
-  })
-
-  onUnmounted(async () => {
-    if (channel) {
-      await supabase.removeChannel(channel)
-      channel = null
-    }
-  })
+onUnmounted(async () => {
+  if (channel) {
+    await supabase.removeChannel(channel)
+    channel = null
+  }
+})
 </script>
+
 <template>
   <UPage>
     <UPageBody
       v-if="sessionStore.id"
       :ui="{ base: 'space-y-4' }"
     >
-      <p class="text-lg font-bold uppercase">{{ slug }}</p>
+      <p class="text-lg font-bold uppercase">
+        {{ slug }}
+      </p>
       <div
         id="dice-container"
         class="flex min-h-62 w-full flex-col items-center justify-center rounded-xl bg-neutral-200 dark:bg-neutral-950"
@@ -137,8 +141,7 @@
           <span
             v-if="diceStore.lastRoll.interpreted.isCritical"
             class="text-bold"
-            >Critical!</span
-          >
+          >Critical!</span>
           {{ diceStore.lastRoll.interpreted.total }}
           {{ diceStore.lastRoll.interpreted.outcome }}
         </p>
