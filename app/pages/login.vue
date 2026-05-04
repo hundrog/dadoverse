@@ -65,7 +65,6 @@
           description="Enter your credentials to access your account."
           icon="i-lucide-user"
           :fields="fields"
-          :providers="providers"
           @submit="onSubmit"
         />
       </UPageCard>
