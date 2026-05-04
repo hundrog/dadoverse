@@ -3,7 +3,7 @@ export const useDiceLogic = () => {
   const parseRoll = (system: DiceSystem, dice: number[], options: RollOptions = {}): RollResult => {
     switch (system) {
       case 'duality':
-        return solveDuality(dice, options.modifier || 'none');
+        return solveDuality(dice, options.modifier || 'none', options.bonus || 0);
 
       case 'yze':
         if (!options.yzeClusters) {
@@ -33,10 +33,13 @@ export const useDiceLogic = () => {
   const solveDuality = (
     dice: number[],
     modifier: "advantage" | "disadvantage" | "none" = "none",
+    bonus: number
   ): RollResult => {
+    console.log(dice, modifier, bonus)
     const [hope = 0, fear = 0, modDice = 0] = dice;
     const isCritical = hope === fear;
-    let total = hope + fear;
+    let total = hope + fear + bonus;
+
     let outcome = "";
 
     // Aplicar lógica de ventaja/desventaja al total
@@ -55,6 +58,7 @@ export const useDiceLogic = () => {
     return {
       system: "duality",
       rawValues: dice,
+      bonus,
       interpreted: {
         total,
         outcome,

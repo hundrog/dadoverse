@@ -1,3 +1,4 @@
+<!-- app/components/session/ThreeStateToggle.vue -->
 <template>
   <div class="flex justify-center items-center gap-3">
     <span class="text-sm" :class="state === 'disadvantage' ? 'text-error font-semibold' : 'text-muted'">

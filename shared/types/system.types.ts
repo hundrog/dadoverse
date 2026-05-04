@@ -3,6 +3,7 @@ export interface DualityMetadata {
   fear: number;
   modifierDice?: number;
   modifierType?: "advantage" | "disadvantage" | "none";
+  bonus?: number;
 }
 
 export interface YzeMetadata {
