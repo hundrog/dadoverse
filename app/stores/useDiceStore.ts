@@ -57,7 +57,7 @@ export const useDiceStore = defineStore('dice', () => {
       .from('rolls')
       .select('*')
       .eq('session_id', session.id as string)
-      .order('created_at', { ascending: false }) // Cambié timestamp por created_at (estándar Supabase)
+      .order('created_at', { ascending: false })
 
     if (!error) rolls.value = data
   }

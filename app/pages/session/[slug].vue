@@ -171,7 +171,7 @@ onMounted(async () => {
           </UPageCard>
         </template>
         <template #history>
-          <div class="py-4"></div>
+          <SessionDiceLog />
         </template>
       </UTabs>
     </UPageBody>
