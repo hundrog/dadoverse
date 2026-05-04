@@ -19,7 +19,7 @@ export const useDiceStore = defineStore('dice', () => {
   // --- MÉTODOS PRIVADOS ---
 
   function addRollToLog(roll: any) {
-    rolls.value.unshift(roll)
+    rolls.value.push(roll)
     if (rolls.value.length > 50) rolls.value.pop()
   }
 
@@ -57,7 +57,7 @@ export const useDiceStore = defineStore('dice', () => {
       .from('rolls')
       .select('*')
       .eq('session_id', session.id as string)
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: true })
 
     if (!error) rolls.value = data
   }

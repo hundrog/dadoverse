@@ -7,6 +7,7 @@ const sessionStore = useSessionStore();
 const route = useRoute();
 const supabase = useSupabaseClient();
 const { $createDiceBox } = useNuxtApp();
+let channel: any = null
 
 const rollMod = ref<RollModifier>("none");
 const bonus = ref(0);
@@ -58,7 +59,7 @@ onMounted(async () => {
 
     diceStore.setDiceBox(box);
 
-    const channel = supabase.channel(`session:${sessionStore.id}`, {
+    channel = supabase.channel(`session:${sessionStore.id}`, {
       config: {
         presence: {
           key: sessionStore.activeIdentity, // Usamos el nombre del PC como clave única
@@ -105,6 +106,13 @@ onMounted(async () => {
       });
   }
 });
+
+onUnmounted(async () => {
+  if (channel) {
+    await supabase.removeChannel(channel)
+    channel = null
+  }
+})
 </script>
 <template>
   <UPage>
@@ -121,12 +129,14 @@ onMounted(async () => {
       >
         Roll Dice
       </UButton>
-      <div class="flex justify-center text-center" v-if="diceStore.lastRoll">
+      <div class="flex justify-center text-center">
+        <p v-if="diceStore.lastRoll">
         <span v-if="diceStore.lastRoll.interpreted.isCritical" class="text-bold"
           >Critical!</span
         >
         {{ diceStore.lastRoll.interpreted.total }}
-        {{ diceStore.lastRoll.interpreted.outcome }}
+        {{ diceStore.lastRoll.interpreted.outcome }}</p>
+        <p v-else class="">&nbsp;</p>
       </div>
       <UTabs :items="items" class="w-full">
         <template #settings>
