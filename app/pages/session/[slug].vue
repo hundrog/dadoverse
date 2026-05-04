@@ -120,7 +120,7 @@ onUnmounted(async () => {
       <p class="text-lg font-bold uppercase">{{ slug }}</p>
       <div
         id="dice-container"
-        class="min-h-62 w-full bg-neutral-950 rounded-xl"
+        class="min-h-62 w-full flex flex-col bg-neutral-200 dark:bg-neutral-950 rounded-xl justify-center items-center"
       />
       <UButton
         class="w-full justify-center"
@@ -187,9 +187,3 @@ onUnmounted(async () => {
     </UPageBody>
   </UPage>
 </template>
-
-<style scoped>
-#dice-container {
-  pointer-events: none; /* Para que puedas clickear los botones de abajo */
-}
-</style>

@@ -35,7 +35,6 @@ export const useDiceLogic = () => {
     modifier: "advantage" | "disadvantage" | "none" = "none",
     bonus: number
   ): RollResult => {
-    console.log(dice, modifier, bonus)
     const [hope = 0, fear = 0, modDice = 0] = dice;
     const isCritical = hope === fear;
     let total = hope + fear + bonus;

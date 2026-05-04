@@ -19,34 +19,6 @@ useSeoMeta({
   ogImage: "https://ui.nuxt.com/assets/templates/nuxt/starter-light.png",
   twitterCard: "summary_large_image",
 });
-
-import type { NavigationMenuItem } from "@nuxt/ui";
-
-const route = useRoute();
-
-const items = computed<NavigationMenuItem[]>(() => [
-  {
-    label: "Docs",
-    // to: '/docs/getting-started',
-    active: route.path.startsWith("/docs/getting-started"),
-  },
-  {
-    label: "Components",
-    // to: '/docs/components',
-    active: route.path.startsWith("/docs/components"),
-  },
-  {
-    label: "Figma",
-    to: "https://go.nuxt.com/figma-ui",
-    target: "_blank",
-  },
-  {
-    label: "Releases",
-    to: "https://github.com/nuxt/ui/releases",
-    target: "_blank",
-  },
-]);
-
 const toast = useToast();
 
 function handleError(error: Error, clearError: () => void) {
@@ -74,28 +46,14 @@ function handleError(error: Error, clearError: () => void) {
           :on-mount="() => handleError(error, clearError)"
         />
       </template>
-      <UHeader>
+      <UHeader :toggle="false">
         <template #title>
           <NuxtLink to="/"> Roll & Roll </NuxtLink>
         </template>
 
-        <UNavigationMenu :items="items" />
-
-        <template #body>
-          <UNavigationMenu :items="items" orientation="vertical" />
-        </template>
-
         <template #right>
           <UColorModeButton />
-
-          <UButton
-            to="https://github.com/nuxt-ui-templates/starter"
-            target="_blank"
-            icon="i-simple-icons-github"
-            aria-label="GitHub"
-            color="neutral"
-            variant="ghost"
-          />
+          <LayoutUserMenu />
         </template>
       </UHeader>
 

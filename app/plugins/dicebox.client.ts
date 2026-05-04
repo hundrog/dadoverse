@@ -12,6 +12,7 @@ export default defineNuxtPlugin(() => {
           theme: "default",
           scale: 9,
           offscreen: true,
+          settleTimeout: 3500,
         })
       }
     }

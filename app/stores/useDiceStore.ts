@@ -92,8 +92,6 @@ export const useDiceStore = defineStore('dice', () => {
         created_at: new Date().toISOString()
       }
 
-      console.log(enrichedRoll)
-
       // 4. UI Local: Actualizar log inmediatamente
       addRollToLog(enrichedRoll)
       lastRoll.value = enrichedRoll
