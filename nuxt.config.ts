@@ -36,7 +36,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['@3d-dice/dice-box']
+      include: ['@3d-dice/dice-box', 'zod']
     }
   }
 })
