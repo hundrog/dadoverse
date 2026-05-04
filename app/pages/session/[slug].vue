@@ -72,13 +72,13 @@
           const newState = channel.presenceState()
           sessionStore.updateOnlineMembers(newState)
         })
-        .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+        .on('presence', { event: 'join' }, ({ key }: { key: string }) => {
           console.log(`${key} se ha unido a la sesion`)
         })
-        .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+        .on('presence', { event: 'leave' }, ({ key }: { key: string }) => {
           console.log(`${key} se ha ido`)
         })
-        .on('broadcast', { event: 'dice_anim' }, payload => {
+        .on('broadcast', { event: 'dice_anim' }, (payload: { user_name: string }) => {
           // Aquí conectaremos con el componente 3D más adelante
           console.log('Dados rodando de:', payload.user_name)
         })
@@ -90,11 +90,11 @@
             table: 'rolls',
             filter: `session_id=eq.${sessionStore.id}`
           },
-          payload => {
+          (payload: { new: any }) => {
             diceStore.addRollToLog(payload.new)
           }
         )
-        .subscribe(async status => {
+        .subscribe(async (status: string) => {
           if (status === 'SUBSCRIBED') {
             // "Track" anuncia nuestra presencia a los demás
             await channel.track({
