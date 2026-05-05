@@ -139,12 +139,12 @@ onUnmounted(async () => {
       </UButton>
       <div class="flex justify-center text-center">
         <p v-if="diceStore.lastRoll">
+          {{ diceStore.lastRoll.interpreted.total }}
           <span
             v-if="diceStore.lastRoll.interpreted.isCritical"
-            class="text-bold"
-          >{{ t('session.room.critical') }}</span>
-          {{ diceStore.lastRoll.interpreted.total }}
-          {{ diceStore.lastRoll.interpreted.outcome }}
+            class="font-bold"
+          >{{ diceStore.lastRoll.interpreted.outcome }}</span>
+          <span v-else>{{ diceStore.lastRoll.interpreted.outcome }}</span>
         </p>
         <p
           v-else

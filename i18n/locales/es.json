@@ -55,7 +55,7 @@
       "displayNamePlaceholder": "Ej. Will el Sabio",
       "systems": {
         "duality": {
-          "title": "Dados de Dualidad de Daggerheart",
+          "title": "Daggerheart",
           "description": "El sistema de Dados de Dualidad en Daggerheart usa dos d12 (Esperanza y Miedo) tirados juntos para determinar exito y tono narrativo."
         },
         "yze": {
@@ -63,7 +63,7 @@
           "description": "En el sistema de pool de dados, cada accion se resuelve tirando varios d6; solo los resultados de 6 cuentan como exitos y su cantidad determina el resultado."
         },
         "step": {
-          "title": "Dados por Escalon",
+          "title": "Step Dice",
           "description": "La variante de dados por escalon usa dados de distintos tamanos (d6, d8, d10...), con una curva de dificultad mas suave y menos penalizaciones por push."
         },
         "modiphius2d20": {
