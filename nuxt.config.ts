@@ -15,21 +15,24 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-15',
 
   nitro: {
-    serveStatic: true,
+    preset: 'cloudflare-pages',
     compressPublicAssets: true,
     devProxy: {
       // A veces necesario en desarrollo para evitar problemas de CORS con los assets
     },
     prerender: {
-      autoSubfolderIndex: false
+      autoSubfolderIndex: false,
+      crawlLinks: false
     },
     routeRules: {
       '/dice-box/**': {
+        ssr: false,
         headers: {
-          'Content-Type': 'application/javascript', // Para los scripts del worker
+          'Content-Type': 'application/javascript',
           'Cross-Origin-Resource-Policy': 'cross-origin'
         }
-      }
+      },
+      '/session/**': { ssr: false }
     }
   },
 
