@@ -70,23 +70,27 @@ const systems = ref([
     title: t('session.new.systems.yze.title'),
     description: t('session.new.systems.yze.description'),
     icon: 'i-lucide-dices',
+    disabled: true
   },
   {
     id: 'step',
     title: t('session.new.systems.step.title'),
     description: t('session.new.systems.step.description'),
-    icon: 'i-lucide-dices'
+    icon: 'i-lucide-dices',
+    disabled: true
   },
   {
     id: '2d20',
     title: t('session.new.systems.modiphius2d20.title'),
     description: t('session.new.systems.modiphius2d20.description'),
-    icon: 'i-lucide-dices'
+    icon: 'i-lucide-dices',
+    disabled: true
   }
 ])
 
 function selectSystem(index: number, id: string) {
-  if (index !== 0) return
+  if (systems.value.find(s => s.id === id)?.disabled) return
+
   selected.value = index
   form.system_type = id as DiceSystem
 }
@@ -94,7 +98,6 @@ function selectSystem(index: number, id: string) {
 async function handleCreateSession(form: SessionInsert) {
   const currentSchema = schemas[currentStep.value] as ZodObject<any>
   const result = await currentSchema.safeParseAsync(form)
-  console.log(result)
 
   if (!result.success) {
     formRef.value.setErrors(
@@ -113,7 +116,6 @@ async function handleCreateSession(form: SessionInsert) {
 async function nextStep() {
   const currentSchema = schemas[currentStep.value] as ZodObject<any>
   const result = await currentSchema.safeParseAsync(form)
-  console.log(result)
 
   if (!result.success) {
     formRef.value.setErrors(
@@ -167,7 +169,7 @@ async function nextStep() {
                   :highlight="selected === index"
                   highlight-color="primary"
                   :spotlight="isDesktop"
-                  :variant="system.id === 'duality' ? 'outline' : 'disabled'"
+                  :variant="system.disabled ? 'disabled' : 'outline' "
                   spotlight-color="secondary"
                   @click="selectSystem(index, system.id)"
                 />
