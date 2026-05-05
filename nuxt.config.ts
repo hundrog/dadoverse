@@ -1,6 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/supabase'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/ui',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    '@nuxtjs/supabase',
+    'nuxt-security'
+  ],
 
   devtools: {
     enabled: true
@@ -15,8 +22,21 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-15',
 
   nitro: {
+    serveStatic: true,
+    compressPublicAssets: true,
+    devProxy: {
+      // A veces necesario en desarrollo para evitar problemas de CORS con los assets
+    },
     prerender: {
       autoSubfolderIndex: false
+    },
+    routeRules: {
+      '/dice-box/**': {
+        headers: {
+          'Content-Type': 'application/javascript', // Para los scripts del worker
+          'Cross-Origin-Resource-Policy': 'cross-origin'
+        }
+      }
     }
   },
 
@@ -35,8 +55,34 @@ export default defineNuxtConfig({
     }
   },
 
+  security: {
+    nonce: true,
+    headers: {
+      contentSecurityPolicy: {
+        'script-src': [
+          "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
+          "'wasm-unsafe-eval'",
+        ],
+        'worker-src': ["'self'", 'blob:'],
+        'img-src': [
+          "'self'",
+          'data:',
+          'https://api.dicebear.com',
+          'https://source.boringavatars.com'
+        ],
+        'connect-src': ["'self'", 'https://*.supabase.co', 'wss://*.supabase.co', 'ws://localhost:*'],
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'base-uri': ["'self'"]
+      },
+      crossOriginEmbedderPolicy: 'unsafe-none',
+      crossOriginOpenerPolicy: 'same-origin',
+      crossOriginResourcePolicy: 'cross-origin'
+    }
+  },
+
   supabase: {
-    // Options
     redirectOptions: {
       login: '/login',
       callback: '/confirm',
