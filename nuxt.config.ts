@@ -48,39 +48,39 @@ export default defineNuxtConfig({
     }
   },
 
+  i18n: {
+    locales: [
+      { code: 'en', language: 'en-US', file: 'en.json' },
+      { code: 'es', language: 'es-MX', file: 'es.json' }
+    ],
+    defaultLocale: 'es'
+  },
+
   security: {
     nonce: true,
     headers: {
       contentSecurityPolicy: {
         'script-src': [
-          "'self'",
-          "'unsafe-inline'",
-          "'unsafe-eval'",
-          "'wasm-unsafe-eval'",
+          '\'self\'',
+          '\'unsafe-inline\'',
+          '\'unsafe-eval\'',
+          '\'wasm-unsafe-eval\''
         ],
-        'worker-src': ["'self'", 'blob:'],
+        'worker-src': ['\'self\'', 'blob:'],
         'img-src': [
-          "'self'",
+          '\'self\'',
           'data:',
           'https://api.dicebear.com',
           'https://source.boringavatars.com'
         ],
-        'connect-src': ["'self'", 'https://*.supabase.co', 'wss://*.supabase.co', 'ws://localhost:*', 'ws//api.iconify.design/*'],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'base-uri': ["'self'"]
+        'connect-src': ['\'self\'', 'https://*.supabase.co', 'wss://*.supabase.co', 'ws://localhost:*', 'ws//api.iconify.design/*'],
+        'style-src': ['\'self\'', '\'unsafe-inline\''],
+        'base-uri': ['\'self\'']
       },
       crossOriginEmbedderPolicy: 'unsafe-none',
       crossOriginOpenerPolicy: 'same-origin',
       crossOriginResourcePolicy: 'cross-origin'
     }
-  },
-
-  i18n: {
-    locales: [
-      { code: 'en', language: 'en-US', file: 'en.json' },
-      { code: 'es', language: 'es-MX', file: 'es.json'}
-    ],
-    defaultLocale: 'es',
   },
 
   supabase: {

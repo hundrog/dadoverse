@@ -39,7 +39,7 @@ export default defineAppConfig({
             leadingIcon: 'text-muted'
           }
         }
-      },
+      }
     }
   }
 })

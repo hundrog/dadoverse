@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { StepperItem } from '@nuxt/ui'
 import { breakpointsTailwind } from '@vueuse/core'
-import { z, ZodObject } from 'zod'
+import type { ZodObject } from 'zod'
+import { z } from 'zod'
 
 const sessionStore = useSessionStore()
 const { t } = useI18n()
@@ -142,7 +143,6 @@ async function nextStep() {
         :schema="schemas[currentStep]"
         @submit="handleCreateSession(form)"
       >
-
         <UStepper
           ref="stepper"
           v-model="currentStep"
