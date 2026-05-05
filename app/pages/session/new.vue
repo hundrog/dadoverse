@@ -4,6 +4,7 @@ import { breakpointsTailwind } from '@vueuse/core'
 import { z, ZodObject } from 'zod'
 
 const sessionStore = useSessionStore()
+const { t } = useI18n()
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isDesktop = breakpoints.greaterOrEqual('md')
 const selected = ref<number | null>(null)
@@ -22,34 +23,34 @@ const form = reactive({
 const items: StepperItem[] = [
   {
     slot: 'name' as const,
-    title: 'Name',
+    title: t('session.new.steps.name'),
     icon: 'i-lucide-users'
   },
   {
     slot: 'system' as const,
-    title: 'System',
+    title: t('session.new.steps.system'),
     icon: 'i-lucide-settings-2'
   },
   {
     slot: 'create' as const,
-    title: 'Create',
+    title: t('session.new.steps.create'),
     icon: 'i-lucide-check'
   }
 ]
 
 // Paso 1: Solo el nombre de la sesión
 const step1Schema = z.object({
-  name: z.string().min(1, 'Name is required')
+  name: z.string().min(1, t('session.new.validation.nameRequired'))
 })
 
 // Paso 2: Solo el sistema
 const step2Schema = z.object({
-  system_type: z.string().min(1, 'System is required')
+  system_type: z.string().min(1, t('session.new.validation.systemRequired'))
 })
 
 // Paso 3: Lo que falta (Username y Config)
 const step3Schema = z.object({
-  username: z.string().min(1, 'Display name is required'),
+  username: z.string().min(1, t('session.new.validation.displayNameRequired')),
   config: z.object({
     allow_spectators: z.boolean()
   })
@@ -60,30 +61,26 @@ const schemas = [step1Schema, step2Schema, step3Schema]
 const systems = ref([
   {
     id: 'duality',
-    title: 'Daggerheart Duality Dice',
-    description:
-      'The Duality Dice system in the Daggerheart RPG uses two d12s (Hope and Fear) rolled together to determine success and narrative tone.',
+    title: t('session.new.systems.duality.title'),
+    description: t('session.new.systems.duality.description'),
     icon: 'i-lucide-dices'
   },
   {
     id: 'yze',
-    title: 'Year Zero Engine',
-    description:
-      'In the dice pool system, every action is resolved by rolling a bunch of d6 dice, only the results of 6 count as successes, and the number of successes determines the outcome of the action.',
+    title: t('session.new.systems.yze.title'),
+    description: t('session.new.systems.yze.description'),
     icon: 'i-lucide-dices',
   },
   {
     id: 'step',
-    title: 'Step Dice',
-    description:
-      'The step-dice variant uses different-sized dice (d6, d8, d10…), giving a gentler difficulty curve and fewer “push” penalties.',
+    title: t('session.new.systems.step.title'),
+    description: t('session.new.systems.step.description'),
     icon: 'i-lucide-dices'
   },
   {
     id: '2d20',
-    title: 'Modiphius 2D20',
-    description:
-      'The Modiphius 2D20 system uses two d20 dice to determine the outcome of actions, with the difference between the dice determining the degree of success.',
+    title: t('session.new.systems.modiphius2d20.title'),
+    description: t('session.new.systems.modiphius2d20.description'),
     icon: 'i-lucide-dices'
   }
 ])
@@ -136,7 +133,7 @@ async function nextStep() {
 <template>
   <UPage>
     <UPageBody>
-      <p class="text-lg font-bold uppercase">New Session</p>
+      <p class="text-lg font-bold uppercase">{{ t('session.new.title') }}</p>
       <UForm
         ref="formRef"
         :state="form"
@@ -151,11 +148,11 @@ async function nextStep() {
           class="w-full"
         >
           <template #name>
-            <UFormField label="Name" name="name">
+            <UFormField :label="t('session.new.steps.name')" name="name">
               <UInput
                 v-model="form.name"
                 size="xl"
-                placeholder="The Great Adventure"
+                :placeholder="t('session.new.namePlaceholder')"
                 class="w-full"
               />
             </UFormField>
@@ -181,14 +178,14 @@ async function nextStep() {
             <div class="flex flex-col gap-6">
               <!-- Review -->
               <div class="flex flex-col gap-2">
-                <p class="text-muted text-sm font-medium uppercase">Review</p>
+                <p class="text-muted text-sm font-medium uppercase">{{ t('session.new.review') }}</p>
                 <div class="flex flex-col gap-1">
                   <div class="flex justify-between">
-                    <span class="text-muted text-sm">Name</span>
+                    <span class="text-muted text-sm">{{ t('session.new.steps.name') }}</span>
                     <span class="text-sm font-medium">{{ form.name }}</span>
                   </div>
                   <div class="flex justify-between">
-                    <span class="text-muted text-sm">System</span>
+                    <span class="text-muted text-sm">{{ t('session.new.steps.system') }}</span>
                     <span class="text-sm font-medium">{{
                       systems.find(s => s.id === form.system_type)?.title
                     }}</span>
@@ -200,17 +197,17 @@ async function nextStep() {
 
               <!-- Config -->
               <div class="flex flex-col gap-4">
-                <p class="text-muted text-sm font-medium uppercase">Configuration</p>
+                <p class="text-muted text-sm font-medium uppercase">{{ t('session.new.configuration') }}</p>
 
                 <div class="flex flex-col gap-2">
                   <div>
-                    <p class="text-sm font-medium">Display name</p>
-                    <p class="text-muted text-xs">The name your rolls will have (like GM)</p>
+                    <p class="text-sm font-medium">{{ t('session.new.displayName') }}</p>
+                    <p class="text-muted text-xs">{{ t('session.new.displayNameHelp') }}</p>
                   </div>
                   <UFormField name="username">
                     <UInput
                       v-model="form.username"
-                      placeholder="Ej. Will el Sabio"
+                      :placeholder="t('session.new.displayNamePlaceholder')"
                       size="xl"
                       class="w-full"
                     />
@@ -219,8 +216,8 @@ async function nextStep() {
 
                 <div class="flex items-center justify-between">
                   <div>
-                    <p class="text-sm font-medium">Allow Spectators</p>
-                    <p class="text-muted text-xs">Let others join as observers</p>
+                    <p class="text-sm font-medium">{{ t('session.new.allowSpectators') }}</p>
+                    <p class="text-muted text-xs">{{ t('session.new.allowSpectatorsHelp') }}</p>
                   </div>
                   <USwitch v-model="form.config.allow_spectators" />
                 </div>
@@ -231,7 +228,7 @@ async function nextStep() {
                 size="xl"
                 type="submit"
               >
-                Create Session
+                {{ t('session.new.createSession') }}
               </UButton>
             </div>
           </template>
@@ -242,7 +239,7 @@ async function nextStep() {
             :disabled="!stepper?.hasPrev"
             @click="stepper?.prev()"
           >
-            Prev
+            {{ t('session.new.prev') }}
           </UButton>
 
           <UButton
@@ -250,7 +247,7 @@ async function nextStep() {
             :disabled="!stepper?.hasNext"
             @click="nextStep()"
           >
-            Next
+            {{ t('session.new.next') }}
           </UButton>
         </div>
       </UForm>

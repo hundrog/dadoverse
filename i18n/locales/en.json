@@ -1,0 +1,95 @@
+{
+  "app": {
+    "name": "Dadoverse",
+    "tagline": "A TTRPG dice roller for complex dice systems",
+    "headerTitle": "Roll & Roll",
+    "footerBuiltWith": "Built with Nuxt UI",
+    "errorToastTitle": "Something went wrong"
+  },
+  "auth": {
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "invalidEmail": "Invalid email",
+    "google": "Google",
+    "facebook": "Facebook",
+    "loginWithGoogle": "Login with Google",
+    "loginWithFacebook": "Login with Facebook",
+    "errorSigningIn": "Error signing in",
+    "emailSent": "Email sent",
+    "magicLinkSent": "Check your inbox for the magic link.",
+    "login": "Login",
+    "loginDescription": "Enter your credentials to access your account."
+  },
+  "session": {
+    "join": {
+      "title": "Join a Session",
+      "as": "As",
+      "find": "Find Session",
+      "or": "Or",
+      "create": "Create Session",
+      "slugPlaceholder": "the-great-adventure-9531",
+      "namePlaceholder": "Korintya"
+    },
+    "new": {
+      "title": "New Session",
+      "steps": {
+        "name": "Name",
+        "system": "System",
+        "create": "Create"
+      },
+      "validation": {
+        "nameRequired": "Name is required",
+        "systemRequired": "System is required",
+        "displayNameRequired": "Display name is required"
+      },
+      "review": "Review",
+      "configuration": "Configuration",
+      "displayName": "Display name",
+      "displayNameHelp": "The name your rolls will have (like GM)",
+      "allowSpectators": "Allow Spectators",
+      "allowSpectatorsHelp": "Let others join as observers",
+      "createSession": "Create Session",
+      "prev": "Prev",
+      "next": "Next",
+      "namePlaceholder": "The Great Adventure",
+      "displayNamePlaceholder": "Ex. The Wise Will",
+      "systems": {
+        "duality": {
+          "title": "Daggerheart Duality Dice",
+          "description": "The Duality Dice system in the Daggerheart RPG uses two d12s (Hope and Fear) rolled together to determine success and narrative tone."
+        },
+        "yze": {
+          "title": "Year Zero Engine",
+          "description": "In the dice pool system, every action is resolved by rolling a bunch of d6 dice; only results of 6 count as successes, and the number of successes determines the outcome of the action."
+        },
+        "step": {
+          "title": "Step Dice",
+          "description": "The step-dice variant uses different-sized dice (d6, d8, d10...), giving a gentler difficulty curve and fewer push penalties."
+        },
+        "modiphius2d20": {
+          "title": "Modiphius 2D20",
+          "description": "The Modiphius 2D20 system uses two d20 dice to determine the outcome of actions, with the difference between the dice determining the degree of success."
+        }
+      }
+    },
+    "room": {
+      "settings": "Settings",
+      "history": "History",
+      "rollDice": "Roll Dice",
+      "critical": "Critical!",
+      "rollingDualityDice": "Rolling Duality Dice",
+      "bonus": "Bonus",
+      "moreDice": "More Dice",
+      "advantage": "Advantage",
+      "disadvantage": "Disadvantage"
+    }
+  },
+  "userMenu": {
+    "logout": "Log out",
+    "avatarAlt": "avatar"
+  },
+  "errorPage": {
+    "statusMessage": "Page not found",
+    "message": "The page you are looking for does not exist."
+  }
+}

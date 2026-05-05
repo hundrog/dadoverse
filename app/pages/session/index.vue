@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const sessionSlug = ref('')
 const name = ref('')
+const { t } = useI18n()
 
 const sessionStore = useSessionStore()
 
@@ -19,19 +20,19 @@ const goToSession = async (slug: string) => {
   <UPage>
     <UPageBody>
       <p class="text-lg font-bold">
-        Join a Session
+        {{ t('session.join.title') }}
       </p>
       <UInput
         v-model="sessionSlug"
         size="xl"
-        placeholder="the-great-adventure-9531"
+        :placeholder="t('session.join.slugPlaceholder')"
         class="w-full"
       />
-      As
+      {{ t('session.join.as') }}
       <UInput
         v-model="name"
         size="xl"
-        placeholder="Korintya"
+        :placeholder="t('session.join.namePlaceholder')"
         class="w-full"
         @keyup.enter="goToSession(sessionSlug)"
       />
@@ -41,15 +42,15 @@ const goToSession = async (slug: string) => {
           size="xl"
           @click="goToSession(sessionSlug)"
         >
-          Find Session
+          {{ t('session.join.find') }}
         </UButton>
-        <USeparator label="Or" />
+        <USeparator :label="t('session.join.or')" />
         <UButton
           class="w-full justify-center md:w-auto"
           size="xl"
           to="/session/new"
         >
-          Create Session
+          {{ t('session.join.create') }}
         </UButton>
       </div>
     </UPageBody>

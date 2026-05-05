@@ -5,6 +5,7 @@ import type { RollModifier } from '~/types/dice.types'
 
 const diceStore = useDiceStore()
 const sessionStore = useSessionStore()
+const { t } = useI18n()
 const route = useRoute()
 const supabase = useSupabaseClient()
 const { $createDiceBox } = useNuxtApp()
@@ -23,12 +24,12 @@ const COLORS = {
 const items: TabsItem[] = [
   {
     slot: 'settings' as const,
-    label: 'settings',
+    label: t('session.room.settings'),
     icon: 'i-lucide-settings'
   },
   {
     slot: 'history' as const,
-    label: 'History',
+    label: t('session.room.history'),
     icon: 'i-lucide-clock-fading'
   }
 ]
@@ -134,14 +135,14 @@ onUnmounted(async () => {
         size="xl"
         @click="rollDuality(rollMod, bonus)"
       >
-        Roll Dice
+        {{ t('session.room.rollDice') }}
       </UButton>
       <div class="flex justify-center text-center">
         <p v-if="diceStore.lastRoll">
           <span
             v-if="diceStore.lastRoll.interpreted.isCritical"
             class="text-bold"
-          >Critical!</span>
+          >{{ t('session.room.critical') }}</span>
           {{ diceStore.lastRoll.interpreted.total }}
           {{ diceStore.lastRoll.interpreted.outcome }}
         </p>
@@ -159,12 +160,12 @@ onUnmounted(async () => {
         <template #settings>
           <UPageCard :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }">
             <template #header>
-              <span class="text-bold">Rolling Duality Dice</span>
+              <span class="text-bold">{{ t('session.room.rollingDualityDice') }}</span>
             </template>
 
             <template #body>
               <SessionThreeStateToggle v-model="rollMod" />
-              Bonus: {{ bonus > 0 ? '+' + bonus : bonus }}
+              {{ t('session.room.bonus') }}: {{ bonus > 0 ? '+' + bonus : bonus }}
               <USlider
                 v-model="bonus"
                 :min="-10"
@@ -177,7 +178,7 @@ onUnmounted(async () => {
               <UCollapsible class="flex flex-col gap-2">
                 <UButton
                   class="group w-full"
-                  label="More Dice"
+                  :label="t('session.room.moreDice')"
                   color="neutral"
                   variant="ghost"
                   trailing-icon="i-lucide-chevron-down"

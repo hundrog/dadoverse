@@ -5,7 +5,7 @@
       class="text-sm"
       :class="state === 'disadvantage' ? 'text-error font-semibold' : 'text-muted'"
     >
-      Disadvantage
+      {{ t('session.room.disadvantage') }}
     </span>
 
     <button
@@ -31,7 +31,7 @@
       class="text-sm"
       :class="state === 'advantage' ? 'text-success font-semibold' : 'text-muted'"
     >
-      Advantage
+      {{ t('session.room.advantage') }}
     </span>
   </div>
 </template>
@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import type { RollModifier } from '~/types/dice.types'
 
+const { t } = useI18n()
 const states: RollModifier[] = ['disadvantage', 'none', 'advantage']
 
 const state = defineModel<RollModifier>({ default: 'none' })

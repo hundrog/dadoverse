@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { en, es } from '@nuxt/ui/locale'
 
-const locale = ref('es')
+const { t, locale } = useI18n()
 useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
@@ -10,9 +10,8 @@ useHead({
   }
 })
 
-const title = 'Dadoverse'
-const description
-  = 'A TTRPG dice roller for complex dice systems'
+const title = t('app.name')
+const description = t('app.tagline')
 
 useSeoMeta({
   title,
@@ -26,7 +25,7 @@ const toast = useToast()
 
 function handleError(error: Error, clearError: () => void) {
   toast.add({
-    'title': 'Something went wrong',
+    'title': t('app.errorToastTitle'),
     'description': error.message,
     'color': 'error',
     'icon': 'i-lucide-alert-circle',
@@ -51,7 +50,7 @@ function handleError(error: Error, clearError: () => void) {
       </template>
       <UHeader :toggle="false">
         <template #title>
-          Roll & Roll
+          {{ t('app.name') }}
         </template>
 
         <template #right>
@@ -69,7 +68,7 @@ function handleError(error: Error, clearError: () => void) {
       <UFooter>
         <template #left>
           <p class="text-muted text-sm">
-            Built with Nuxt UI • © {{ new Date().getFullYear() }}
+            {{ t('app.footerBuiltWith') }} • © {{ new Date().getFullYear() }}
           </p>
         </template>
 

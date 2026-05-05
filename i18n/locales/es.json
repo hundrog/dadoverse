@@ -1,0 +1,95 @@
+{
+  "app": {
+    "name": "Dadoverse",
+    "tagline": "Un lanzador de dados TTRPG para sistemas de dados complejos",
+    "headerTitle": "Tira y rueda",
+    "footerBuiltWith": "Hecho con Nuxt UI",
+    "errorToastTitle": "Algo salio mal"
+  },
+  "auth": {
+    "email": "Correo",
+    "enterEmail": "Ingresa tu correo",
+    "invalidEmail": "Correo invalido",
+    "google": "Google",
+    "facebook": "Facebook",
+    "loginWithGoogle": "Iniciar con Google",
+    "loginWithFacebook": "Iniciar con Facebook",
+    "errorSigningIn": "Error al iniciar sesion",
+    "emailSent": "Correo enviado",
+    "magicLinkSent": "Revisa tu bandeja para el enlace magico.",
+    "login": "Iniciar sesion",
+    "loginDescription": "Ingresa tus credenciales para acceder a tu cuenta."
+  },
+  "session": {
+    "join": {
+      "title": "Unirse a una sesion",
+      "as": "Como",
+      "find": "Buscar sesion",
+      "or": "O",
+      "create": "Crear sesion",
+      "slugPlaceholder": "la-gran-aventura-9531",
+      "namePlaceholder": "Korintya"
+    },
+    "new": {
+      "title": "Nueva sesion",
+      "steps": {
+        "name": "Nombre",
+        "system": "Sistema",
+        "create": "Crear"
+      },
+      "validation": {
+        "nameRequired": "El nombre es obligatorio",
+        "systemRequired": "El sistema es obligatorio",
+        "displayNameRequired": "El nombre visible es obligatorio"
+      },
+      "review": "Resumen",
+      "configuration": "Configuracion",
+      "displayName": "Nombre visible",
+      "displayNameHelp": "El nombre que tendran tus tiradas (por ejemplo GM)",
+      "allowSpectators": "Permitir espectadores",
+      "allowSpectatorsHelp": "Permite que otros entren como observadores",
+      "createSession": "Crear sesion",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "namePlaceholder": "La Gran Aventura",
+      "displayNamePlaceholder": "Ej. Will el Sabio",
+      "systems": {
+        "duality": {
+          "title": "Dados de Dualidad de Daggerheart",
+          "description": "El sistema de Dados de Dualidad en Daggerheart usa dos d12 (Esperanza y Miedo) tirados juntos para determinar exito y tono narrativo."
+        },
+        "yze": {
+          "title": "Year Zero Engine",
+          "description": "En el sistema de pool de dados, cada accion se resuelve tirando varios d6; solo los resultados de 6 cuentan como exitos y su cantidad determina el resultado."
+        },
+        "step": {
+          "title": "Dados por Escalon",
+          "description": "La variante de dados por escalon usa dados de distintos tamanos (d6, d8, d10...), con una curva de dificultad mas suave y menos penalizaciones por push."
+        },
+        "modiphius2d20": {
+          "title": "Modiphius 2D20",
+          "description": "El sistema Modiphius 2D20 usa dos d20 para determinar acciones, y la diferencia entre dados define el grado de exito."
+        }
+      }
+    },
+    "room": {
+      "settings": "Configuracion",
+      "history": "Historial",
+      "rollDice": "Tirar dados",
+      "critical": "Critico!",
+      "rollingDualityDice": "Tirando dados de dualidad",
+      "bonus": "Bono",
+      "moreDice": "Mas dados",
+      "advantage": "Ventaja",
+      "disadvantage": "Desventaja"
+    }
+  },
+  "userMenu": {
+    "logout": "Cerrar sesion",
+    "avatarAlt": "avatar"
+  },
+  "errorPage": {
+    "statusMessage": "Pagina no encontrada",
+    "message": "La pagina que buscas no existe."
+  }
+}

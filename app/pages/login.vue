@@ -3,6 +3,7 @@ import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
 const supabase = useSupabaseClient()
+const { t } = useI18n()
 
 const toast = useToast()
 
@@ -10,31 +11,31 @@ const fields: AuthFormField[] = [
   {
     name: 'email',
     type: 'email',
-    label: 'Email',
-    placeholder: 'Enter your email',
+    label: t('auth.email'),
+    placeholder: t('auth.enterEmail'),
     required: true
   }
 ]
 
 const _providers = [
   {
-    label: 'Google',
+    label: t('auth.google'),
     icon: 'i-simple-icons-google',
     onClick: () => {
-      toast.add({ title: 'Google', description: 'Login with Google' })
+      toast.add({ title: t('auth.google'), description: t('auth.loginWithGoogle') })
     }
   },
   {
-    label: 'Facebook',
+    label: t('auth.facebook'),
     icon: 'i-simple-icons-facebook',
     onClick: () => {
-      toast.add({ title: 'Facebook', description: 'Login with Facebook' })
+      toast.add({ title: t('auth.facebook'), description: t('auth.loginWithFacebook') })
     }
   }
 ]
 
 const schema = z.object({
-  email: z.email('Invalid email')
+  email: z.email(t('auth.invalidEmail'))
 })
 
 type Schema = z.output<typeof schema>
@@ -43,15 +44,15 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   const { error } = await supabase.auth.signInWithOtp(payload.data)
   if (error) {
     toast.add({
-      title: 'Error signing in',
+      title: t('auth.errorSigningIn'),
       description: error.message,
       color: 'error'
     })
     return
   }
   toast.add({
-    title: 'Email sent',
-    description: 'Check your inbox for the magic link.'
+    title: t('auth.emailSent'),
+    description: t('auth.magicLinkSent')
   })
 }
 </script>
@@ -62,8 +63,8 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
       <UPageCard class="w-full max-w-md">
         <UAuthForm
           :schema="schema"
-          title="Login"
-          description="Enter your credentials to access your account."
+          :title="t('auth.login')"
+          :description="t('auth.loginDescription')"
           icon="i-lucide-user"
           :fields="fields"
           @submit="onSubmit"

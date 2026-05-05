@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 
+const { t } = useI18n()
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 
 const items = ref<DropdownMenuItem[]>([
   {
-    label: 'LogOut',
+    label: t('userMenu.logout'),
     icon: 'i-lucide-log-out',
     onSelect(e: Event) {
       e.preventDefault()
@@ -37,7 +38,7 @@ const logout = async () => {
   >
     <img
       :src="`https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=${user.sub}`"
-      alt="avatar"
+      :alt="t('userMenu.avatarAlt')"
       class="size-7 rounded-full bg-neutral-200 dark:bg-neutral-950"
     >
   </UDropdownMenu>
