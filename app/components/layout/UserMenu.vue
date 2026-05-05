@@ -18,7 +18,7 @@ const items = ref<DropdownMenuItem[]>([
 const logout = async () => {
   await supabase.auth.signOut()
 
-  return navigateTo('/login')
+  return navigateTo('/')
 }
 </script>
 

@@ -144,26 +144,6 @@ async function handleCreateSession(form: SessionInsert) {
                 </div>
                 <USwitch v-model="form.config.allow_spectators" />
               </div>
-
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-sm font-medium">
-                    Theme
-                  </p>
-                  <p class="text-muted text-xs">
-                    Visual style for the session
-                  </p>
-                </div>
-                <USelect
-                  v-model="form.config.theme"
-                  :items="[
-                    { label: 'Default', value: 'default' },
-                    { label: 'Moss Green', value: 'moss-green' },
-                    { label: 'Slate', value: 'slate' },
-                    { label: 'Abyss', value: 'abyss' }
-                  ]"
-                />
-              </div>
             </div>
 
             <UButton

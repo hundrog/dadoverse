@@ -7,9 +7,9 @@ useHead({
   }
 })
 
-const title = 'Nuxt Starter Template'
+const title = 'Dadoverse'
 const description
-  = 'A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.'
+  = 'A TTRPG dice roller for complex dice systems'
 
 useSeoMeta({
   title,
@@ -48,7 +48,7 @@ function handleError(error: Error, clearError: () => void) {
       </template>
       <UHeader :toggle="false">
         <template #title>
-          <NuxtLink to="/"> Roll & Roll </NuxtLink>
+          Roll & Roll
         </template>
 
         <template #right>
