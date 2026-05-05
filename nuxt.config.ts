@@ -72,7 +72,7 @@ export default defineNuxtConfig({
           'https://api.dicebear.com',
           'https://source.boringavatars.com'
         ],
-        'connect-src': ["'self'", 'https://*.supabase.co', 'wss://*.supabase.co', 'ws://localhost:*'],
+        'connect-src': ["'self'", 'https://*.supabase.co', 'wss://*.supabase.co', 'ws://localhost:*', 'ws//api.iconify.design/*'],
         'style-src': ["'self'", "'unsafe-inline'"],
         'base-uri': ["'self'"]
       },

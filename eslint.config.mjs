@@ -6,6 +6,8 @@ export default withNuxt({
   rules: {
     '@stylistic/quotes': ['error', 'single'],
     '@stylistic/semi': ['error', 'never'],
-    '@typescript-eslint/no-explicit-any': 'off'
+    '@typescript-eslint/no-explicit-any': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/max-attributes-per-line': ['flat/strongly-recommended']
   }
 })

@@ -14,7 +14,7 @@ const stepper = useTemplateRef('stepper')
 
 const form = reactive({
   username: usernameCookie.value || '', // Pre-cargar si existe
-  name: sessionStore.name as string,
+  name: sessionStore.name ?? '',
   system_type: sessionStore.system_type as DiceSystem,
   config: { ...sessionStore.config }
 })
@@ -64,31 +64,32 @@ const systems = ref([
     description:
       'The Duality Dice system in the Daggerheart RPG uses two d12s (Hope and Fear) rolled together to determine success and narrative tone.',
     icon: 'i-lucide-dices'
+  },
+  {
+    id: 'yze',
+    title: 'Year Zero Engine',
+    description:
+      'In the dice pool system, every action is resolved by rolling a bunch of d6 dice, only the results of 6 count as successes, and the number of successes determines the outcome of the action.',
+    icon: 'i-lucide-dices',
+  },
+  {
+    id: 'step',
+    title: 'Step Dice',
+    description:
+      'The step-dice variant uses different-sized dice (d6, d8, d10…), giving a gentler difficulty curve and fewer “push” penalties.',
+    icon: 'i-lucide-dices'
+  },
+  {
+    id: '2d20',
+    title: 'Modiphius 2D20',
+    description:
+      'The Modiphius 2D20 system uses two d20 dice to determine the outcome of actions, with the difference between the dice determining the degree of success.',
+    icon: 'i-lucide-dices'
   }
-  // {
-  //   id: 'yze',
-  //   title: 'Year Zero Engine',
-  //   description:
-  //     'In the dice pool system, every action is resolved by rolling a bunch of d6 dice, only the results of 6 count as successes, and the number of successes determines the outcome of the action.',
-  //   icon: 'i-lucide-dices'
-  // },
-  // {
-  //   id: 'step',
-  //   title: 'Step Dice',
-  //   description:
-  //     'The step-dice variant uses different-sized dice (d6, d8, d10…), giving a gentler difficulty curve and fewer “push” penalties.',
-  //   icon: 'i-lucide-dices'
-  // },
-  // {
-  //   id: '2d20',
-  //   title: 'Modiphius 2D20',
-  //   description:
-  //     'The Modiphius 2D20 system uses two d20 dice to determine the outcome of actions, with the difference between the dice determining the degree of success.',
-  //   icon: 'i-lucide-dices'
-  // }
 ])
 
 function selectSystem(index: number, id: string) {
+  if (index !== 0) return
   selected.value = index
   form.system_type = id as DiceSystem
 }
@@ -96,6 +97,7 @@ function selectSystem(index: number, id: string) {
 async function handleCreateSession(form: SessionInsert) {
   const currentSchema = schemas[currentStep.value] as ZodObject<any>
   const result = await currentSchema.safeParseAsync(form)
+  console.log(result)
 
   if (!result.success) {
     formRef.value.setErrors(
@@ -114,6 +116,7 @@ async function handleCreateSession(form: SessionInsert) {
 async function nextStep() {
   const currentSchema = schemas[currentStep.value] as ZodObject<any>
   const result = await currentSchema.safeParseAsync(form)
+  console.log(result)
 
   if (!result.success) {
     formRef.value.setErrors(
@@ -140,23 +143,7 @@ async function nextStep() {
         :schema="schemas[currentStep]"
         @submit="handleCreateSession(form)"
       >
-        <div class="mt-4 flex justify-between gap-2">
-          <UButton
-            leading-icon="i-lucide-arrow-left"
-            :disabled="!stepper?.hasPrev"
-            @click="stepper?.prev()"
-          >
-            Prev
-          </UButton>
 
-          <UButton
-            trailing-icon="i-lucide-arrow-right"
-            :disabled="!stepper?.hasNext"
-            @click="nextStep()"
-          >
-            Next
-          </UButton>
-        </div>
         <UStepper
           ref="stepper"
           v-model="currentStep"
@@ -183,6 +170,7 @@ async function nextStep() {
                   :highlight="selected === index"
                   highlight-color="primary"
                   :spotlight="isDesktop"
+                  :variant="system.id === 'duality' ? 'outline' : 'disabled'"
                   spotlight-color="secondary"
                   @click="selectSystem(index, system.id)"
                 />
@@ -248,6 +236,23 @@ async function nextStep() {
             </div>
           </template>
         </UStepper>
+        <div class="mt-4 my-4 flex justify-between gap-2">
+          <UButton
+            leading-icon="i-lucide-arrow-left"
+            :disabled="!stepper?.hasPrev"
+            @click="stepper?.prev()"
+          >
+            Prev
+          </UButton>
+
+          <UButton
+            trailing-icon="i-lucide-arrow-right"
+            :disabled="!stepper?.hasNext"
+            @click="nextStep()"
+          >
+            Next
+          </UButton>
+        </div>
       </UForm>
     </UPageBody>
   </UPage>
