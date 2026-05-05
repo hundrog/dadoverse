@@ -1,13 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/ui',
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@nuxtjs/supabase',
-    'nuxt-security'
-  ],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/supabase', 'nuxt-security', '@nuxtjs/i18n'],
 
   devtools: {
     enabled: true
@@ -80,6 +73,14 @@ export default defineNuxtConfig({
       crossOriginOpenerPolicy: 'same-origin',
       crossOriginResourcePolicy: 'cross-origin'
     }
+  },
+
+  i18n: {
+    locales: [
+      { code: 'en', language: 'en-US' },
+      { code: 'es', language: 'es-MX' }
+    ],
+    defaultLocale: 'es',
   },
 
   supabase: {

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { en, es } from '@nuxt/ui/locale'
+
+const locale = ref('es')
 useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
@@ -71,14 +74,7 @@ function handleError(error: Error, clearError: () => void) {
         </template>
 
         <template #right>
-          <UButton
-            to="https://github.com/nuxt-ui-templates/starter"
-            target="_blank"
-            icon="i-simple-icons-github"
-            aria-label="GitHub"
-            color="neutral"
-            variant="ghost"
-          />
+          <ULocaleSelect v-model="locale" :locales="[en, es]" />
         </template>
       </UFooter>
     </NuxtErrorBoundary>
