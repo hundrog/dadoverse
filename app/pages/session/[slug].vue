@@ -10,6 +10,7 @@ const route = useRoute()
 const supabase = useSupabaseClient()
 const { $createDiceBox } = useNuxtApp()
 const tempName = ref('')
+const { copy, copied } = useClipboard()
 let channel: any = null
 
 const rollMod = ref<RollModifier>('none')
@@ -39,6 +40,16 @@ const items: TabsItem[] = [
     icon: 'i-lucide-settings'
   }
 ]
+
+const shareSession = () => {
+  const sessionUrl = window.location.href
+
+  copy(sessionUrl)
+
+  // Opcional: Feedback visual con el sistema de Toasts de Nuxt UI
+  const toast = useToast()
+  toast.add({ title: 'Enlace copiado', icon: 'i-lucide-clipboard-check' })
+}
 
 const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
   const diceConfig = [
@@ -149,9 +160,26 @@ onUnmounted(async () => {
     <UPageBody
       :ui="{ base: 'space-y-4' }"
     >
-      <p class="text-lg font-bold uppercase">
-        {{ slug }}
-      </p>
+      <div class="flex justify-between items-center">
+        <p class="text-lg font-bold uppercase">
+          {{ slug }}
+        </p>
+        <UTooltip
+          :content="{
+            align: 'end',
+            side: 'left',
+            sideOffset: 3
+          }"
+          :text="t('session.room.share')"
+        >
+          <UButton
+            :icon="copied ? 'i-lucide-check' : 'i-lucide-share'"
+            :color="copied ? 'success' : 'neutral'"
+            variant="ghost"
+            @click="shareSession"
+          />
+        </UTooltip>
+      </div>
       <div
         id="dice-container"
         class="flex min-h-62 w-full flex-col items-center justify-center rounded-xl bg-neutral-200 dark:bg-neutral-950"

@@ -84,7 +84,8 @@
       "advantage": "Ventaja",
       "disadvantage": "Desventaja",
       "active_as": "Conectado como",
-      "empty_name": ""
+      "empty_name": "",
+      "share": "Compartir sesión"
     }
   },
   "userMenu": {

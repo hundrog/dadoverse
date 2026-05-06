@@ -84,7 +84,8 @@
       "advantage": "Advantage",
       "disadvantage": "Disadvantage",
       "active_as": "Active as",
-      "empty_name": ""
+      "empty_name": "",
+      "share": "Share Session"
     }
   },
   "userMenu": {
