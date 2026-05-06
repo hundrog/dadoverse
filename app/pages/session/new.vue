@@ -15,11 +15,13 @@ const currentStep = ref(0)
 const stepper = useTemplateRef('stepper')
 
 const form = reactive({
-  username: characterName.value || '', // Pre-cargar si existe
+  username: characterName.value ?? '', // Pre-cargar si existe
   name: sessionStore.name ?? '',
-  system_type: sessionStore.system_type as DiceSystem,
-  config: { ...sessionStore.config }
+  system_type: sessionStore.system_type ?? 'duality' as DiceSystem,
+  config: { ...sessionStore.config ?? {} }
 })
+
+console.log('FORM SSR', form)
 
 const items: StepperItem[] = [
   {
