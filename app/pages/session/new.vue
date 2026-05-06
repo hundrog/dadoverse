@@ -9,13 +9,13 @@ const { t } = useI18n()
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isDesktop = breakpoints.greaterOrEqual('md')
 const selected = ref<number | null>(null)
-const usernameCookie = useCookie('pc_name')
+const characterName = ref('')
 const formRef = ref()
 const currentStep = ref(0)
 const stepper = useTemplateRef('stepper')
 
 const form = reactive({
-  username: usernameCookie.value || '', // Pre-cargar si existe
+  username: characterName.value || '', // Pre-cargar si existe
   name: sessionStore.name ?? '',
   system_type: sessionStore.system_type as DiceSystem,
   config: { ...sessionStore.config }
@@ -131,6 +131,11 @@ async function nextStep() {
   formRef.value.setErrors([])
   currentStep.value++
 }
+
+onMounted(() => {
+  const cookie = useCookie('pc_name')
+  characterName.value = cookie.value || ''
+})
 </script>
 
 <template>

@@ -54,8 +54,11 @@ const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
 
 onMounted(async () => {
   await sessionStore.initializeSession(slug)
+  sessionStore.initCharacterName()
 
   if (sessionStore.id) {
+    await nextTick()
+
     const box = $createDiceBox('#dice-container')
     await box.init()
 
@@ -110,6 +113,7 @@ onMounted(async () => {
 })
 
 onUnmounted(async () => {
+  diceStore.setDiceBox(null)
   if (channel) {
     await supabase.removeChannel(channel)
     channel = null

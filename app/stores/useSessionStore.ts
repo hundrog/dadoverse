@@ -13,7 +13,7 @@ export const useSessionStore = defineStore('session', () => {
   const members = ref<string[]>([])
   const role = ref<'owner' | 'player' | 'spectator'>('spectator')
   const onlineMembers = ref<any[]>([])
-  const characterName = ref(useCookie('pc_name').value || '')
+  const characterName = ref('')
 
   const generateObserverName = () => {
     const adjectives = ['Sombrío', 'Etéreo', 'Vigilante', 'Silencioso']
@@ -39,6 +39,13 @@ export const useSessionStore = defineStore('session', () => {
   const setCharacterName = (name: string) => {
     characterName.value = name
     useCookie('pc_name').value = name
+  }
+
+  function initCharacterName() {
+    if (import.meta.client) {
+      const cookie = useCookie('pc_name')
+      characterName.value = cookie.value ?? ''
+    }
   }
 
   async function initializeSession(sessionSlug: string) {
@@ -133,6 +140,7 @@ export const useSessionStore = defineStore('session', () => {
     onlineMembers,
     // Actions
     setCharacterName,
+    initCharacterName,
     updateOnlineMembers,
     createSession,
     initializeSession,

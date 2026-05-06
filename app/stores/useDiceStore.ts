@@ -69,13 +69,20 @@ export const useDiceStore = defineStore('dice', () => {
    */
   async function executeRoll(diceConfig: any[], options: any = {}) {
     if (!session.id || !session.activeIdentity || !diceBoxInstance.value) return
+    // Re-attachear canvas si se perdió entre navegaciones
+    const container = document.querySelector('#dice-container')
+    if (container && diceBoxInstance.value.canvas) {
+      if (!container.contains(diceBoxInstance.value.canvas)) {
+        container.innerHTML = ''
+        container.appendChild(diceBoxInstance.value.canvas)
+      }
+    }
 
     isRolling.value = true
 
     try {
       // 1. Física: Tirar dados en el Canvas 3D
       // Esperamos a que los dados dejen de rodar
-
       const boxResults = await diceBoxInstance.value.roll(diceConfig)
 
       // Extraemos solo los valores numéricos para la lógica
