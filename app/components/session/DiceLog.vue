@@ -2,13 +2,13 @@
 const diceStore = useDiceStore()
 const supabase = useSupabaseClient()
 const sessionStore = useSessionStore()
+const scrollContainer = ref<HTMLElement | null>(null)
 let channel: any = null
 
 const messages = computed(() => {
-  return diceStore.rolls.map(roll => ({
-    id: roll.id || Math.random(), // id temporal si viene de memoria
+  return diceStore.rolls.slice().map(roll => ({
+    id: roll.id || `temp-${roll.timestamp}`,
     user_name: roll.user_name,
-    // Manejamos si el objeto viene de la DB (raw_result) o de la store local
     interpreted: roll.raw_result?.interpreted || roll.interpreted
   }))
 })
@@ -43,24 +43,32 @@ onUnmounted(() => {
   supabase.removeChannel(channel)
 })
 
-watch(
-  messages,
-  () => {
-    // Pequeño timeout para esperar a que el DOM se actualice
-    setTimeout(() => {
-      const container = document.querySelector('#session-dice-log')
-      if (container) {
-        container.scrollTop = container.scrollHeight
-      }
-    }, 50)
-  },
-  { deep: true }
-)
+const scrollToBottom = () => {
+  // nextTick espera a que Vue actualice el DOM con el nuevo mensaje
+  nextTick(() => {
+    if (scrollContainer.value) {
+      // UScrollArea expone el elemento de scroll a través de su referencia
+      // Si es un div normal, sería .scrollTop.
+      // En UScrollArea de Nuxt UI, buscamos el viewport:
+      const el = (scrollContainer.value as any).$el
+        ? (scrollContainer.value as any).$el.querySelector('[data-radix-scroll-area-viewport]') || (scrollContainer.value as any).$el
+        : (scrollContainer.value as any).$el
+
+      el.scrollTo({
+        top: el.scrollHeight,
+        behavior: 'smooth' // O 'auto' si quieres que sea instantáneo
+      })
+    }
+  })
+}
+
+watch(messages, scrollToBottom, { deep: true })
 </script>
 
 <template>
   <UScrollArea
     id="session-dice-log"
+    ref="scrollContainer"
     class="h-64"
   >
     <div

@@ -20,7 +20,7 @@ export const useDiceStore = defineStore('dice', () => {
 
   function addRollToLog(roll: any) {
     rolls.value.push(roll)
-    if (rolls.value.length > 50) rolls.value.pop()
+    if (rolls.value.length > 50) rolls.value.shift()
   }
 
   async function _broadcastRoll(payload: {
@@ -58,6 +58,7 @@ export const useDiceStore = defineStore('dice', () => {
       .select('*')
       .eq('session_id', session.id as string)
       .order('created_at', { ascending: true })
+      .limit(50)
 
     if (!error) rolls.value = data
   }
