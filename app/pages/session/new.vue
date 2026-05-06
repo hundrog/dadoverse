@@ -21,8 +21,6 @@ const form = reactive({
   config: { ...sessionStore.config ?? {} }
 })
 
-console.log('FORM SSR', form)
-
 const items: StepperItem[] = [
   {
     slot: 'name' as const,

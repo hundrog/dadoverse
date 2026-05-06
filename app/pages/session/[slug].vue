@@ -9,8 +9,8 @@ const { t } = useI18n()
 const route = useRoute()
 const supabase = useSupabaseClient()
 const { $createDiceBox } = useNuxtApp()
+const tempName = ref('')
 let channel: any = null
-console.log('SETUP RUNNING', route.params.slug)
 
 const rollMod = ref<RollModifier>('none')
 const bonus = ref(0)
@@ -24,14 +24,19 @@ const COLORS = {
 
 const items: TabsItem[] = [
   {
-    slot: 'settings' as const,
-    label: t('session.room.settings'),
-    icon: 'i-lucide-settings'
+    slot: 'modifiers' as const,
+    label: t('session.room.modifiers'),
+    icon: 'i-lucide-sliders-horizontal'
   },
   {
     slot: 'history' as const,
     label: t('session.room.history'),
     icon: 'i-lucide-clock-fading'
+  },
+  {
+    slot: 'settings' as const,
+    label: t('session.room.settings'),
+    icon: 'i-lucide-settings'
   }
 ]
 
@@ -53,12 +58,16 @@ const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
   diceStore.executeRoll(diceConfig, { modifier: mod, bonus: bonus })
 }
 
+const handleSaveName = () => {
+  if (tempName.value && tempName.value.trim() !== '') {
+    sessionStore.setCharacterName(tempName.value.trim())
+  }
+}
+
 onMounted(async () => {
-  console.log('MOUNTED')
   await sessionStore.initializeSession(slug)
   sessionStore.initCharacterName()
-
-  console.log('session id', sessionStore.id)
+  tempName.value = sessionStore.activeIdentity
 
   if (sessionStore.id) {
     await nextTick()
@@ -68,7 +77,6 @@ onMounted(async () => {
       console.warn('No dice container found')
       return
     }
-    console.log('[DiceBox] container rect:', container?.getBoundingClientRect())
 
     container.innerHTML = ''
 
@@ -175,7 +183,7 @@ onUnmounted(async () => {
         :items="items"
         class="w-full"
       >
-        <template #settings>
+        <template #modifiers>
           <UPageCard :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }">
             <template #header>
               <span class="text-bold">{{ t('session.room.rollingDualityDice') }}</span>
@@ -195,6 +203,34 @@ onUnmounted(async () => {
         </template>
         <template #history>
           <SessionDiceLog />
+        </template>
+        <template #settings>
+          <UFormGroup
+            :label="$t('session.room.character_name_label')"
+            :description="$t('session.room.character_name_desc')"
+          >
+            <div class="flex gap-2 mt-2">
+              <UInput
+                v-model="tempName"
+                icon="i-lucide-user"
+                :placeholder="sessionStore.activeIdentity || $t('session.room.empty_name')"
+                class="w-full"
+                @keyup.enter="handleSaveName"
+              />
+              <UButton
+                color="primary"
+                variant="soft"
+                icon="i-lucide-check"
+                :disabled="!tempName || tempName === sessionStore.activeIdentity"
+                @click="handleSaveName"
+              />
+            </div>
+          </UFormGroup>
+
+          <!-- Visualización del estado actual -->
+          <div v-if="sessionStore.activeIdentity" class="text-xs text-on-surface-dim italic">
+            {{ $t('session.room.active_as') }}: <span class="text-primary-400">{{ sessionStore.activeIdentity }}</span>
+          </div>
         </template>
       </UTabs>
     </UPageBody>

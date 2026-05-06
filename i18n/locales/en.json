@@ -74,6 +74,7 @@
     },
     "room": {
       "settings": "Settings",
+      "modifiers": "Modifiers",
       "history": "History",
       "rollDice": "Roll Dice",
       "critical": "Critical!",
@@ -81,7 +82,9 @@
       "bonus": "Bonus",
       "moreDice": "More Dice",
       "advantage": "Advantage",
-      "disadvantage": "Disadvantage"
+      "disadvantage": "Disadvantage",
+      "active_as": "Active as",
+      "empty_name": ""
     }
   },
   "userMenu": {

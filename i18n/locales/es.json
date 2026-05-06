@@ -74,6 +74,7 @@
     },
     "room": {
       "settings": "Configuracion",
+      "modifiers": "Modificadores",
       "history": "Historial",
       "rollDice": "Tirar dados",
       "critical": "Critico!",
@@ -81,7 +82,9 @@
       "bonus": "Bono",
       "moreDice": "Mas dados",
       "advantage": "Ventaja",
-      "disadvantage": "Desventaja"
+      "disadvantage": "Desventaja",
+      "active_as": "Conectado como",
+      "empty_name": ""
     }
   },
   "userMenu": {
