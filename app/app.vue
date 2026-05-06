@@ -40,42 +40,44 @@ function handleError(error: Error, clearError: () => void) {
 <template>
   <NuxtLoadingIndicator />
   <UApp>
-    <NuxtErrorBoundary>
-      <template #error="{ error, clearError }">
-        <!-- Componente puente que dispara el toast como side effect -->
-        <LayoutErrorToastTrigger
-          :error="error"
-          :on-mount="() => handleError(error, clearError)"
+    <UHeader :toggle="false">
+      <template #title>
+        {{ t('app.name') }}
+      </template>
+
+      <template #right>
+        <UColorModeButton />
+        <LayoutUserMenu />
+      </template>
+    </UHeader>
+
+    <UMain class="mx-auto max-w-xl px-4">
+      <NuxtErrorBoundary>
+        <template #error="{ error, clearError }">
+          <LayoutErrorToastTrigger
+            :error="error"
+            :on-mount="() => handleError(error, clearError)"
+          />
+        </template>
+        <NuxtPage />
+      </NuxtErrorBoundary>
+    </UMain>
+
+    <USeparator icon="i-simple-icons-nuxtdotjs" />
+
+    <UFooter>
+      <template #left>
+        <p class="text-muted text-sm">
+          {{ t('app.footerBuiltWith') }} • © {{ new Date().getFullYear() }}
+        </p>
+      </template>
+
+      <template #right>
+        <ULocaleSelect
+          v-model="locale"
+          :locales="[en, es]"
         />
       </template>
-      <UHeader :toggle="false">
-        <template #title>
-          {{ t('app.name') }}
-        </template>
-
-        <template #right>
-          <UColorModeButton />
-          <LayoutUserMenu />
-        </template>
-      </UHeader>
-
-      <UMain class="mx-auto max-w-xl px-4">
-        <NuxtPage />
-      </UMain>
-
-      <USeparator icon="i-simple-icons-nuxtdotjs" />
-
-      <UFooter>
-        <template #left>
-          <p class="text-muted text-sm">
-            {{ t('app.footerBuiltWith') }} • © {{ new Date().getFullYear() }}
-          </p>
-        </template>
-
-        <template #right>
-          <ULocaleSelect v-model="locale" :locales="[en, es]" />
-        </template>
-      </UFooter>
-    </NuxtErrorBoundary>
+    </UFooter>
   </UApp>
 </template>

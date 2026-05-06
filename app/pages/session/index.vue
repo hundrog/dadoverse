@@ -12,7 +12,7 @@ const goToSession = async (slug: string) => {
     sessionStore.setCharacterName(name.value.trim())
   }
 
-  await navigateTo(`/session/${slug}`)
+  await navigateTo(`/session/${slug}`, { replace: true })
 }
 </script>
 

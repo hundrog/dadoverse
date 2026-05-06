@@ -10,6 +10,7 @@ const route = useRoute()
 const supabase = useSupabaseClient()
 const { $createDiceBox } = useNuxtApp()
 let channel: any = null
+console.log('SETUP RUNNING', route.params.slug)
 
 const rollMod = ref<RollModifier>('none')
 const bonus = ref(0)
@@ -53,11 +54,25 @@ const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
 }
 
 onMounted(async () => {
+  console.log('MOUNTED')
   await sessionStore.initializeSession(slug)
   sessionStore.initCharacterName()
 
+  console.log('session id', sessionStore.id)
+
   if (sessionStore.id) {
     await nextTick()
+
+    const container = document.querySelector('#dice-container')
+    if (!container) {
+      console.warn('No dice container found')
+      return
+    }
+    console.log('[DiceBox] container rect:', container?.getBoundingClientRect())
+
+    container.innerHTML = ''
+
+    await new Promise(resolve => setTimeout(resolve, 100))
 
     const box = $createDiceBox('#dice-container')
     await box.init()
@@ -124,7 +139,6 @@ onUnmounted(async () => {
 <template>
   <UPage>
     <UPageBody
-      v-if="sessionStore.id"
       :ui="{ base: 'space-y-4' }"
     >
       <p class="text-lg font-bold uppercase">
@@ -177,27 +191,6 @@ onUnmounted(async () => {
                 :default-value="0"
               />
             </template>
-            <!-- TODO: Add more dice for damage and stuff
-            <template #footer>
-              <UCollapsible class="flex flex-col gap-2">
-                <UButton
-                  class="group w-full"
-                  :label="t('session.room.moreDice')"
-                  color="neutral"
-                  variant="ghost"
-                  trailing-icon="i-lucide-chevron-down"
-                  :ui="{
-                    trailingIcon:
-                      'group-data-[state=open]:rotate-180 transition-transform duration-200',
-                  }"
-                  block
-                />
-                <template #content>
-                  <Placeholder class="h-48" />
-                </template>
-              </UCollapsible>
-            </template>
-          -->
           </UPageCard>
         </template>
         <template #history>
