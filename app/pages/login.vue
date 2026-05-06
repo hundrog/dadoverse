@@ -4,7 +4,7 @@ import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
 const supabase = useSupabaseClient()
 const { t } = useI18n()
-
+const { public: { siteUrl } } = useRuntimeConfig()
 const toast = useToast()
 
 const fields: AuthFormField[] = [
@@ -41,7 +41,12 @@ const schema = z.object({
 type Schema = z.output<typeof schema>
 
 async function onSubmit(payload: FormSubmitEvent<Schema>) {
-  const { error } = await supabase.auth.signInWithOtp(payload.data)
+  const { error } = await supabase.auth.signInWithOtp({
+    ...payload.data,
+    options: {
+      emailRedirectTo: `${siteUrl}/confirm`
+    }
+  })
   if (error) {
     toast.add({
       title: t('auth.errorSigningIn'),
