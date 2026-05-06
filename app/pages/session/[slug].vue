@@ -205,28 +205,22 @@ onUnmounted(async () => {
           <SessionDiceLog />
         </template>
         <template #settings>
-          <UFormGroup
-            :label="$t('session.room.character_name_label')"
-            :description="$t('session.room.character_name_desc')"
-          >
-            <div class="flex gap-2 mt-2">
-              <UInput
-                v-model="tempName"
-                icon="i-lucide-user"
-                :placeholder="sessionStore.activeIdentity || $t('session.room.empty_name')"
-                class="w-full"
-                @keyup.enter="handleSaveName"
-              />
-              <UButton
-                color="primary"
-                variant="soft"
-                icon="i-lucide-check"
-                :disabled="!tempName || tempName === sessionStore.activeIdentity"
-                @click="handleSaveName"
-              />
-            </div>
-          </UFormGroup>
-
+          <div class="flex gap-2 mt-2">
+            <UInput
+              v-model="tempName"
+              icon="i-lucide-user"
+              :placeholder="sessionStore.activeIdentity || $t('session.room.empty_name')"
+              class="w-full"
+              @keyup.enter="handleSaveName"
+            />
+            <UButton
+              color="primary"
+              variant="soft"
+              icon="i-lucide-check"
+              :disabled="!tempName || tempName === sessionStore.activeIdentity"
+              @click="handleSaveName"
+            />
+          </div>
           <!-- Visualización del estado actual -->
           <div v-if="sessionStore.activeIdentity" class="text-xs text-on-surface-dim italic">
             {{ $t('session.room.active_as') }}: <span class="text-primary-400">{{ sessionStore.activeIdentity }}</span>
