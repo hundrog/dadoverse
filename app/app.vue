@@ -42,7 +42,7 @@ function handleError(error: Error, clearError: () => void) {
   <UApp>
     <UHeader :toggle="false">
       <template #title>
-        <img src="/android-chrome-512x512.png" class="size-6" />
+        <img src="/favicon-32x32.png" class="size-6">
         {{ t('app.name') }}
       </template>
 
