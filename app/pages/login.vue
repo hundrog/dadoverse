@@ -17,21 +17,33 @@ const fields: AuthFormField[] = [
   }
 ]
 
-const _providers = [
+const providers = [
   {
     label: t('auth.google'),
     icon: 'i-simple-icons-google',
-    onClick: () => {
+    onClick: async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${siteUrl}/confirm`
+        }
+      })
       toast.add({ title: t('auth.google'), description: t('auth.loginWithGoogle') })
     }
-  },
-  {
-    label: t('auth.facebook'),
-    icon: 'i-simple-icons-facebook',
-    onClick: () => {
-      toast.add({ title: t('auth.facebook'), description: t('auth.loginWithFacebook') })
-    }
   }
+  // {
+  //   label: t('auth.facebook'),
+  //   icon: 'i-simple-icons-facebook',
+  //   onClick: async () => {
+  //     await supabase.auth.signInWithOAuth({
+  //       provider: 'facebook',
+  //       options: {
+  //         redirectTo: `${siteUrl}/confirm`
+  //       }
+  //     })
+  //     toast.add({ title: t('auth.facebook'), description: t('auth.loginWithFacebook') })
+  //   }
+  // }
 ]
 
 const schema = z.object({
@@ -71,6 +83,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
           :title="t('auth.login')"
           :description="t('auth.loginDescription')"
           icon="i-lucide-user"
+          :providers="providers"
           :fields="fields"
           @submit="onSubmit"
         />

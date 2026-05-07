@@ -69,18 +69,24 @@ export const useSessionStore = defineStore('session', () => {
     }
   }
 
-  async function createSession(payload: SessionInsert) {
+  type CreateSessionInput = SessionInsert & { username?: string }
+
+  async function createSession(payload: CreateSessionInput) {
     const supabase = useSupabaseClient<Database>()
     const user = useSupabaseUser()
+
+    const { username, ...sessionData } = payload
 
     if (!user.value) {
       await navigateTo('/error')
       return
     }
 
+    if (username) setCharacterName(username)
+
     const { data, error } = await supabase
       .from('sessions')
-      .insert({ ...payload, owner_id: user.value.sub })
+      .insert({ ...sessionData, owner_id: user.value.sub })
       .select()
       .single()
 
