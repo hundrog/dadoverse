@@ -32,7 +32,7 @@ const formatDate = (date: string) => {
     </header>
 
     <div v-if="pending" class="space-y-4">
-      <USkeleton class="h-20 w-full" v-for="i in 3" :key="i" />
+      <USkeleton v-for="i in 3" :key="i" class="h-20 w-full" />
     </div>
 
     <div v-else-if="sessions?.length" class="grid gap-4">

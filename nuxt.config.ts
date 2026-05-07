@@ -100,7 +100,7 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: '/login',
       callback: '/confirm',
-      include: ['/session/new'],
+      include: ['/session/new', '/profile/*'],
       exclude: [],
       saveRedirectToCookie: false
     }

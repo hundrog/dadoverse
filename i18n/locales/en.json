@@ -90,6 +90,7 @@
   },
   "userMenu": {
     "logout": "Log out",
+    "profile": "Profile",
     "avatarAlt": "avatar"
   },
   "errorPage": {

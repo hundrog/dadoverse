@@ -7,6 +7,11 @@ const supabase = useSupabaseClient()
 
 const items = ref<DropdownMenuItem[]>([
   {
+    label: t('userMenu.profile'),
+    icon: 'i-lucide-user',
+    to: '/profile'
+  },
+  {
     label: t('userMenu.logout'),
     icon: 'i-lucide-log-out',
     onSelect(e: Event) {

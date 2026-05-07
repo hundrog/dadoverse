@@ -90,6 +90,7 @@
   },
   "userMenu": {
     "logout": "Cerrar sesion",
+    "profile": "Perfil",
     "avatarAlt": "avatar"
   },
   "errorPage": {
