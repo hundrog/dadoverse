@@ -2,7 +2,15 @@
 const diceStore = useDiceStore()
 const supabase = useSupabaseClient()
 const sessionStore = useSessionStore()
+const { t } = useI18n()
 let channel: any = null
+
+const getOutcomeLabel = (interpreted?: any) => {
+  if (interpreted?.outcomeKey) {
+    return t(interpreted.outcomeKey, interpreted.outcomeParams || {})
+  }
+  return interpreted?.outcome || ''
+}
 
 const getBadgeClass = (interpreted?: any) => {
   const metadata = interpreted?.metadata
@@ -85,7 +93,7 @@ onUnmounted(() => {
         variant="soft"
         :class="['ml-2', getBadgeClass(msg.interpreted)]"
       >
-        {{ msg.interpreted.outcome }}
+        {{ getOutcomeLabel(msg.interpreted) }}
       </UBadge>
     </div>
   </UScrollArea>

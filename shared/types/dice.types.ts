@@ -20,7 +20,9 @@ export interface RollResult {
   interpreted: {
     total?: number
     successes?: number
-    outcome: string // "Éxito con Esperanza", "3 Éxitos", etc.
+    outcome: string // Backward compatible display fallback for persisted rows
+    outcomeKey?: string // i18n key for language-agnostic persistence
+    outcomeParams?: Record<string, number | string>
     isCritical: boolean
     metadata: Record<string, any>
   }

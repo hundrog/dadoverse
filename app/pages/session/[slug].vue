@@ -41,6 +41,13 @@ const items: TabsItem[] = [
   }
 ]
 
+const getOutcomeLabel = (interpreted?: any) => {
+  if (interpreted?.outcomeKey) {
+    return t(interpreted.outcomeKey, interpreted.outcomeParams || {})
+  }
+  return interpreted?.outcome || ''
+}
+
 const shareSession = () => {
   const sessionUrl = window.location.href
 
@@ -197,8 +204,8 @@ onUnmounted(async () => {
           <span
             v-if="diceStore.lastRoll.interpreted.isCritical"
             class="font-bold"
-          >{{ diceStore.lastRoll.interpreted.outcome }}</span>
-          <span v-else>{{ diceStore.lastRoll.interpreted.outcome }}</span>
+          >{{ getOutcomeLabel(diceStore.lastRoll.interpreted) }}</span>
+          <span v-else>{{ getOutcomeLabel(diceStore.lastRoll.interpreted) }}</span>
         </p>
         <p
           v-else

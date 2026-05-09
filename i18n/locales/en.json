@@ -86,6 +86,23 @@
       "active_as": "Active as",
       "empty_name": "",
       "share": "Share Session"
+    },
+    "rollOutcome": {
+      "duality": {
+        "critical": "Critical",
+        "withHope": "With Hope",
+        "withFear": "With Fear"
+      },
+      "yze": {
+        "successes": "{count} Successes"
+      },
+      "2d20": {
+        "successes": "{successes} Successes",
+        "successesWithComplications": "{successes} Successes / {complications} Complication"
+      },
+      "step": {
+        "totalWithHighRoll": "Total: {total} (HR: {highRoll})"
+      }
     }
   },
   "userMenu": {

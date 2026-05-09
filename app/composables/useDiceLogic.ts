@@ -49,9 +49,9 @@ export const useDiceLogic = () => {
     }
 
     if (isCritical) {
-      outcome = 'Crítico'
+      outcome = 'Critical'
     } else {
-      outcome = hope > fear ? 'Con Esperanza' : 'Con Miedo'
+      outcome = hope > fear ? 'With Hope' : 'With Fear'
     }
 
     return {
@@ -61,6 +61,11 @@ export const useDiceLogic = () => {
       interpreted: {
         total,
         outcome,
+        outcomeKey: isCritical
+          ? 'session.rollOutcome.duality.critical'
+          : hope > fear
+            ? 'session.rollOutcome.duality.withHope'
+            : 'session.rollOutcome.duality.withFear',
         isCritical,
         metadata: {
           hope,
@@ -109,7 +114,9 @@ export const useDiceLogic = () => {
       rawValues: [...attribute, ...skill, ...gear, ...artifacts],
       interpreted: {
         successes: totalSuccesses,
-        outcome: `${totalSuccesses} Éxitos`,
+        outcome: `${totalSuccesses} Successes`,
+        outcomeKey: 'session.rollOutcome.yze.successes',
+        outcomeParams: { count: totalSuccesses },
         isCritical: totalSuccesses >= 3,
         metadata: {
           attributeSuccesses,
@@ -142,8 +149,13 @@ export const useDiceLogic = () => {
         successes,
         outcome:
           complications > 0
-            ? `${successes} Éxitos / ${complications} Complicación`
-            : `${successes} Éxitos`,
+            ? `${successes} Successes / ${complications} Complication`
+            : `${successes} Successes`,
+        outcomeKey:
+          complications > 0
+            ? 'session.rollOutcome.2d20.successesWithComplications'
+            : 'session.rollOutcome.2d20.successes',
+        outcomeParams: { successes, complications },
         isCritical: successes >= 2,
         metadata: { tn, complications }
       }
@@ -160,6 +172,8 @@ export const useDiceLogic = () => {
       interpreted: {
         total,
         outcome: `Total: ${total} (HR: ${highRoll})`,
+        outcomeKey: 'session.rollOutcome.step.totalWithHighRoll',
+        outcomeParams: { total, highRoll },
         isCritical: dice.every(d => d >= 6) && dice[0] === dice[1], // Simplificación de pifia/crítico
         metadata: { highRoll }
       }
