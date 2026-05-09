@@ -96,7 +96,7 @@
       "yze": {
         "successes": "{count} Éxitos"
       },
-      "2d20": {
+      "modiphius2d20": {
         "successes": "{successes} Éxitos",
         "successesWithComplications": "{successes} Éxitos / {complications} Complicación"
       },

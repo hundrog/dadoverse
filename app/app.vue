@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { en, es } from '@nuxt/ui/locale'
 
-const { t, locale } = useI18n()
+const { t, locale, setLocale } = useI18n()
+const localeModel = computed({
+  get: () => locale.value as 'en' | 'es',
+  set: async (value: 'en' | 'es') => {
+    await setLocale(value)
+  }
+})
 useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
@@ -75,7 +81,7 @@ function handleError(error: Error, clearError: () => void) {
 
       <template #right>
         <ULocaleSelect
-          v-model="locale"
+          v-model="localeModel"
           :locales="[en, es]"
         />
       </template>

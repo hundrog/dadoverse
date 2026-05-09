@@ -153,8 +153,8 @@ export const useDiceLogic = () => {
             : `${successes} Successes`,
         outcomeKey:
           complications > 0
-            ? 'session.rollOutcome.2d20.successesWithComplications'
-            : 'session.rollOutcome.2d20.successes',
+            ? 'session.rollOutcome.modiphius2d20.successesWithComplications'
+            : 'session.rollOutcome.modiphius2d20.successes',
         outcomeParams: { successes, complications },
         isCritical: successes >= 2,
         metadata: { tn, complications }
