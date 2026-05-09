@@ -2,11 +2,10 @@
 const diceStore = useDiceStore()
 const supabase = useSupabaseClient()
 const sessionStore = useSessionStore()
-const scrollContainer = ref<HTMLElement | null>(null)
 let channel: any = null
 
 const messages = computed(() => {
-  return diceStore.rolls.slice().map(roll => ({
+  return diceStore.rolls.slice().reverse().map(roll => ({
     id: roll.id || `temp-${roll.timestamp}`,
     user_name: roll.user_name,
     interpreted: roll.raw_result?.interpreted || roll.interpreted
@@ -42,39 +41,21 @@ onMounted(async () => {
 onUnmounted(() => {
   supabase.removeChannel(channel)
 })
-
-const scrollToBottom = () => {
-  // nextTick espera a que Vue actualice el DOM con el nuevo mensaje
-  nextTick(() => {
-    if (scrollContainer.value) {
-      // UScrollArea expone el elemento de scroll a través de su referencia
-      // Si es un div normal, sería .scrollTop.
-      // En UScrollArea de Nuxt UI, buscamos el viewport:
-      const el = (scrollContainer.value as any).$el
-        ? (scrollContainer.value as any).$el.querySelector('[data-radix-scroll-area-viewport]') || (scrollContainer.value as any).$el
-        : (scrollContainer.value as any).$el
-
-      el.scrollTo({
-        top: el.scrollHeight,
-        behavior: 'smooth' // O 'auto' si quieres que sea instantáneo
-      })
-    }
-  })
-}
-
-watch(messages, scrollToBottom, { deep: true })
 </script>
 
 <template>
   <UScrollArea
     id="session-dice-log"
-    ref="scrollContainer"
     class="h-64"
   >
     <div
-      v-for="msg in messages"
+      v-for="(msg, index) in messages"
       :key="msg.id"
-      class="bg-accented my-1 rounded-xl p-4"
+      :class="[
+        'bg-accented my-1 rounded-xl border p-4',
+        index === 0 ? 'mb-4 p-6' : 'mb-0',
+        msg.interpreted?.isCritical ? 'border-primary' : 'border-transparent'
+      ]"
     >
       <span class="font-bold">{{ msg.user_name }}:</span>
       {{ msg.interpreted.total }}

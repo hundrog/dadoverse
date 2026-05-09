@@ -11,7 +11,8 @@ export default defineNuxtPlugin(() => {
           container: selector,
           assetPath: '/dice-box/',
           theme: 'default',
-          scale: 9,
+          scale: 11,
+          mass: 1.2,
           offscreen: true,
           settleTimeout: 3500
         })
