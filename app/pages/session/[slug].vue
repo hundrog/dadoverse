@@ -182,7 +182,7 @@ onUnmounted(async () => {
       </div>
       <div
         id="dice-container"
-        class="flex min-h-62 w-full flex-col items-center justify-center rounded-xl bg-neutral-200 dark:bg-neutral-950"
+        class="aspect-square w-full flex flex-col items-center justify-center rounded-xl bg-neutral-200 dark:bg-neutral-950"
       />
       <UButton
         class="w-full justify-center"

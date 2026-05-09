@@ -4,6 +4,27 @@ const supabase = useSupabaseClient()
 const sessionStore = useSessionStore()
 let channel: any = null
 
+const getBadgeClass = (interpreted?: any) => {
+  const metadata = interpreted?.metadata
+  const hope = metadata?.hope
+  const fear = metadata?.fear
+
+  if (typeof hope === 'number' && typeof fear === 'number') {
+    if (hope > fear) {
+      return 'bg-hope-500/15 text-hope-400 ring-hope-500/30'
+    }
+    if (fear > hope) {
+      return 'bg-fear-500/20 text-fear-200 ring-fear-500/30'
+    }
+  }
+
+  if (interpreted?.isCritical) {
+    return 'bg-primary/15 text-primary ring-primary/30'
+  }
+
+  return ''
+}
+
 const messages = computed(() => {
   return diceStore.rolls.slice().reverse().map(roll => ({
     id: roll.id || `temp-${roll.timestamp}`,
@@ -60,9 +81,9 @@ onUnmounted(() => {
       <span class="font-bold">{{ msg.user_name }}:</span>
       {{ msg.interpreted.total }}
       <UBadge
-        size="xs"
+        size="md"
         variant="soft"
-        class="ml-2"
+        :class="['ml-2', getBadgeClass(msg.interpreted)]"
       >
         {{ msg.interpreted.outcome }}
       </UBadge>

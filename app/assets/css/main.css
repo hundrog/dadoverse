@@ -4,6 +4,31 @@
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
 
+  /* Dice semantic colors */
+  --color-hope-50: #fffceb;
+  --color-hope-100: #fff6cf;
+  --color-hope-200: #fdeca3;
+  --color-hope-300: #f9de6d;
+  --color-hope-400: #efcf57;
+  --color-hope-500: #e7c74b;
+  --color-hope-600: #c7a732;
+  --color-hope-700: #9c8124;
+  --color-hope-800: #705c1c;
+  --color-hope-900: #463913;
+  --color-hope-950: #231d0a;
+
+  --color-fear-50: #eeeafb;
+  --color-fear-100: #d7d0f2;
+  --color-fear-200: #b6a9e2;
+  --color-fear-300: #8f7acf;
+  --color-fear-400: #6452b4;
+  --color-fear-500: #22135f;
+  --color-fear-600: #1c114f;
+  --color-fear-700: #160d3f;
+  --color-fear-800: #110a30;
+  --color-fear-900: #0a061f;
+  --color-fear-950: #05030f;
+
   --color-green-50: #effdf5;
   --color-green-100: #d9fbe8;
   --color-green-200: #b3f5d1;
