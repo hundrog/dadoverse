@@ -26,7 +26,7 @@ const getBadgeClass = (interpreted?: any) => {
 }
 
 const messages = computed(() => {
-  return diceStore.rolls.slice().reverse().map(roll => ({
+  return diceStore.rolls.map(roll => ({
     id: roll.id || `temp-${roll.timestamp}`,
     user_name: roll.user_name,
     interpreted: roll.raw_result?.interpreted || roll.interpreted

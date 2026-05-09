@@ -18,9 +18,24 @@ export const useDiceStore = defineStore('dice', () => {
 
   // --- MÉTODOS PRIVADOS ---
 
+  const getRollDate = (roll: any) => {
+    const dateValue = roll?.created_at || roll?.timestamp || roll?.raw_result?.created_at
+    return dateValue ? new Date(dateValue).getTime() : 0
+  }
+
+  const sortRollsNewestFirst = (items: any[]) => {
+    return items.slice().sort((a, b) => getRollDate(b) - getRollDate(a))
+  }
+
   function addRollToLog(roll: any) {
-    rolls.value.push(roll)
-    if (rolls.value.length > 50) rolls.value.shift()
+    const withoutDuplicate = rolls.value.filter(existing => {
+      if (existing.id && roll.id) {
+        return existing.id !== roll.id
+      }
+      return true
+    })
+
+    rolls.value = sortRollsNewestFirst([roll, ...withoutDuplicate]).slice(0, 50)
   }
 
   async function _broadcastRoll(payload: {
@@ -57,10 +72,10 @@ export const useDiceStore = defineStore('dice', () => {
       .from('rolls')
       .select('*')
       .eq('session_id', session.id as string)
-      .order('created_at', { ascending: true })
+      .order('created_at', { ascending: false })
       .limit(50)
 
-    if (!error) rolls.value = data
+    if (!error) rolls.value = sortRollsNewestFirst(data || [])
   }
 
   /**
