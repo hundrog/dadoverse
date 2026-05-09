@@ -1,4 +1,6 @@
 export const useDiceLogic = () => {
+  const { t } = useI18n()
+
   // Procesa la tirada según el sistema
   const parseRoll = (system: DiceSystem, dice: number[], options: RollOptions = {}): RollResult => {
     switch (system) {
@@ -24,7 +26,7 @@ export const useDiceLogic = () => {
         return solveStep(dice)
 
       default:
-        throw new Error('Sistema no soportado')
+        throw new Error(t('session.errors.unsupportedSystem'))
     }
   }
 
@@ -49,9 +51,11 @@ export const useDiceLogic = () => {
     }
 
     if (isCritical) {
-      outcome = 'Critical'
+      outcome = t('session.rollOutcome.duality.critical')
     } else {
-      outcome = hope > fear ? 'With Hope' : 'With Fear'
+      outcome = hope > fear
+        ? t('session.rollOutcome.duality.withHope')
+        : t('session.rollOutcome.duality.withFear')
     }
 
     return {
@@ -114,7 +118,7 @@ export const useDiceLogic = () => {
       rawValues: [...attribute, ...skill, ...gear, ...artifacts],
       interpreted: {
         successes: totalSuccesses,
-        outcome: `${totalSuccesses} Successes`,
+        outcome: t('session.rollOutcome.yze.successes', { count: totalSuccesses }),
         outcomeKey: 'session.rollOutcome.yze.successes',
         outcomeParams: { count: totalSuccesses },
         isCritical: totalSuccesses >= 3,
@@ -149,8 +153,8 @@ export const useDiceLogic = () => {
         successes,
         outcome:
           complications > 0
-            ? `${successes} Successes / ${complications} Complication`
-            : `${successes} Successes`,
+            ? t('session.rollOutcome.modiphius2d20.successesWithComplications', { successes, complications })
+            : t('session.rollOutcome.modiphius2d20.successes', { successes }),
         outcomeKey:
           complications > 0
             ? 'session.rollOutcome.modiphius2d20.successesWithComplications'
@@ -171,7 +175,7 @@ export const useDiceLogic = () => {
       rawValues: dice,
       interpreted: {
         total,
-        outcome: `Total: ${total} (HR: ${highRoll})`,
+        outcome: t('session.rollOutcome.step.totalWithHighRoll', { total, highRoll }),
         outcomeKey: 'session.rollOutcome.step.totalWithHighRoll',
         outcomeParams: { total, highRoll },
         isCritical: dice.every(d => d >= 6) && dice[0] === dice[1], // Simplificación de pifia/crítico

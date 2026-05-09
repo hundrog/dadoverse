@@ -103,6 +103,9 @@
       "step": {
         "totalWithHighRoll": "Total: {total} (HR: {highRoll})"
       }
+    },
+    "errors": {
+      "unsupportedSystem": "Sistema no soportado"
     }
   },
   "userMenu": {
