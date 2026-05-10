@@ -163,7 +163,7 @@ onMounted(async () => {
 
     await new Promise(resolve => setTimeout(resolve, 100))
 
-    const box = $createDiceBox('#dice-container')
+    const box = $createDiceBox('#dice-container', sessionStore.system_type)
     await box.init()
 
     diceStore.setDiceBox(box)
