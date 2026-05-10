@@ -28,7 +28,7 @@ export const useDiceStore = defineStore('dice', () => {
   }
 
   function addRollToLog(roll: any) {
-    const withoutDuplicate = rolls.value.filter(existing => {
+    const withoutDuplicate = rolls.value.filter((existing) => {
       if (existing.id && roll.id) {
         return existing.id !== roll.id
       }

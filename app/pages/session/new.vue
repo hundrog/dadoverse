@@ -87,8 +87,6 @@ const systems = ref([
 ])
 
 function selectSystem(index: number, id: string) {
-  if (systems.value.find(s => s.id === id)?.disabled) return
-
   selected.value = index
   form.system_type = id as DiceSystem
 }
@@ -171,7 +169,7 @@ onMounted(() => {
                   :highlight="selected === index"
                   highlight-color="primary"
                   :spotlight="isDesktop"
-                  :variant="system.disabled ? 'disabled' : 'outline' "
+                  variant="outline"
                   spotlight-color="secondary"
                   @click="selectSystem(index, system.id)"
                 />
