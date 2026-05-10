@@ -9,28 +9,39 @@ const { t } = useI18n()
 const route = useRoute()
 const supabase = useSupabaseClient()
 const { $createDiceBox } = useNuxtApp()
-const tempName = ref('')
 const { copy, copied } = useClipboard()
+const tempName = ref('')
+const slug = route.params.slug as string
+
 const stepDice = ref({
   dice1: 6,
   dice2: 6
 })
+
 const stepDiceValues = [
   { label: 'D6', value: 6 },
   { label: 'D8', value: 8 },
   { label: 'D10', value: 10 },
   { label: 'D12', value: 12 }
 ]
-let channel: any = null
+
+const yzeDice = ref({
+  attr: 2,
+  skill: 2,
+  gear: 2,
+  artifact: 6
+})
 
 const rollMod = ref<RollModifier>('none')
 const bonus = ref(0)
-const slug = route.params.slug as string
+const level = ref(1)
+const tn = ref(10)
 
 const COLORS = {
   hope: '#e7c74b',
   fear: '#22135f',
-  mod: '#17b1c8'
+  adv: '#00dc82',
+  dis: '#ff6467'
 }
 
 const items: TabsItem[] = [
@@ -51,6 +62,8 @@ const items: TabsItem[] = [
   }
 ]
 
+let channel: any = null
+
 const getOutcomeLabel = (interpreted?: any) => {
   if (interpreted?.outcomeKey) {
     return t(interpreted.outcomeKey, interpreted.outcomeParams || {})
@@ -68,7 +81,7 @@ const shareSession = () => {
   toast.add({ title: 'Enlace copiado', icon: 'i-lucide-clipboard-check' })
 }
 
-const _rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
+const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
   const diceConfig = [
     { qty: 1, sides: 12, themeColor: COLORS.hope },
     { qty: 1, sides: 12, themeColor: COLORS.fear }
@@ -79,7 +92,7 @@ const _rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
     diceConfig.push({
       qty: 1,
       sides: 6,
-      themeColor: mod === 'advantage' ? '#00dc82' : '#ff6467'
+      themeColor: mod === 'advantage' ? COLORS.adv : COLORS.dis
     })
   }
 
@@ -95,23 +108,35 @@ const rollStep = (bonus: number = 0) => {
   diceStore.executeRoll(diceConfig, { bonus: bonus })
 }
 
-const _rollYze = (attr: number, skill: number, gear: number, artifact: number) => {
+const rollYze = (attr: number, skill: number, gear: number, artifact: number) => {
   const diceConfig = [
-    { qty: attr, sides: 6, themeColor: 'neutral' },
-    { qty: skill, sides: 6, themeColor: 'primary' },
-    { qty: gear, sides: 6, themeColor: 'success' },
-    { qty: 1, sides: artifact, themeColor: 'fear' }
+    { qty: attr, sides: 6, themeColor: COLORS.hope },
+    { qty: skill, sides: 6, themeColor: COLORS.adv },
+    { qty: gear, sides: 6, themeColor: COLORS.dis },
+    { qty: 1, sides: artifact, themeColor: COLORS.fear }
   ]
 
   diceStore.executeRoll(diceConfig)
 }
 
-const _rollModiphius = (level: number) => {
+const rollModiphius = (level: number = 1) => {
   const diceConfig = [
-    { qty: level, sides: 20, themeColor: 'primary' }
+    { qty: level, sides: 20, themeColor: COLORS.hope }
   ]
 
-  diceStore.executeRoll(diceConfig)
+  diceStore.executeRoll(diceConfig, { tn: tn.value })
+}
+
+const handleRoll = () => {
+  if (sessionStore.system_type === 'step') {
+    rollStep(bonus.value)
+  } else if (sessionStore.system_type === 'duality') {
+    rollDuality(rollMod.value, bonus.value)
+  } else if (sessionStore.system_type === 'yze') {
+    rollYze(yzeDice.value.attr, yzeDice.value.skill, yzeDice.value.gear, yzeDice.value.artifact)
+  } else if (sessionStore.system_type === '2d20') {
+    rollModiphius(level.value)
+  }
 }
 
 const handleSaveName = () => {
@@ -232,7 +257,7 @@ onUnmounted(async () => {
       <UButton
         class="w-full justify-center"
         size="xl"
-        @click="rollStep(bonus)"
+        @click="handleRoll()"
       >
         {{ t('session.room.rollDice') }}
       </UButton>

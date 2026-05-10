@@ -76,15 +76,13 @@ const systems = ref([
     id: 'yze',
     title: t('session.new.systems.yze.title'),
     description: t('session.new.systems.yze.description'),
-    icon: 'i-lucide-dices',
-    disabled: true
+    icon: 'i-lucide-dices'
   },
   {
     id: '2d20',
     title: t('session.new.systems.modiphius2d20.title'),
     description: t('session.new.systems.modiphius2d20.description'),
-    icon: 'i-lucide-dices',
-    disabled: true
+    icon: 'i-lucide-dices'
   }
 ])
 
