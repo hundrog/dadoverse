@@ -127,7 +127,7 @@ export const useDiceStore = defineStore('dice', () => {
           options,
           user_name: session.activeIdentity
         }),
-        _saveRoll(enrichedRoll)
+        // _saveRoll(enrichedRoll)
       ])
     } catch (err) {
       console.error('[DiceStore] Fallo en la tirada:', err)

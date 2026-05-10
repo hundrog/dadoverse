@@ -11,6 +11,16 @@ const supabase = useSupabaseClient()
 const { $createDiceBox } = useNuxtApp()
 const tempName = ref('')
 const { copy, copied } = useClipboard()
+const stepDice = ref({
+  dice1: 6,
+  dice2: 6
+})
+const stepDiceValues = [
+  { label: 'D6', value: 6 },
+  { label: 'D8', value: 8 },
+  { label: 'D10', value: 10 },
+  { label: 'D12', value: 12 }
+]
 let channel: any = null
 
 const rollMod = ref<RollModifier>('none')
@@ -58,7 +68,7 @@ const shareSession = () => {
   toast.add({ title: 'Enlace copiado', icon: 'i-lucide-clipboard-check' })
 }
 
-const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
+const _rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
   const diceConfig = [
     { qty: 1, sides: 12, themeColor: COLORS.hope },
     { qty: 1, sides: 12, themeColor: COLORS.fear }
@@ -74,6 +84,34 @@ const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
   }
 
   diceStore.executeRoll(diceConfig, { modifier: mod, bonus: bonus })
+}
+
+const rollStep = (bonus: number = 0) => {
+  const diceConfig = [
+    { qty: 1, sides: stepDice.value.dice1, themeColor: COLORS.hope },
+    { qty: 1, sides: stepDice.value.dice2, themeColor: COLORS.fear }
+  ]
+
+  diceStore.executeRoll(diceConfig, { bonus: bonus })
+}
+
+const _rollYze = (attr: number, skill: number, gear: number, artifact: number) => {
+  const diceConfig = [
+    { qty: attr, sides: 6, themeColor: 'neutral' },
+    { qty: skill, sides: 6, themeColor: 'primary' },
+    { qty: gear, sides: 6, themeColor: 'success' },
+    { qty: 1, sides: artifact, themeColor: 'fear' }
+  ]
+
+  diceStore.executeRoll(diceConfig)
+}
+
+const _rollModiphius = (level: number) => {
+  const diceConfig = [
+    { qty: level, sides: 20, themeColor: 'primary' }
+  ]
+
+  diceStore.executeRoll(diceConfig)
 }
 
 const handleSaveName = () => {
@@ -194,7 +232,7 @@ onUnmounted(async () => {
       <UButton
         class="w-full justify-center"
         size="xl"
-        @click="rollDuality(rollMod, bonus)"
+        @click="rollStep(bonus)"
       >
         {{ t('session.room.rollDice') }}
       </UButton>
@@ -219,13 +257,51 @@ onUnmounted(async () => {
         class="w-full"
       >
         <template #modifiers>
-          <UPageCard :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }">
+          <UPageCard
+            v-if="sessionStore.system_type === 'duality'"
+            :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }"
+          >
             <template #header>
               <span class="text-bold">{{ t('session.room.rollingDualityDice') }}</span>
             </template>
 
             <template #body>
               <SessionThreeStateToggle v-model="rollMod" />
+              {{ t('session.room.bonus') }}: {{ bonus > 0 ? '+' + bonus : bonus }}
+              <USlider
+                v-model="bonus"
+                :min="-10"
+                :max="10"
+                :default-value="0"
+              />
+            </template>
+          </UPageCard>
+          <UPageCard
+            v-if="sessionStore.system_type === 'step'"
+            :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }"
+          >
+            <template #header>
+              <span class="text-bold">{{ t('session.room.rollingStepDice') }}</span>
+            </template>
+            <template #body>
+              <div class="">
+                <URadioGroup
+                  v-model="stepDice.dice1"
+                  legend="Dice 1"
+                  orientation="horizontal"
+                  variant="card"
+                  :ui="{ fieldset: 'w-full', item: 'flex-1 justify-center' }"
+                  :items="stepDiceValues"
+                />
+                <URadioGroup
+                  v-model="stepDice.dice2"
+                  legend="Dice 2"
+                  orientation="horizontal"
+                  variant="card"
+                  :ui="{ fieldset: 'w-full', item: 'flex-1 justify-center' }"
+                  :items="stepDiceValues"
+                />
+              </div>
               {{ t('session.room.bonus') }}: {{ bonus > 0 ? '+' + bonus : bonus }}
               <USlider
                 v-model="bonus"

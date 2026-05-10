@@ -16,7 +16,7 @@ const stepper = useTemplateRef('stepper')
 
 const form = reactive({
   username: characterName.value ?? '', // Pre-cargar si existe
-  name: sessionStore.name ?? '',
+  name: '',
   system_type: sessionStore.system_type ?? 'duality' as DiceSystem,
   config: { ...sessionStore.config ?? {} }
 })
@@ -67,16 +67,15 @@ const systems = ref([
     icon: 'i-lucide-dices'
   },
   {
-    id: 'yze',
-    title: t('session.new.systems.yze.title'),
-    description: t('session.new.systems.yze.description'),
-    icon: 'i-lucide-dices',
-    disabled: true
-  },
-  {
     id: 'step',
     title: t('session.new.systems.step.title'),
     description: t('session.new.systems.step.description'),
+    icon: 'i-lucide-dices'
+  },
+  {
+    id: 'yze',
+    title: t('session.new.systems.yze.title'),
+    description: t('session.new.systems.yze.description'),
     icon: 'i-lucide-dices',
     disabled: true
   },
