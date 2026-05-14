@@ -103,7 +103,7 @@ export default defineNuxtConfig({
       callback: '/confirm',
       include: ['/session/new', '/profile/*'],
       exclude: [],
-      saveRedirectToCookie: false
+      saveRedirectToCookie: true
     }
   }
 })
