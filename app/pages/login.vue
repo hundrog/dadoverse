@@ -1,11 +1,28 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
+import { safeAuthRedirectPath } from '~/utils/safeAuthRedirectPath'
 
 const supabase = useSupabaseClient()
+const route = useRoute()
 const { t } = useI18n()
 const { public: { siteUrl } } = useRuntimeConfig()
 const toast = useToast()
+const redirectCookie = useCookie('supabase-redirect-path', {
+  maxAge: 60 * 10, // 10 minutos es suficiente
+  path: '/',
+  sameSite: 'lax',
+  secure: true // Asegúrate de estar en HTTPS o localhost
+})
+
+function authCallbackUrl(): string {
+  const raw = route.query.redirectTo as string
+  const q = Array.isArray(raw) ? raw[0] : raw
+  const path = safeAuthRedirectPath(q)
+  if (!path) return `${siteUrl}/confirm`
+  redirectCookie.value = path
+  return `${siteUrl}/confirm?redirectTo=${encodeURIComponent(path)}`
+}
 
 const fields: AuthFormField[] = [
   {
@@ -25,7 +42,7 @@ const providers = [
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${siteUrl}/confirm`
+          redirectTo: authCallbackUrl()
         }
       })
       toast.add({ title: t('auth.google'), description: t('auth.loginWithGoogle') })
@@ -56,7 +73,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   const { error } = await supabase.auth.signInWithOtp({
     ...payload.data,
     options: {
-      emailRedirectTo: `${siteUrl}/confirm`
+      emailRedirectTo: authCallbackUrl()
     }
   })
   if (error) {

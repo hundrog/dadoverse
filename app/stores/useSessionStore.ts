@@ -81,16 +81,13 @@ export const useSessionStore = defineStore('session', () => {
 
     const { username, ...sessionData } = payload
 
-    if (!user.value) {
-      await navigateTo('/error')
-      return
-    }
-
     if (username) setCharacterName(username)
+
+    const ownerId = user.value?.sub ?? null
 
     const { data, error } = await supabase
       .from('sessions')
-      .insert({ ...sessionData, owner_id: user.value.sub })
+      .insert({ ...sessionData, owner_id: ownerId })
       .select()
       .single()
 
@@ -99,6 +96,7 @@ export const useSessionStore = defineStore('session', () => {
       slug.value = data.slug
       name.value = data.name
       created_at.value = data.created_at
+      owner_id.value = data.owner_id
       system_type.value = data.system_type as DiceSystem
       tray_type.value = data.tray_type as 'standard' | 'collaborative'
       config.value = data.config as unknown as SessionConfig

@@ -89,11 +89,14 @@
       "active_as": "Active as",
       "empty_name": "",
       "share": "Share Session",
+      "linkCopied": "Link copied",
       "temporarySession": "Temporary Session",
       "temporarySessionDescriptionSingular": "This session will be automatically deleted in 1 day if it has no owner registered.",
       "temporarySessionDescriptionPlural": "This session will be automatically deleted in {days} days if it has no owner registered.",
       "temporarySessionDescriptionSoon": "This session will be automatically deleted soon if it has no owner registered.",
-      "claimSession": "Claim Session"
+      "claimSession": "Claim Session",
+      "sessionClaimed": "Session claimed",
+      "sessionClaimFailed": "Failed to claim session"
     },
     "rollOutcome": {
       "duality": {

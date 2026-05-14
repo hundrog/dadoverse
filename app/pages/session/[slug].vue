@@ -7,6 +7,9 @@ const diceStore = useDiceStore()
 const sessionStore = useSessionStore()
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
+const toast = useToast()
+const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 const { $createDiceBox } = useNuxtApp()
 const { copy, copied } = useClipboard()
@@ -54,7 +57,10 @@ const temporarySessionDescription = computed(() => {
       days: TEMPORARY_SESSION_TTL_DAYS
     })
   }
-  const remainingMs = createdMs + TEMPORARY_SESSION_TTL_DAYS * MS_PER_DAY - Date.now()
+  const nowMs = Date.now()
+  // Avoid ceil → TTL+1 when server `created_at` is marginally ahead of client time.
+  const effectiveCreatedMs = Math.min(createdMs, nowMs)
+  const remainingMs = effectiveCreatedMs + TEMPORARY_SESSION_TTL_DAYS * MS_PER_DAY - nowMs
   const days = Math.max(0, Math.ceil(remainingMs / MS_PER_DAY))
   if (days === 0) {
     return t('session.room.temporarySessionDescriptionSoon')
@@ -103,10 +109,7 @@ const shareSession = () => {
   const sessionUrl = window.location.href
 
   copy(sessionUrl)
-
-  // Opcional: Feedback visual con el sistema de Toasts de Nuxt UI
-  const toast = useToast()
-  toast.add({ title: 'Enlace copiado', icon: 'i-lucide-clipboard-check' })
+  toast.add({ title: t('session.room.linkCopied'), icon: 'i-lucide-clipboard-check' })
 }
 
 const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
@@ -174,17 +177,39 @@ const handleSaveName = () => {
 }
 
 const handleClaimSession = async () => {
-  const user = useSupabaseUser()
-  if (!user.value) return
+  const route = useRoute()
 
-  await supabase
+  if (!user.value) {
+    // Si no hay usuario, vamos al login pasando la ruta actual como retorno
+    // encodeURIComponent es clave para que los / y ? no rompan la URL del login
+    const separator = route.fullPath.includes('?') ? '&' : '?'
+    const returnTo = encodeURIComponent(`${route.fullPath}${separator}action=claim`)
+    return navigateTo(`/login?redirectTo=${returnTo}`)
+  }
+
+  const { error } = await supabase
     .from('sessions')
     .update({ owner_id: user.value.id })
     .eq('id', sessionStore.id as string)
+
+    if (!error) {
+    toast.add({ title: t('session.room.sessionClaimed'), icon: 'i-lucide-check' })
+  } else {
+    createError({
+      statusCode: 500,
+      statusMessage: error.message,
+      message: t('session.room.sessionClaimFailed')
+    })
+    return
+  }
 }
 
 onMounted(async () => {
   await sessionStore.initializeSession(slug)
+  if (route.query.action === 'claim' && user.value) {
+    // handleClaimSession()
+    // router.replace({ query: {} })
+  }
   sessionStore.initCharacterName()
   tempName.value = sessionStore.activeIdentity
 
@@ -296,7 +321,7 @@ onUnmounted(async () => {
     :description="temporarySessionDescription"
   >
     <template #actions>
-      <UButton size="xs" color="warning" @click="handleClaimSession">
+      <UButton size="xs" color="warning" @click="() => void handleClaimSession()">
         {{ t('session.room.claimSession') }}
       </UButton>
     </template>

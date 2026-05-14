@@ -89,11 +89,14 @@
       "active_as": "Conectado como",
       "empty_name": "",
       "share": "Compartir sesión",
+      "linkCopied": "Enlace copiado",
       "temporarySession": "Sesión temporal",
       "temporarySessionDescriptionSingular": "Esta sala se auto-eliminará en 1 día al no tener un dueño registrado.",
       "temporarySessionDescriptionPlural": "Esta sala se auto-eliminará en {days} días al no tener un dueño registrado.",
       "temporarySessionDescriptionSoon": "Esta sala se auto-eliminará pronto al no tener un dueño registrado.",
-      "claimSession": "Guardar en mi cuenta"
+      "claimSession": "Guardar en mi cuenta",
+      "sessionClaimed": "Sesión guardada en tu cuenta",
+      "sessionClaimFailed": "Error al guardar la sesión en tu cuenta"
     },
     "rollOutcome": {
       "duality": {
