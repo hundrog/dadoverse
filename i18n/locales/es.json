@@ -88,7 +88,12 @@
       "disadvantage": "Desventaja",
       "active_as": "Conectado como",
       "empty_name": "",
-      "share": "Compartir sesión"
+      "share": "Compartir sesión",
+      "temporarySession": "Sesión temporal",
+      "temporarySessionDescriptionSingular": "Esta sala se auto-eliminará en 1 día al no tener un dueño registrado.",
+      "temporarySessionDescriptionPlural": "Esta sala se auto-eliminará en {days} días al no tener un dueño registrado.",
+      "temporarySessionDescriptionSoon": "Esta sala se auto-eliminará pronto al no tener un dueño registrado.",
+      "claimSession": "Guardar en mi cuenta"
     },
     "rollOutcome": {
       "duality": {

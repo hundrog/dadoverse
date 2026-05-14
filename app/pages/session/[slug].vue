@@ -37,6 +37,34 @@ const bonus = ref(0)
 const level = ref(1)
 const tn = ref(10)
 
+/** Unclaimed sessions are removed this many days after `created_at` (see alert copy / backend policy). */
+const TEMPORARY_SESSION_TTL_DAYS = 5
+const MS_PER_DAY = 86_400_000
+
+const temporarySessionDescription = computed(() => {
+  const created = sessionStore.created_at
+  if (!created) {
+    return t('session.room.temporarySessionDescriptionPlural', {
+      days: TEMPORARY_SESSION_TTL_DAYS
+    })
+  }
+  const createdMs = new Date(created).getTime()
+  if (Number.isNaN(createdMs)) {
+    return t('session.room.temporarySessionDescriptionPlural', {
+      days: TEMPORARY_SESSION_TTL_DAYS
+    })
+  }
+  const remainingMs = createdMs + TEMPORARY_SESSION_TTL_DAYS * MS_PER_DAY - Date.now()
+  const days = Math.max(0, Math.ceil(remainingMs / MS_PER_DAY))
+  if (days === 0) {
+    return t('session.room.temporarySessionDescriptionSoon')
+  }
+  if (days === 1) {
+    return t('session.room.temporarySessionDescriptionSingular')
+  }
+  return t('session.room.temporarySessionDescriptionPlural', { days })
+})
+
 const COLORS = {
   hope: '#e7c74b',
   fear: '#22135f',
@@ -145,6 +173,16 @@ const handleSaveName = () => {
   }
 }
 
+const handleClaimSession = async () => {
+  const user = useSupabaseUser()
+  if (!user.value) return
+
+  await supabase
+    .from('sessions')
+    .update({ owner_id: user.value.id })
+    .eq('id', sessionStore.id as string)
+}
+
 onMounted(async () => {
   await sessionStore.initializeSession(slug)
   sessionStore.initCharacterName()
@@ -250,6 +288,19 @@ onUnmounted(async () => {
           />
         </UTooltip>
       </div>
+      <UAlert
+    icon="i-lucide-clock-5"
+    color="warning"
+    variant="soft"
+    :title="t('session.room.temporarySession')"
+    :description="temporarySessionDescription"
+  >
+    <template #actions>
+      <UButton size="xs" color="warning" @click="handleClaimSession">
+        {{ t('session.room.claimSession') }}
+      </UButton>
+    </template>
+  </UAlert>
       <div
         id="dice-container"
         class="aspect-square w-full flex flex-col items-center justify-center rounded-xl bg-neutral-200 dark:bg-neutral-950"

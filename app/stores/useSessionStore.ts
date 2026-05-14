@@ -3,6 +3,8 @@ export const useSessionStore = defineStore('session', () => {
   const id = ref<string | null>(null)
   const slug = ref<string | null>(null)
   const name = ref<string | null>(null)
+  const created_at = ref<string | null>(null)
+  const owner_id = ref<string | null>(null)
   const system_type = ref<DiceSystem>('duality')
   const tray_type = ref<'standard' | 'collaborative'>('standard')
   const config = ref<SessionConfig>({
@@ -53,7 +55,7 @@ export const useSessionStore = defineStore('session', () => {
 
     const { data } = await supabase
       .from('sessions')
-      .select('id, slug, name, system_type, tray_type, config')
+      .select('id, slug, name, created_at, owner_id, system_type, tray_type, config')
       .eq('slug', sessionSlug)
       .single()
 
@@ -61,6 +63,8 @@ export const useSessionStore = defineStore('session', () => {
       id.value = data.id
       slug.value = data.slug
       name.value = data.name
+      created_at.value = data.created_at
+      owner_id.value = data.owner_id
       system_type.value = data.system_type as DiceSystem
       tray_type.value = data.tray_type as 'standard' | 'collaborative'
       config.value = data.config as unknown as SessionConfig
@@ -94,6 +98,7 @@ export const useSessionStore = defineStore('session', () => {
       id.value = data.id
       slug.value = data.slug
       name.value = data.name
+      created_at.value = data.created_at
       system_type.value = data.system_type as DiceSystem
       tray_type.value = data.tray_type as 'standard' | 'collaborative'
       config.value = data.config as unknown as SessionConfig
@@ -137,6 +142,8 @@ export const useSessionStore = defineStore('session', () => {
     id,
     slug,
     name,
+    created_at,
+    owner_id,
     system_type,
     tray_type,
     config,
