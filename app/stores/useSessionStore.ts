@@ -16,6 +16,7 @@ export const useSessionStore = defineStore('session', () => {
   const role = ref<'owner' | 'player' | 'spectator'>('spectator')
   const onlineMembers = ref<any[]>([])
   const characterName = ref('')
+  const userSessions = ref<any[]>([])
 
   const generateObserverName = () => {
     const adjectives = ['Sombrío', 'Etéreo', 'Vigilante', 'Silencioso']
@@ -135,6 +136,31 @@ export const useSessionStore = defineStore('session', () => {
     }
   }
 
+  async function fetchUserSessions() {
+    const supabase = useSupabaseClient<Database>()
+    const user = useSupabaseUser()
+    if (!user.value) return
+
+    const { data, error } = await supabase
+      .from('sessions')
+      .select('*')
+      .eq('owner_id', user.value.sub)
+      .order('created_at', { ascending: false })
+
+    if (!error && data) {
+      userSessions.value = data
+    }
+  }
+
+  async function deleteSession(sessionId: string) {
+    const supabase = useSupabaseClient<Database>()
+    const { error } = await supabase.from('sessions').delete().eq('id', sessionId)
+
+    if (!error) {
+      userSessions.value = userSessions.value.filter(s => s.id !== sessionId)
+    }
+  }
+
   return {
     // State
     id,
@@ -149,12 +175,15 @@ export const useSessionStore = defineStore('session', () => {
     role,
     activeIdentity,
     onlineMembers,
+    userSessions,
     // Actions
     setCharacterName,
     initCharacterName,
     updateOnlineMembers,
     createSession,
     initializeSession,
-    updateRoomSettings
+    updateRoomSettings,
+    fetchUserSessions,
+    deleteSession
   }
 })

@@ -1,17 +1,15 @@
 <script setup lang="ts">
-const user = useSupabaseUser()
-const supabase = useSupabaseClient()
 const systems = useDiceSystems()
+const sessionStore = useSessionStore()
 
 // Estado para las sesiones
-const { data: sessions, pending } = await useAsyncData('user-sessions', async () => {
-  const { data } = await supabase
-    .from('sessions')
-    .select('*')
-    .eq('owner_id', user.value?.sub as string) // Filtramos por el creador
-    .order('created_at', { ascending: false })
-  return data
-})
+const { pending } = await useAsyncData('user-sessions', () => sessionStore.fetchUserSessions().then(() => true))
+
+const handleDeleteSession = async (session: any) => {
+  if (confirm('¿Estás seguro de que quieres borrar esta sesión?')) {
+    await sessionStore.deleteSession(session.id)
+  }
+}
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString(undefined, {
@@ -38,9 +36,9 @@ const systemName = (id: string) => systems.value.find(s => s.id === id)?.title
       <USkeleton v-for="i in 3" :key="i" class="h-20 w-full" />
     </div>
 
-    <div v-else-if="sessions?.length" class="grid gap-4">
+    <div v-else-if="sessionStore.userSessions?.length" class="grid gap-4">
       <UCard
-        v-for="session in sessions"
+        v-for="session in sessionStore.userSessions"
         :key="session.id"
         class="hover:border-primary-500/50 transition-colors"
       >
@@ -60,7 +58,7 @@ const systemName = (id: string) => systems.value.find(s => s.id === id)?.title
             </div>
           </div>
 
-          <div class="flex gap-2">
+          <div class="flex flex-col gap-2">
             <UButton
               :to="`/session/${session.slug}`"
               variant="soft"
@@ -71,11 +69,13 @@ const systemName = (id: string) => systems.value.find(s => s.id === id)?.title
             </UButton>
 
             <!-- Botón de ajustes de la sesión -->
-            <!-- <UButton
-              variant="ghost"
-              color="neutral"
-              icon="i-lucide-cog"
-            /> -->
+            <UButton
+              variant="outline"
+              color="error"
+              label="Delete"
+              icon="i-lucide-trash"
+              @click="handleDeleteSession(session)"
+            />
           </div>
         </div>
       </UCard>
