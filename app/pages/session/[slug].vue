@@ -177,8 +177,6 @@ const handleSaveName = () => {
 }
 
 const handleClaimSession = async () => {
-  const route = useRoute()
-
   if (!user.value) {
     // Si no hay usuario, vamos al login pasando la ruta actual como retorno
     // encodeURIComponent es clave para que los / y ? no rompan la URL del login
@@ -186,15 +184,16 @@ const handleClaimSession = async () => {
     const returnTo = encodeURIComponent(`${route.fullPath}${separator}action=claim`)
     return navigateTo(`/login?redirectTo=${returnTo}`)
   }
-
   const { error } = await supabase
     .from('sessions')
-    .update({ owner_id: user.value.id })
-    .eq('id', sessionStore.id as string)
+    .update({ owner_id: user.value.sub})
+    .eq('slug', slug)
 
     if (!error) {
-    toast.add({ title: t('session.room.sessionClaimed'), icon: 'i-lucide-check' })
+      sessionStore.owner_id = user.value.sub
+      toast.add({ title: t('session.room.sessionClaimed'), icon: 'i-lucide-check' })
   } else {
+    console.log(error)
     createError({
       statusCode: 500,
       statusMessage: error.message,
@@ -207,8 +206,8 @@ const handleClaimSession = async () => {
 onMounted(async () => {
   await sessionStore.initializeSession(slug)
   if (route.query.action === 'claim' && user.value) {
-    // handleClaimSession()
-    // router.replace({ query: {} })
+    handleClaimSession()
+    router.replace({ query: {} })
   }
   sessionStore.initCharacterName()
   tempName.value = sessionStore.activeIdentity
@@ -319,6 +318,7 @@ onUnmounted(async () => {
     variant="soft"
     :title="t('session.room.temporarySession')"
     :description="temporarySessionDescription"
+    v-if="!sessionStore.owner_id"
   >
     <template #actions>
       <UButton size="xs" color="warning" @click="() => void handleClaimSession()">
