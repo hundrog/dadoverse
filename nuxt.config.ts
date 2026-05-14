@@ -1,6 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/supabase', 'nuxt-security', '@nuxtjs/i18n'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/ui',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    '@nuxtjs/supabase',
+    'nuxt-security',
+    '@nuxtjs/i18n',
+    'motion-v/nuxt'
+  ],
 
   devtools: {
     enabled: true
@@ -42,7 +51,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['@3d-dice/dice-box', 'zod']
+      include: ['@3d-dice/dice-box', 'zod', 'shaders/vue']
     }
   },
 

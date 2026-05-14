@@ -27,20 +27,6 @@ useSeoMeta({
   ogImage: '/shared-picture.png',
   twitterCard: 'summary_large_image'
 })
-const toast = useToast()
-
-function handleError(error: Error, clearError: () => void) {
-  toast.add({
-    'title': t('app.errorToastTitle'),
-    'description': error.message,
-    'color': 'error',
-    'icon': 'i-lucide-alert-circle',
-    'duration': 5000,
-    'onUpdate:open': (open: boolean) => {
-      if (!open) clearError()
-    }
-  })
-}
 </script>
 
 <template>
@@ -58,17 +44,9 @@ function handleError(error: Error, clearError: () => void) {
       </template>
     </UHeader>
 
-    <UMain class="mx-auto max-w-xl px-4">
-      <NuxtErrorBoundary>
-        <template #error="{ error, clearError }">
-          <LayoutErrorToastTrigger
-            :error="error"
-            :on-mount="() => handleError(error, clearError)"
-          />
-        </template>
-        <NuxtPage />
-      </NuxtErrorBoundary>
-    </UMain>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
 
     <USeparator icon="i-simple-icons-nuxtdotjs" />
 

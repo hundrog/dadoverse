@@ -25,7 +25,7 @@ export const useDiceSystems = () => {
     },
     {
       id: '2d20',
-      disabled: false,
+      disabled: true,
       title: t('session.new.systems.modiphius2d20.title'),
       description: t('session.new.systems.modiphius2d20.description'),
       icon: 'i-lucide-dices'
