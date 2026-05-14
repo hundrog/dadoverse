@@ -96,7 +96,9 @@
       "temporarySessionDescriptionSoon": "This session will be automatically deleted soon if it has no owner registered.",
       "claimSession": "Claim Session",
       "sessionClaimed": "Session claimed",
-      "sessionClaimFailed": "Failed to claim session"
+      "sessionClaimFailed": "Failed to claim session",
+      "sessionJoined": "has join the session",
+      "sessionLeft": "has left the session"
     },
     "rollOutcome": {
       "duality": {

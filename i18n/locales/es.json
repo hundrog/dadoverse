@@ -96,7 +96,9 @@
       "temporarySessionDescriptionSoon": "Esta sala se auto-eliminará pronto al no tener un dueño registrado.",
       "claimSession": "Guardar en mi cuenta",
       "sessionClaimed": "Sesión guardada en tu cuenta",
-      "sessionClaimFailed": "Error al guardar la sesión en tu cuenta"
+      "sessionClaimFailed": "Error al guardar la sesión en tu cuenta",
+      "sessionJoined": "se ha unido a la sesión",
+      "sessionLeft": "se ha desconectado de la sesión"
     },
     "rollOutcome": {
       "duality": {

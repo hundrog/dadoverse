@@ -186,14 +186,13 @@ const handleClaimSession = async () => {
   }
   const { error } = await supabase
     .from('sessions')
-    .update({ owner_id: user.value.sub})
+    .update({ owner_id: user.value.sub })
     .eq('slug', slug)
 
-    if (!error) {
-      sessionStore.owner_id = user.value.sub
-      toast.add({ title: t('session.room.sessionClaimed'), icon: 'i-lucide-check' })
+  if (!error) {
+    sessionStore.owner_id = user.value.sub
+    toast.add({ title: t('session.room.sessionClaimed'), icon: 'i-lucide-check' })
   } else {
-    console.log(error)
     createError({
       statusCode: 500,
       statusMessage: error.message,
@@ -244,10 +243,10 @@ onMounted(async () => {
         sessionStore.updateOnlineMembers(newState)
       })
       .on('presence', { event: 'join' }, ({ key }: { key: string }) => {
-        console.log(`${key} se ha unido a la sesion`)
+        console.log(`${key} ${t('session.room.sessionJoined')}`)
       })
       .on('presence', { event: 'leave' }, ({ key }: { key: string }) => {
-        console.log(`${key} se ha ido`)
+        console.log(`${key} ${t('session.room.sessionLeft')}`)
       })
       .on('broadcast', { event: 'dice_anim' }, (payload: { user_name: string }) => {
         // Aquí conectaremos con el componente 3D más adelante
@@ -313,19 +312,19 @@ onUnmounted(async () => {
         </UTooltip>
       </div>
       <UAlert
-    icon="i-lucide-clock-5"
-    color="warning"
-    variant="soft"
-    :title="t('session.room.temporarySession')"
-    :description="temporarySessionDescription"
-    v-if="!sessionStore.owner_id"
-  >
-    <template #actions>
-      <UButton size="xs" color="warning" @click="() => void handleClaimSession()">
-        {{ t('session.room.claimSession') }}
-      </UButton>
-    </template>
-  </UAlert>
+        v-if="!sessionStore.owner_id"
+        icon="i-lucide-clock-5"
+        color="warning"
+        variant="soft"
+        :title="t('session.room.temporarySession')"
+        :description="temporarySessionDescription"
+      >
+        <template #actions>
+          <UButton size="xs" color="warning" @click="() => void handleClaimSession()">
+            {{ t('session.room.claimSession') }}
+          </UButton>
+        </template>
+      </UAlert>
       <div
         id="dice-container"
         class="aspect-square w-full flex flex-col items-center justify-center rounded-xl bg-neutral-200 dark:bg-neutral-950"
