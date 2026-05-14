@@ -62,24 +62,28 @@ const schemas = [step1Schema, step2Schema, step3Schema]
 const systems = ref([
   {
     id: 'duality',
+    disabled: false,
     title: t('session.new.systems.duality.title'),
     description: t('session.new.systems.duality.description'),
     icon: 'i-lucide-dices'
   },
   {
     id: 'step',
+    disabled: false,
     title: t('session.new.systems.step.title'),
     description: t('session.new.systems.step.description'),
     icon: 'i-lucide-dices'
   },
   {
     id: 'yze',
+    disabled: true,
     title: t('session.new.systems.yze.title'),
     description: t('session.new.systems.yze.description'),
     icon: 'i-lucide-dices'
   },
   {
     id: '2d20',
+    disabled: false,
     title: t('session.new.systems.modiphius2d20.title'),
     description: t('session.new.systems.modiphius2d20.description'),
     icon: 'i-lucide-dices'
@@ -87,6 +91,8 @@ const systems = ref([
 ])
 
 function selectSystem(index: number, id: string) {
+  if (systems.value.find(s => s.id === id)?.disabled) return
+
   selected.value = index
   form.system_type = id as DiceSystem
 }
@@ -169,7 +175,7 @@ onMounted(() => {
                   :highlight="selected === index"
                   highlight-color="primary"
                   :spotlight="isDesktop"
-                  variant="outline"
+                  :variant="system.disabled ? 'disabled' : 'outline'"
                   spotlight-color="secondary"
                   @click="selectSystem(index, system.id)"
                 />

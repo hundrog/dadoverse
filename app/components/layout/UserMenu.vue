@@ -47,4 +47,10 @@ const logout = async () => {
       class="size-7 rounded-full bg-neutral-200 dark:bg-neutral-950"
     >
   </UDropdownMenu>
+  <UButton
+    v-else
+    label="Login"
+    to="/login"
+    icon="i-lucide-log-in"
+  />
 </template>
