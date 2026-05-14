@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
+const systems = useDiceSystems()
 
 // Estado para las sesiones
 const { data: sessions, pending } = await useAsyncData('user-sessions', async () => {
@@ -17,6 +18,8 @@ const formatDate = (date: string) => {
     year: 'numeric', month: 'short', day: 'numeric'
   })
 }
+
+const systemName = (id: string) => systems.value.find(s => s.id === id)?.title
 </script>
 
 <template>
@@ -44,6 +47,7 @@ const formatDate = (date: string) => {
         <div class="flex items-center justify-between">
           <div class="space-y-1">
             <h3 class="font-bold text-white text-lg">{{ session.name || 'Sesión sin nombre' }}</h3>
+            <UBadge variant="outline" color="secondary" :label="systemName(session.system_type)" />
             <div class="flex gap-4 text-sm text-on-surface-dim">
               <span class="flex items-center gap-1">
                 <UIcon name="i-lucide-calendar" />
