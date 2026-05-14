@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { indexPage as page } from '~/data/index-page'
 
+const { locale } = useI18n()
 definePageMeta({
   layout: 'landing',
   colorMode: 'dark'
@@ -153,7 +154,8 @@ function staggerMotion(index: number = 0) {
         description: 'max-w-md mx-auto text-dimmed'
       }"
     >
-      <img src="/dadoverse-01.png" alt="">
+      <img v-if="locale === 'es'" src="/dadoverse-01.png" alt="">
+      <img v-else src="/dadoverse-01-en.png" alt="">
     </UPageSection>
 
     <!-- CTA -->
