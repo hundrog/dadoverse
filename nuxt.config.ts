@@ -28,6 +28,11 @@ export default defineNuxtConfig({
     '/': { prerender: false }
   },
 
+  sourcemap: {
+    server: false,
+    client: false
+  },
+
   compatibilityDate: '2025-01-15',
 
   nitro: {
