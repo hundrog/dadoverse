@@ -4,27 +4,29 @@
     "tagline": "Un lanzador de dados TTRPG para sistemas de dados complejos",
     "headerTitle": "Tira y rueda",
     "footerBuiltWith": "Hecho con Nuxt UI",
-    "errorToastTitle": "Algo salio mal"
+    "errorToastTitle": "Algo salio mal",
+    "footerTerms": "Terminos y condiciones",
+    "footerPrivacy": "Política de privacidad"
   },
   "landing": {
     "title": "Menos cálculos.\nMás historia.",
-    "description": "Lanza dados, suma bonificadores y gestiona modificadores en segundos. Invita a tus amigos y redescubre la forma más pura de jugar rol sin que las matemáticas interrumpan el flujo.",
+    "description": "Lanza dados, suma o resta resultados y gestiona modificadores en segundos. Invita a tus amigos y redescubre la forma más sencilla de lanzar dados sin que las matemáticas interrumpan el flujo.",
     "hero": {
-      "headline": "v1.0 DualityDice",
+      "headline": "v1.1 DualityDice",
       "links": {
         "createSession": "Crear sesión",
         "joinSession": "Unirse a partida"
       }
     },
     "features": {
-      "headline": "Herramientas",
-      "title": "Toda la mesa, un solo plano.",
-      "description": "Olvídate de las pestañas infinitas y las calculadoras externas. Conecta tus dados, sistemas y narrativa en una sola interfaz reactiva.",
+      "headline": "Simplicidad",
+      "title": "Herramienta sencilla, capacidades avanzadas.",
+      "description": "Todo lo que necesitas desde fisicas de dados, hasta reglas de multiples sistemas, en una interfazo sencilla que te permite concentrarte en la historia, no en el software.",
       "items": {
         "physicsTitle": "Física 3D de dados",
         "physicsDescription": "Dados con físicas realistas integrados. Tira, suma y obtén resultados instantáneos sincronizados con toda tu mesa en tiempo real.",
         "engineTitle": "Motor Multi-Sistema",
-        "engineDescription": "Soporte nativo para Daggerheart, Year Zero, Fabula Ultima y más. La interfaz se adapta a las reglas de tu juego preferido.",
+        "engineDescription": "Soporte nativo para Daggerheart, Fabula Ultima y más en camino. La interfaz se adapta a las reglas de tu juego preferido.",
         "sessionsTitle": "Sesiones Compartidas",
         "sessionsDescription": "Crea una sala y comparte el enlace. Sin registros complicados para tus jugadores: entrar y rodar es cuestión de segundos.",
         "logTitle": "Log de Resultados",

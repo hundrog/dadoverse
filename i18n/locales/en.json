@@ -4,27 +4,29 @@
     "tagline": "A TTRPG dice roller for complex dice systems",
     "headerTitle": "Roll & Roll",
     "footerBuiltWith": "Built with Nuxt UI",
-    "errorToastTitle": "Something went wrong"
+    "errorToastTitle": "Something went wrong",
+    "footerTerms": "Terms & Conditions",
+    "footerPrivacy": "Privacy Policy"
   },
   "landing": {
     "title": "Less math.\nMore story.",
-    "description": "Roll dice, add bonuses, and manage modifiers in seconds. Invite your friends and rediscover the purest way to play RPGs without math interrupting the flow.",
+    "description": "Roll dice, add bonuses, and manage modifiers in seconds. Invite your friends and rediscover the simplest way to throw dices without math interrupting the flow.",
     "hero": {
-      "headline": "v1.0 DualityDice",
+      "headline": "v1.1 DualityDice",
       "links": {
         "createSession": "Create Session",
         "joinSession": "Join Game"
       }
     },
     "features": {
-      "headline": "Tools",
-      "title": "The whole table, in a single view.",
-      "description": "Forget about endless tabs and external calculators. Connect your dice, systems, and narrative in a single reactive interface.",
+      "headline": "Simplicity",
+      "title": "A lightweight tool with heavyweight capabilities.",
+      "description": "Everything you need, from dice physics to multi-system rules—into a single, intuitive interface that lets you focus on the story, not the software.",
       "items": {
         "physicsTitle": "3D Dice Physics",
         "physicsDescription": "Integrated dice with realistic physics. Roll, add, and get instant results synced with your entire table in real-time.",
         "engineTitle": "Multi-System Engine",
-        "engineDescription": "Native support for Daggerheart, Year Zero, Fabula Ultima, and more. The interface adapts to your favorite game's rules.",
+        "engineDescription": "Native support for Daggerheart, Fabula Ultima, and more in the way. The interface adapts to your favorite game's rules.",
         "sessionsTitle": "Shared Sessions",
         "sessionsDescription": "Create a room and share the link. No complicated sign-ups for your players: jumping in and rolling takes only seconds.",
         "logTitle": "Results Log",

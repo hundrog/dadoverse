@@ -39,7 +39,10 @@ useSeoMeta({
       </template>
 
       <template #right>
-        <UColorModeButton />
+        <ULocaleSelect
+          v-model="localeModel"
+          :locales="[en, es]"
+        />
         <LayoutUserMenu />
       </template>
     </UHeader>
@@ -50,18 +53,26 @@ useSeoMeta({
 
     <USeparator icon="i-simple-icons-nuxtdotjs" />
 
-    <UFooter>
+    <UFooter
+      :ui="{
+        right: 'flex-col space-y-1',
+        center: 'flex-col space-y-1'
+      }"
+    >
       <template #left>
         <p class="text-muted text-sm">
           {{ t('app.footerBuiltWith') }} • © {{ new Date().getFullYear() }}
         </p>
       </template>
 
+      <template #default>
+        <UButton to="https://github.com/hundrog/dadoverse" target="_blank" variant="ghost" icon="i-simple-icons-github">Github</UButton>
+        <UButton to="https://buymeacoffee.com/the.blue.pixel" target="_blank" variant="ghost" icon="i-simple-icons-buymeacoffee">BuyMeACoffee</UButton>
+      </template>
+
       <template #right>
-        <ULocaleSelect
-          v-model="localeModel"
-          :locales="[en, es]"
-        />
+        <ULink to="/about/terms">{{ t('app.footerTerms') }}</ULink>
+        <ULink to="/about/privacy">{{ t('app.footerPrivacy') }}</ULink>
       </template>
     </UFooter>
   </UApp>
