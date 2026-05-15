@@ -25,6 +25,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/session/**': { ssr: true },
     '/': { prerender: false }
   },
 
@@ -72,10 +73,17 @@ export default defineNuxtConfig({
   i18n: {
     strategy: 'no_prefix',
     locales: [
-      { code: 'en', language: 'en-US', file: 'en.json' },
-      { code: 'es', language: 'es-MX', file: 'es.json' }
+      { code: 'en', language: 'en-US', iso: 'en-US', file: 'en.json' },
+      { code: 'es', language: 'es-MX', iso: 'es-MX', file: 'es.json' }
     ],
-    defaultLocale: 'es'
+    defaultLocale: 'en',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: false,
+      fallbackLocale: 'en'
+    }
   },
 
   security: {
