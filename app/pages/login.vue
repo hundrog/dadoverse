@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as z from 'zod'
-import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
+import type { FormSubmitEvent } from '@nuxt/ui'
 import { safeAuthRedirectPath } from '~/utils/safeAuthRedirectPath'
 
 const supabase = useSupabaseClient()
@@ -24,15 +24,15 @@ function authCallbackUrl(): string {
   return `${siteUrl}/confirm?redirectTo=${encodeURIComponent(path)}`
 }
 
-const fields: AuthFormField[] = [
-  {
-    name: 'email',
-    type: 'email',
-    label: t('auth.email'),
-    placeholder: t('auth.enterEmail'),
-    required: true
-  }
-]
+// const fields: AuthFormField[] = [
+//   {
+//     name: 'email',
+//     type: 'email',
+//     label: t('auth.email'),
+//     placeholder: t('auth.enterEmail'),
+//     required: true
+//   }
+// ]
 
 const providers = [
   {
@@ -45,22 +45,20 @@ const providers = [
           redirectTo: authCallbackUrl()
         }
       })
-      toast.add({ title: t('auth.google'), description: t('auth.loginWithGoogle') })
+    }
+  },
+  {
+    label: t('auth.discord'),
+    icon: 'i-simple-icons-discord',
+    onClick: async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+          redirectTo: authCallbackUrl()
+        }
+      })
     }
   }
-  // {
-  //   label: t('auth.facebook'),
-  //   icon: 'i-simple-icons-facebook',
-  //   onClick: async () => {
-  //     await supabase.auth.signInWithOAuth({
-  //       provider: 'facebook',
-  //       options: {
-  //         redirectTo: `${siteUrl}/confirm`
-  //       }
-  //     })
-  //     toast.add({ title: t('auth.facebook'), description: t('auth.loginWithFacebook') })
-  //   }
-  // }
 ]
 
 const schema = z.object({
@@ -101,7 +99,6 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
           :description="t('auth.loginDescription')"
           icon="i-lucide-user"
           :providers="providers"
-          :fields="fields"
           @submit="onSubmit"
         />
       </UPageCard>

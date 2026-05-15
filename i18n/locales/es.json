@@ -72,6 +72,7 @@
     "invalidEmail": "Correo invalido",
     "google": "Google",
     "facebook": "Facebook",
+    "discord": "Discord",
     "loginWithGoogle": "Iniciar con Google",
     "loginWithFacebook": "Iniciar con Facebook",
     "errorSigningIn": "Error al iniciar sesion",
