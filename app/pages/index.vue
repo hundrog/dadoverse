@@ -1,30 +1,56 @@
 <script setup lang="ts">
-import { indexPage as page } from '~/data/index-page'
-
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 definePageMeta({
   layout: 'landing',
   colorMode: 'dark'
 })
 
-const title = page.seo?.title ?? page.title
-const description = page.seo?.description ?? page.description
-
-useSeoMeta({
-  title,
-  ogTitle: title,
-  description,
-  ogDescription: description
-})
-
 const heroTitle = computed(() => {
-  const [primary = '', ...secondaryParts] = page.title.split('\n')
+  const [primary = '', ...secondaryParts] = t('landing.title').split('\n')
 
   return {
     primary,
     secondary: secondaryParts.join(' ').trim()
   }
 })
+
+const heroLinks = [
+  { label: 'landing.hero.links.createSession', color: 'primary' as const, size: 'xl' as const, to: '/session/new' },
+  { label: 'landing.hero.links.joinSession', size: 'xl' as const, color: 'neutral' as const, variant: 'soft' as const, to: '/session' }
+]
+
+const featureItems = [
+  {
+    icon: 'i-lucide-dices',
+    title: 'landing.features.items.physicsTitle',
+    description: 'landing.features.items.physicsDescription'
+  },
+  {
+    icon: 'i-lucide-cpu',
+    title: 'landing.features.items.engineTitle',
+    description: 'landing.features.items.engineDescription'
+  },
+  {
+    icon: 'i-lucide-users',
+    title: 'landing.features.items.sessionsTitle',
+    description: 'landing.features.items.sessionsDescription'
+  },
+  {
+    icon: 'i-lucide-history',
+    title: 'landing.features.items.logTitle',
+    description: 'landing.features.items.logDescription'
+  },
+  {
+    icon: 'i-lucide-shield-check',
+    title: 'landing.features.items.privacyTitle',
+    description: 'landing.features.items.privacyDescription'
+  },
+  {
+    icon: 'i-lucide-code-2',
+    title: 'landing.features.items.openSourceTitle',
+    description: 'landing.features.items.openSourceDescription'
+  }
+]
 
 function enterMotion(delay: number = 0) {
   return {
@@ -54,11 +80,11 @@ function staggerMotion(index: number = 0) {
 </script>
 
 <template>
-  <div v-if="page">
+  <UPage>
     <!-- Hero -->
     <UPageHero
       :ui="{
-        root: 'pb-24 sm:pb-32',
+        root: 'pb-24 sm:pb-32 scroll-mt-(--ui-header-height)',
         container: 'relative z-10 lg:py-32',
         wrapper: 'flex flex-col items-center',
         title: 'sm:text-6xl lg:text-7xl xl:text-[80px] tracking-tighter leading-[1.05]',
@@ -68,10 +94,10 @@ function staggerMotion(index: number = 0) {
     >
       <template #top>
         <Motion v-bind="staggerMotion(0)">
-          <HeroShaders class="absolute top-0 inset-x-0 opacity-15 h-full" />
+          <HeroShaders class="absolute inset-x-0 top-0 h-full opacity-15" />
         </Motion>
 
-        <GradientGlow class="top-0 w-2/3 h-1/2" />
+        <GradientGlow class="top-0 h-1/2 w-2/3" />
       </template>
 
       <template #headline>
@@ -79,8 +105,8 @@ function staggerMotion(index: number = 0) {
           <UBadge
             color="neutral"
             variant="soft"
-            :label="page.hero.headline"
-            class="rounded-full px-3 py-1.5 gap-1.5 bg-white/5 backdrop-blur"
+            :label="t('landing.hero.headline')"
+            class="gap-1.5 rounded-full bg-white/5 px-3 py-1.5 backdrop-blur"
           >
             <template #leading>
               <UChip
@@ -105,7 +131,8 @@ function staggerMotion(index: number = 0) {
             v-if="heroTitle.secondary"
             class="animate-shimmer bg-size-[200%_auto] bg-clip-text text-transparent"
             :style="{
-              backgroundImage: 'linear-gradient(135deg, var(--color-primary-400), var(--color-primary-300), var(--color-primary-200), var(--color-primary-100), var(--color-primary-200), var(--color-primary-300), var(--color-primary-400))',
+              backgroundImage:
+                'linear-gradient(135deg, var(--color-primary-400), var(--color-primary-300), var(--color-primary-200), var(--color-primary-100), var(--color-primary-200), var(--color-primary-300), var(--color-primary-400))',
               animationDuration: '10s'
             }"
           >
@@ -120,7 +147,7 @@ function staggerMotion(index: number = 0) {
           v-bind="enterMotion(0.5)"
           class="inline-block"
         >
-          {{ page.description }}
+          {{ t('landing.description') }}
         </Motion>
       </template>
 
@@ -130,9 +157,13 @@ function staggerMotion(index: number = 0) {
           v-bind="enterMotion(0.65)"
         >
           <UButton
-            v-for="link in page.hero.links"
+            v-for="link in heroLinks"
             :key="link.label"
-            v-bind="link"
+            :label="t(`${link.label}`)"
+            :to="link.to"
+            :color="link.color"
+            :size="link.size"
+            :variant="link.variant"
           />
         </Motion>
       </template>
@@ -142,20 +173,39 @@ function staggerMotion(index: number = 0) {
     <UPageSection
       id="features"
       orientation="horizontal"
-      :headline="page.features.headline"
-      :title="page.features.title"
-      :description="page.features.description"
-      :features="page.features.items"
+      :headline="t('landing.features.headline')"
+      :title="t('landing.features.title')"
+      :description="t('landing.features.description')"
       :ui="{
         root: 'py-24 sm:py-32 scroll-mt-(--ui-header-height)',
         container: 'max-w-5xl',
-        headline: 'font-mono font-medium text-xs text-primary uppercase tracking-[0.12em] text-center',
+        features: 'grid grid-cols-2',
+        headline:
+          'font-mono font-medium text-xs text-primary uppercase tracking-[0.12em] text-center',
         title: 'max-w-lg mx-auto',
         description: 'max-w-md mx-auto text-dimmed'
       }"
     >
-      <img v-if="locale === 'es'" src="/dadoverse-01.png" alt="">
-      <img v-else src="/dadoverse-01-en.png" alt="">
+      <template #features>
+        <UPageCard
+          v-for="(feature, index) in featureItems"
+          :key="index"
+          :title="t(feature.title)"
+          :description="t(feature.description)"
+          :icon="feature.icon"
+          spotlight
+        />
+      </template>
+      <img
+        v-if="locale === 'es'"
+        src="/dadoverse-01.png"
+        alt=""
+      >
+      <img
+        v-else
+        src="/dadoverse-01-en.png"
+        alt=""
+      >
     </UPageSection>
 
     <!-- CTA -->
@@ -169,7 +219,7 @@ function staggerMotion(index: number = 0) {
       }"
     >
       <template #top>
-        <GradientGlow class="bottom-0 w-2/3 h-1/2" />
+        <GradientGlow class="bottom-0 h-1/2 w-2/3" />
       </template>
 
       <template #title>
@@ -178,7 +228,7 @@ function staggerMotion(index: number = 0) {
           v-bind="scrollMotion()"
           class="inline-block"
         >
-          {{ page.cta.title }}
+          {{ t('landing.cta.title') }}
         </Motion>
       </template>
 
@@ -188,7 +238,7 @@ function staggerMotion(index: number = 0) {
           v-bind="scrollMotion(0.1)"
           class="inline-block"
         >
-          {{ page.cta.description }}
+          {{ t('landing.cta.description') }}
         </Motion>
       </template>
 
@@ -198,13 +248,16 @@ function staggerMotion(index: number = 0) {
           v-bind="scrollMotion(0.2)"
         >
           <UButton
-            v-for="link in page.cta.links"
+            v-for="link in heroLinks"
             :key="link.label"
-            v-bind="link"
-            size="xl"
+            :label="t(`${link.label}`)"
+            :to="link.to"
+            :color="link.color"
+            :size="link.size"
+            :variant="link.variant"
           />
         </Motion>
       </template>
     </UPageCTA>
-  </div>
+  </UPage>
 </template>

@@ -6,6 +6,55 @@
     "footerBuiltWith": "Hecho con Nuxt UI",
     "errorToastTitle": "Algo salio mal"
   },
+  "landing": {
+    "title": "Menos cálculos.\nMás historia.",
+    "description": "Lanza dados, suma bonificadores y gestiona modificadores en segundos. Invita a tus amigos y redescubre la forma más pura de jugar rol sin que las matemáticas interrumpan el flujo.",
+    "hero": {
+      "headline": "v1.0 DualityDice",
+      "links": {
+        "createSession": "Crear sesión",
+        "joinSession": "Unirse a partida"
+      }
+    },
+    "features": {
+      "headline": "Herramientas",
+      "title": "Toda la mesa, un solo plano.",
+      "description": "Olvídate de las pestañas infinitas y las calculadoras externas. Conecta tus dados, sistemas y narrativa en una sola interfaz reactiva.",
+      "items": {
+        "physicsTitle": "Física 3D de dados",
+        "physicsDescription": "Dados con físicas realistas integrados. Tira, suma y obtén resultados instantáneos sincronizados con toda tu mesa en tiempo real.",
+        "engineTitle": "Motor Multi-Sistema",
+        "engineDescription": "Soporte nativo para Daggerheart, Year Zero, Fabula Ultima y más. La interfaz se adapta a las reglas de tu juego preferido.",
+        "sessionsTitle": "Sesiones Compartidas",
+        "sessionsDescription": "Crea una sala y comparte el enlace. Sin registros complicados para tus jugadores: entrar y rodar es cuestión de segundos.",
+        "logTitle": "Log de Resultados",
+        "logDescription": "Historial persistente de todas las tiradas de la sesión. Quién tiró, qué sacó y cuál fue el resultado narrativo, siempre a la vista.",
+        "privacyTitle": "Privacidad Total",
+        "privacyDescription": "Tus datos son tuyos. Controlamos la seguridad mediante Supabase y Cloudflare, asegurando que tus campañas estén siempre protegidas.",
+        "openSourceTitle": "Espíritu Open Source",
+        "openSourceDescription": "Construido por y para la comunidad. Dadoverso es una herramienta abierta, transparente y en constante evolución junto a los jugadores."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para lanzar los dados?",
+      "description": "La forma más rápida de gestionar tus tiradas en Daggerheart, Year Zero Engine y más.",
+      "links": [
+        {
+          "label": "Crear sesión",
+          "color": "primary",
+          "size": "xl",
+          "to": "/session/new"
+        },
+        {
+          "label": "Unirse a partida",
+          "size": "xl",
+          "color": "neutral",
+          "variant": "soft",
+          "to": "/session"
+        }
+      ]
+    }
+  },
   "auth": {
     "email": "Correo",
     "enterEmail": "Ingresa tu correo",

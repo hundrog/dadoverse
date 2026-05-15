@@ -6,6 +6,55 @@
     "footerBuiltWith": "Built with Nuxt UI",
     "errorToastTitle": "Something went wrong"
   },
+  "landing": {
+    "title": "Less math.\nMore story.",
+    "description": "Roll dice, add bonuses, and manage modifiers in seconds. Invite your friends and rediscover the purest way to play RPGs without math interrupting the flow.",
+    "hero": {
+      "headline": "v1.0 DualityDice",
+      "links": {
+        "createSession": "Create Session",
+        "joinSession": "Join Game"
+      }
+    },
+    "features": {
+      "headline": "Tools",
+      "title": "The whole table, in a single view.",
+      "description": "Forget about endless tabs and external calculators. Connect your dice, systems, and narrative in a single reactive interface.",
+      "items": {
+        "physicsTitle": "3D Dice Physics",
+        "physicsDescription": "Integrated dice with realistic physics. Roll, add, and get instant results synced with your entire table in real-time.",
+        "engineTitle": "Multi-System Engine",
+        "engineDescription": "Native support for Daggerheart, Year Zero, Fabula Ultima, and more. The interface adapts to your favorite game's rules.",
+        "sessionsTitle": "Shared Sessions",
+        "sessionsDescription": "Create a room and share the link. No complicated sign-ups for your players: jumping in and rolling takes only seconds.",
+        "logTitle": "Results Log",
+        "logDescription": "Persistent history of all session rolls. Who rolled, what they got, and the narrative outcome, always in sight.",
+        "privacyTitle": "Total Privacy",
+        "privacyDescription": "Your data is yours. We manage security through Supabase and Cloudflare, ensuring your campaigns are always protected.",
+        "openSourceTitle": "Open Source Spirit",
+        "openSourceDescription": "Built by and for the community. Dadoverso is an open, transparent tool constantly evolving alongside the players."
+      }
+    },
+    "cta": {
+      "title": "Ready to roll the dice?",
+      "description": "The fastest way to manage your rolls in Daggerheart, Year Zero Engine, and more.",
+      "links": [
+        {
+          "label": "Create session",
+          "color": "primary",
+          "size": "xl",
+          "to": "/session/new"
+        },
+        {
+          "label": "Join game",
+          "size": "xl",
+          "color": "neutral",
+          "variant": "soft",
+          "to": "/session"
+        }
+      ]
+    }
+  },
   "auth": {
     "email": "Email",
     "enterEmail": "Enter your email",
