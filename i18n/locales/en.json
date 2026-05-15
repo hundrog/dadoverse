@@ -6,7 +6,16 @@
     "footerBuiltWith": "Built with Nuxt UI",
     "errorToastTitle": "Something went wrong",
     "footerTerms": "Terms & Conditions",
-    "footerPrivacy": "Privacy Policy"
+    "footerPrivacy": "Privacy Policy",
+    "footerFeedback": "Report a problem"
+  },
+  "feedback": {
+    "title": "Report a problem",
+    "description": "Open a GitHub Issue",
+    "formType": "Report Type",
+    "formTitle": "Title",
+    "formMessage": "Message",
+    "formSubmit": "Send"
   },
   "landing": {
     "title": "Less math.\nMore story.",

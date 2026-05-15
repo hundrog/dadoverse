@@ -51,10 +51,9 @@ useSeoMeta({
       <NuxtPage />
     </NuxtLayout>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
-
     <UFooter
       :ui="{
+        left: 'flex-col space-y-1',
         right: 'flex-col space-y-1',
         center: 'flex-col space-y-1'
       }"
@@ -71,6 +70,7 @@ useSeoMeta({
       </template>
 
       <template #right>
+        <AppFeedback />
         <ULink to="/about/terms">{{ t('app.footerTerms') }}</ULink>
         <ULink to="/about/privacy">{{ t('app.footerPrivacy') }}</ULink>
       </template>
