@@ -1,64 +1,103 @@
-# Nuxt Starter Template
+# Dadoverse 🎲
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+Dadoverse is a free and minimalist web application designed for playing tabletop role-playing games (TTRPGs) remotely. Unlike generic dice rollers, Dadoverse is built to faithfully replicate the mechanics and “feel” of specific game systems.
 
-Use this template to get started with [Nuxt UI](https://ui.nuxt.com) quickly.
+**Try it live:** [dadoverse.hundrog.workers.dev](https://dadoverse.hundrog.workers.dev/?utm_source=chatgpt.com)
 
-- [Live demo](https://starter-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+---
 
-<a href="https://starter-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png">
-    <img alt="Nuxt Starter Template" src="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png" width="830" height="466">
-  </picture>
-</a>
+## ✨ Main Features
 
-> The starter template for Vue is on https://github.com/nuxt-ui-templates/starter-vue.
+* **Real-Time Sessions:** Create a shared room or join an existing one through a link to sync your rolls with your gaming group.
+* **Natively Supported Systems:**
 
-## Quick Start
+  * **Daggerheart (Duality Dice):** Roll 2D12 (Hope and Fear) with automatic modifier calculation, advantage/disadvantage handling, and system-specific outcomes such as *“X with Hope”*, *“X with Fear”*, or *“Critical!”*.
+  * **Fabula Ultima (Step Die):** Dynamic dice configuration and scaling based on your attributes.
+* **Immersion-Focused Design:** A clean, fast, and responsive interface that does not interrupt the flow of the narrative.
+* **Full Internationalization:** Native support for Spanish and English based on the user's browser preferences.
 
-```bash [Terminal]
-npm create nuxt@latest -- -t ui
+---
+
+## 🚀 Coming Soon (Roadmap)
+
+* [ ] Support for the **Year Zero Engine (YZE)** with *Push Roll* mechanics.
+* [ ] **2D20 System** (Modiphius).
+* [ ] **Session Statistics:** Dice streak charts and roll history within each game session.
+* [ ] **Advanced Rolls:** Special mathematical calculations (averages, drop lowest/highest, etc.).
+
+---
+
+## 🛠️ Tech Stack
+
+This project is built using a modern web development ecosystem focused on speed and server-side rendering (SSR):
+
+* **Framework:** [Nuxt 3](https://nuxt.com/?utm_source=chatgpt.com) (Vue 3, TypeScript).
+* **Styling & Components:** [Nuxt UI](https://ui.nuxt.com/?utm_source=chatgpt.com) & [Tailwind CSS](https://tailwindcss.com/?utm_source=chatgpt.com).
+* **Database & Auth:** [Supabase](https://supabase.com/?utm_source=chatgpt.com) (PostgreSQL with Row Level Security).
+* **Deployment / Hosting:** [Cloudflare Workers / Pages](https://pages.cloudflare.com/?utm_source=chatgpt.com).
+
+---
+
+## 💻 Local Development
+
+If you'd like to clone the project and run it locally:
+
+### Prerequisites
+
+* Node.js (version 18 or higher recommended)
+
+* A Supabase account/project (for the `sessions` tables and authentication)
+
+### Steps
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/dadoverse.git
+cd dadoverse
 ```
 
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=starter&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fstarter&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fstarter-dark.png&demo-url=https%3A%2F%2Fstarter-template.nuxt.dev%2F&demo-title=Nuxt%20Starter%20Template&demo-description=A%20minimal%20template%20to%20get%20started%20with%20Nuxt%20UI.)
-
-## Setup
-
-Make sure to install the dependencies:
+2. Install dependencies:
 
 ```bash
 pnpm install
+# or npm install / yarn install
 ```
 
-## Development Server
+3. Configure environment variables. Create a `.env` file in the project root:
 
-Start the development server on `http://localhost:3000`:
+```env
+# .env.example
+export NUXT_PUBLIC_SUPABASE_URL=
+export NUXT_PUBLIC_SUPABASE_KEY=
+export NUXT_PUBLIC_SITE_URL=
+```
+
+4. Configure the Database (Supabase)
+
+This project uses the Supabase CLI to manage the database schema and RLS policies.
+
+1. Make sure Docker is running on your machine.
+2. Start the local Supabase environment:
 
 ```bash
-pnpm dev
+npx supabase start
 ```
 
-## Production
-
-Build the application for production:
+5. Start the development server:
 
 ```bash
-pnpm build
+pnpm run dev
 ```
 
-Locally preview production build:
+---
 
-```bash
-pnpm preview
-```
+## ☕ Support the Project
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+If this tool has improved your TTRPG nights and you'd like to support its development and server maintenance, you can buy us a coffee: [Buy Me a Coffee](https://buymeacoffee.com/the.blue.pixel?utm_source=chatgpt.com)
 
-## Renovate integration
+---
 
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
+## 📄 License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
