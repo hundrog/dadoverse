@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // Valor por defecto (local)
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL
     }
   },
 
