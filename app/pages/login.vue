@@ -21,7 +21,9 @@ function authCallbackUrl(): string {
   const path = safeAuthRedirectPath(q)
   if (!path) return `${siteUrl}/confirm`
   redirectCookie.value = path
-  return `${siteUrl}/confirm?redirectTo=${encodeURIComponent(path)}`
+  const uri = `${siteUrl}/confirm?redirectTo=${encodeURIComponent(path)}`
+  console.log(uri)
+  return uri
 }
 
 // const fields: AuthFormField[] = [
