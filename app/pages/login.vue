@@ -15,16 +15,14 @@ const redirectCookie = useCookie('supabase-redirect-path', {
   secure: true // Asegúrate de estar en HTTPS o localhost
 })
 
-console.log('site_url:', siteUrl)
 function authCallbackUrl(): string {
   const raw = route.query.redirectTo as string
   const q = Array.isArray(raw) ? raw[0] : raw
   const path = safeAuthRedirectPath(q)
   if (!path) return `${siteUrl}/confirm`
+
   redirectCookie.value = path
-  const uri = `${siteUrl}/confirm?redirectTo=${encodeURIComponent(path)}`
-  console.log('redirect_url:', uri)
-  return uri
+  return `${siteUrl}/confirm?redirectTo=${encodeURIComponent(path)}`
 }
 
 // const fields: AuthFormField[] = [
