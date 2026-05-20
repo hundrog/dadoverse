@@ -21,7 +21,7 @@
     "title": "Less math.\nMore story.",
     "description": "Roll dice, add bonuses, and manage modifiers in seconds. Invite your friends and rediscover the simplest way to throw dices without math interrupting the flow.",
     "hero": {
-      "headline": "v1.1 DualityDice",
+      "headline": "v1.3 2D20",
       "links": {
         "createSession": "Create Session",
         "joinSession": "Join Game"

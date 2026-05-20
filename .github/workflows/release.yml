@@ -1,0 +1,36 @@
+name: Automated Release
+
+on:
+  push:
+    branches:
+      - main # Se activa solo cuando hay un push directo o un PR mergeado a main
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Crucial para que el bot pueda crear tags y releases
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Trae todo el historial para poder generar las notas correctamente
+
+      - name: Extract Version from package.json
+        id: get_version
+        run: |
+          # Extrae la versión de tu package.json (asumiendo entorno Node/Nuxt)
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=v$VERSION" >> $GITHUB_ENV
+          echo "version=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Draft Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          draft: true # Lo crea como borrador para que tú le des el visto bueno final
+          prerelease: false
+          generateReleaseNotes: true # GitHub genera la lista de cambios automáticamente
+          token: ${{ secrets.GITHUB_TOKEN }} # Autenticación automática de GitHub
