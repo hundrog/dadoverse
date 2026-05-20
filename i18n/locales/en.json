@@ -145,6 +145,8 @@
       "rollingStepDice": "Rolling Step Dice",
       "bonus": "Bonus",
       "moreDice": "More Dice",
+      "numberOfDice": "Number of Dice",
+      "targetNumber": "Target Number",
       "advantage": "Advantage",
       "disadvantage": "Disadvantage",
       "active_as": "Active as",

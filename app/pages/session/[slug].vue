@@ -37,7 +37,7 @@ const yzeDice = ref({
 
 const rollMod = ref<RollModifier>('none')
 const bonus = ref(0)
-const level = ref(1)
+const level = ref(2)
 const tn = ref(10)
 
 /** Unclaimed sessions are removed this many days after `created_at` (see alert copy / backend policy). */
@@ -377,7 +377,7 @@ onUnmounted(async () => {
             </template>
           </UPageCard>
           <UPageCard
-            v-if="sessionStore.system_type === 'step'"
+            v-else-if="sessionStore.system_type === 'step'"
             :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }"
           >
             <template #header>
@@ -408,6 +408,30 @@ onUnmounted(async () => {
                 :min="-10"
                 :max="10"
                 :default-value="0"
+              />
+            </template>
+          </UPageCard>
+          <UPageCard
+            v-else-if="sessionStore.system_type === '2d20'"
+            :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }"
+          >
+            <template #header>
+              <span class="text-bold">{{ t('session.room.rollingModiphius2D20') }}</span>
+            </template>
+            <template #body>
+              {{ t('session.room.numberOfDice') }}: {{ level }}
+              <USlider
+                v-model="level"
+                :min="0"
+                :max="5"
+                :default-value="2"
+              />
+              {{ t('session.room.targetNumber') }}: {{ tn }}
+              <USlider
+                v-model="tn"
+                :min="6"
+                :max="20"
+                :default-value="10"
               />
             </template>
           </UPageCard>

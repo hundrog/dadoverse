@@ -145,6 +145,8 @@
       "rollingStepDice": "Tirando dados por escalon",
       "bonus": "Bono",
       "moreDice": "Mas dados",
+      "numberOfDice": "Numero de Dados",
+      "targetNumber": "Numero Objetivo",
       "advantage": "Ventaja",
       "disadvantage": "Desventaja",
       "active_as": "Conectado como",
