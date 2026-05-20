@@ -21,7 +21,7 @@
     "title": "Menos cálculos.\nMás historia.",
     "description": "Lanza dados, suma o resta resultados y gestiona modificadores en segundos. Invita a tus amigos y redescubre la forma más sencilla de lanzar dados sin que las matemáticas interrumpan el flujo.",
     "hero": {
-      "headline": "v1.1 DualityDice",
+      "headline": "v1.3 2D20",
       "links": {
         "createSession": "Crear sesión",
         "joinSession": "Unirse a partida"

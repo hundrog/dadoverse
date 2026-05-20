@@ -1,0 +1,27 @@
+changelog:
+  categories:
+    - title: '🚀 Nuevas Características / Features'
+      labels:
+        - enhancement
+        - feature
+        - feat
+    - title: '🐛 Correcciones de Errores / Bug Fixes'
+      labels:
+        - bug
+        - fix
+    - title: '🧰 Mantenimiento y Refactorización'
+      labels:
+        - chore
+        - refactor
+        - documentation
+        - docs
+
+  exclude:
+    labels:
+      - duplicate
+      - question
+      - invalid
+
+  replacers:
+    - search: '([^a-zA-Z0-9 ]|^)([fF]ix(es)?|[cC]lose(s)?|[rR]esolve(s)?)\s+#([0-9]+)'
+      replace: '$1'
