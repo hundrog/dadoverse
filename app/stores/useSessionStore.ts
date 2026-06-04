@@ -17,6 +17,9 @@ export const useSessionStore = defineStore('session', () => {
   const onlineMembers = ref<any[]>([])
   const characterName = ref('')
   const userSessions = ref<any[]>([])
+  const loading = ref(false)
+
+  // --- Getters ---
 
   const generateObserverName = () => {
     const adjectives = ['Sombrío', 'Etéreo', 'Vigilante', 'Silencioso']
@@ -176,6 +179,7 @@ export const useSessionStore = defineStore('session', () => {
     activeIdentity,
     onlineMembers,
     userSessions,
+    loading,
     // Actions
     setCharacterName,
     initCharacterName,

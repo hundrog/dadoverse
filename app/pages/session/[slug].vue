@@ -16,6 +16,7 @@ const { copy, copied } = useClipboard()
 const tempName = ref('')
 const slug = route.params.slug as string
 
+sessionStore.loading = true
 const stepDice = ref({
   dice1: 6,
   dice2: 6
@@ -275,6 +276,7 @@ onMounted(async () => {
         }
       })
   }
+  sessionStore.loading = false
 })
 
 onUnmounted(async () => {
@@ -312,7 +314,7 @@ onUnmounted(async () => {
         </UTooltip>
       </div>
       <UAlert
-        v-if="!sessionStore.owner_id"
+        v-if="!sessionStore.loading && !sessionStore.owner_id"
         icon="i-lucide-clock-5"
         color="warning"
         variant="soft"
