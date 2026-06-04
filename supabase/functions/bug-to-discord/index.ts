@@ -6,7 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS' // <-- Clave para que el preflight no falle
 }
 
-Deno.serve(async req => {
+Deno.serve(async (req) => {
   // Manejo del Preflight de CORS
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
