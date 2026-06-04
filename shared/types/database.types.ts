@@ -1,4 +1,10 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+export type Json
+  = | string
+    | number
+    | boolean
+    | null
+    | { [key: string]: Json | undefined }
+    | Json[]
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
@@ -8,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      bug_reports: {
+        Row: {
+          app_id: string | null
+          app_version: string | null
+          contact_email: string | null
+          created_at: string | null
+          description: string
+          device_info: string | null
+          id: string
+          steps_to_reproduce: string | null
+        }
+        Insert: {
+          app_id?: string | null
+          app_version?: string | null
+          contact_email?: string | null
+          created_at?: string | null
+          description: string
+          device_info?: string | null
+          id?: string
+          steps_to_reproduce?: string | null
+        }
+        Update: {
+          app_id?: string | null
+          app_version?: string | null
+          contact_email?: string | null
+          created_at?: string | null
+          description?: string
+          device_info?: string | null
+          id?: string
+          steps_to_reproduce?: string | null
+        }
+        Relationships: []
+      }
       rolls: {
         Row: {
           created_at: string | null
@@ -122,7 +161,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_expired_sessions: { Args: never, Returns: undefined }
     }
     Enums: {
       [_ in never]: never
@@ -156,8 +195,10 @@ export type Tables<
     }
       ? R
       : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
-    ? (DefaultSchema['Tables'] & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables']
+    & DefaultSchema['Views'])
+    ? (DefaultSchema['Tables']
+      & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
         ? R

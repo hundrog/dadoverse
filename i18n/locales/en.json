@@ -11,11 +11,15 @@
   },
   "feedback": {
     "title": "Report a problem",
-    "description": "Open a GitHub Issue",
-    "formType": "Report Type",
-    "formTitle": "Title",
+    "description": "",
+    "formEmail": "Email",
     "formMessage": "Message",
-    "formSubmit": "Send"
+    "messagePlaceholder": "Error while rolling dice",
+    "formDetails": "Steps to reproduce",
+    "detailsPlaceholder": "I was rollind the dice when...",
+    "formSubmit": "Send",
+    "formSubmitted": "Message sent",
+    "fieldRequired": "Field required"
   },
   "landing": {
     "title": "Less math.\nMore story.",
