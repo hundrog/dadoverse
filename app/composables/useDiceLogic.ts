@@ -25,12 +25,31 @@ export const useDiceLogic = () => {
       case 'step':
         return solveStep(dice)
 
+      case 'agnostic':
+        return solveAgnostic(dice)
+
       default:
         throw new Error(t('session.errors.unsupportedSystem'))
     }
   }
 
   // --- Lógicas Específicas ---
+  const solveAgnostic = (dice: number[]): RollResult => {
+    const total = dice.reduce((a, b) => a + b, 0)
+
+    return {
+      system: 'agnostic',
+      rawValues: dice,
+      interpreted: {
+        total,
+        outcome: t('session.rollOutcome.agnostic.total', { total }),
+        outcomeKey: 'session.rollOutcome.agnostic.total',
+        outcomeParams: { total },
+        isCritical: false,
+        metadata: {}
+      }
+    }
+  }
 
   const solveDuality = (
     dice: number[],

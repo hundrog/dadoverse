@@ -11,17 +11,21 @@
   },
   "feedback": {
     "title": "Report a problem",
-    "description": "Open a GitHub Issue",
-    "formType": "Report Type",
-    "formTitle": "Title",
+    "description": "",
+    "formEmail": "Email",
     "formMessage": "Message",
-    "formSubmit": "Send"
+    "messagePlaceholder": "Error while rolling dice",
+    "formDetails": "Steps to reproduce",
+    "detailsPlaceholder": "I was rollind the dice when...",
+    "formSubmit": "Send",
+    "formSubmitted": "Message sent",
+    "fieldRequired": "Field required"
   },
   "landing": {
     "title": "Less math.\nMore story.",
     "description": "Roll dice, add bonuses, and manage modifiers in seconds. Invite your friends and rediscover the simplest way to throw dices without math interrupting the flow.",
     "hero": {
-      "headline": "v1.3 2D20",
+      "headline": "v1.4.0 System Agnostic Rolls",
       "links": {
         "createSession": "Create Session",
         "joinSession": "Join Game"
@@ -138,11 +142,13 @@
       "modifiers": "Modifiers",
       "history": "History",
       "rollDice": "Roll Dice",
+      "clear": "Clear",
       "critical": "Critical!",
       "rollingDualityDice": "Rolling Duality Dice",
       "rollingYZE": "Rolling Year Zero Engine",
       "rollingModiphius2D20": "Rolling Modiphius 2D20",
       "rollingStepDice": "Rolling Step Dice",
+      "rollingJustDice": "System Agnostic Dice Roll",
       "bonus": "Bonus",
       "moreDice": "More Dice",
       "numberOfDice": "Number of Dice",
@@ -164,6 +170,9 @@
       "sessionLeft": "has left the session"
     },
     "rollOutcome": {
+      "agnostic": {
+        "total": "Total"
+      },
       "duality": {
         "critical": "Critical",
         "withHope": "With Hope",

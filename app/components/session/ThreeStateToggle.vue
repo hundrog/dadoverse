@@ -3,17 +3,19 @@
   <div class="flex items-center justify-center gap-3">
     <span
       class="text-sm"
-      :class="state === 'disadvantage' ? 'text-error font-semibold' : 'text-muted'"
+      :class="state === 'disadvantage' && !disabled ? 'text-error font-semibold' : 'text-muted'"
     >
       {{ t('session.room.disadvantage') }}
     </span>
 
     <button
-      class="focus-visible:ring-primary relative h-8 w-16 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2"
+      class="focus-visible:ring-primary relative h-8 w-16 rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      :disabled="disabled"
       :class="{
-        'bg-error': state === 'disadvantage',
-        'bg-muted': state === 'none',
-        'bg-success': state === 'advantage'
+        'bg-error': state === 'disadvantage' && !disabled,
+        'bg-muted': state === 'none' || disabled,
+        'bg-success': state === 'advantage' && !disabled,
+        'cursor-pointer': !disabled
       }"
       @click="cycle"
     >
@@ -29,7 +31,7 @@
 
     <span
       class="text-sm"
-      :class="state === 'advantage' ? 'text-success font-semibold' : 'text-muted'"
+      :class="state === 'advantage' && !disabled ? 'text-success font-semibold' : 'text-muted'"
     >
       {{ t('session.room.advantage') }}
     </span>
@@ -40,11 +42,17 @@
 import type { RollModifier } from '~/types/dice.types'
 
 const { t } = useI18n()
+
+const props = defineProps<{
+  disabled?: boolean
+}>()
+
 const states: RollModifier[] = ['disadvantage', 'none', 'advantage']
 
 const state = defineModel<RollModifier>({ default: 'none' })
 
 function cycle() {
+  if (props.disabled) return
   const idx = states.indexOf(state.value)
   state.value = states[(idx + 1) % states.length] as RollModifier
 }

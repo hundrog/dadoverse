@@ -11,17 +11,21 @@
   },
   "feedback": {
     "title": "Reportar un problema",
-    "description": "Abre un issue en github",
-    "formType": "Tipo de reporte",
-    "formTitle": "Titulo",
+    "description": "",
+    "formEmail": "Email",
     "formMessage": "Mensaje",
-    "formSubmit": "Enviar"
+    "messagePlaceholder": "Error al tirar los dados",
+    "formDetails": "Que estabas haciendo cuando paso?",
+    "detailsPlaceholder": "Estaba tirando mis dados y de repente...",
+    "formSubmit": "Enviar",
+    "formSubmitted": "Mensaje enviado",
+    "fieldRequired": "Campo requerido"
   },
   "landing": {
     "title": "Menos cálculos.\nMás historia.",
     "description": "Lanza dados, suma o resta resultados y gestiona modificadores en segundos. Invita a tus amigos y redescubre la forma más sencilla de lanzar dados sin que las matemáticas interrumpan el flujo.",
     "hero": {
-      "headline": "v1.3 2D20",
+      "headline": "v1.4.0 Tiradas sin Sistema",
       "links": {
         "createSession": "Crear sesión",
         "joinSession": "Unirse a partida"
@@ -138,11 +142,13 @@
       "modifiers": "Modificadores",
       "history": "Historial",
       "rollDice": "Tirar dados",
+      "clear": "Limipiar",
       "critical": "Critico!",
       "rollingDualityDice": "Tirando dados de dualidad",
       "rollingYZE": "Tirando Year Zero Engine",
       "rollingModiphius2D20": "Tirando 2D20 de Modiphius",
       "rollingStepDice": "Tirando dados por escalon",
+      "rollingJustDice": "Tirada de Dados sin Sistema",
       "bonus": "Bono",
       "moreDice": "Mas dados",
       "numberOfDice": "Numero de Dados",
@@ -164,6 +170,9 @@
       "sessionLeft": "se ha desconectado de la sesión"
     },
     "rollOutcome": {
+      "agnostic": {
+        "total": "Total"
+      },
       "duality": {
         "critical": "Crítico",
         "withHope": "Con Esperanza",

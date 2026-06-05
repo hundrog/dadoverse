@@ -2,7 +2,7 @@
   "name": "dadoverse",
   "private": true,
   "type": "module",
-  "version": "v1.3.0",
+  "version": "1.4.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
