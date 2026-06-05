@@ -422,6 +422,7 @@ onUnmounted(async () => {
                 :min="-10"
                 :max="10"
                 :default-value="0"
+                :disabled="sessionStore.agnosticRoll"
               />
             </template>
           </UPageCard>
@@ -492,19 +493,22 @@ onUnmounted(async () => {
               <span class="text-bold">{{ t('session.room.YZE') }}</span>
             </template>
           </UPageCard>
-          <UPageCard :ui="{ root: 'my-4', body: 'flex flex-col gap-4 w-full', footer: 'w-full' }">
+          <UPageCard :ui="{ root: 'my-4', body: 'flex flex-col gap-4 w-full', footer: 'w-full', header: 'flex-col w-full px-4' }">
             <template #header>
-              <span class="text-bold">{{ t('session.room.rollingJustDice') }}</span>
+              <div class="flex justify-between items-center">
+                <span class="text-bold">{{ t('session.room.rollingJustDice') }}</span>
+                <USwitch v-model="sessionStore.agnosticRoll" />
+              </div>
             </template>
             <template #body>
               <div class="grid grid-cols-7 gap-4 my-4">
                 <div v-for="dice in justDiceValues" :key="dice.value" class="flex flex-col col-span-1 justify-center items-center mb-4">
                   <span class="mb-4">{{ dice.amount }}</span>
-                  <UButton icon="i-lucide-plus" size="md" color="primary" variant="solid" @click="incrementDice(dice)" />
+                  <UButton icon="i-lucide-plus" size="md" color="primary" variant="solid" :disabled="!sessionStore.agnosticRoll" @click="incrementDice(dice)" />
                   <span class="my-2">{{ dice.label }}</span>
-                  <UButton icon="i-lucide-minus" size="md" color="primary" variant="solid" @click="decrementDice(dice)" />
+                  <UButton icon="i-lucide-minus" size="md" color="primary" variant="solid" :disabled="!sessionStore.agnosticRoll" @click="decrementDice(dice)" />
                 </div>
-                <UButton class="block col-span-7" @click="clearDice">{{ t('session.room.clear') }}</UButton>
+                <UButton class="block col-span-7" :disabled="!sessionStore.agnosticRoll" @click="clearDice">{{ t('session.room.clear') }}</UButton>
               </div>
             </template>
           </UPageCard>
