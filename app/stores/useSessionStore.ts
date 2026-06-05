@@ -18,6 +18,7 @@ export const useSessionStore = defineStore('session', () => {
   const characterName = ref('')
   const userSessions = ref<any[]>([])
   const loading = ref(false)
+  const agnosticRoll = ref(false)
 
   // --- Getters ---
 
@@ -180,6 +181,7 @@ export const useSessionStore = defineStore('session', () => {
     onlineMembers,
     userSessions,
     loading,
+    agnosticRoll,
     // Actions
     setCharacterName,
     initCharacterName,

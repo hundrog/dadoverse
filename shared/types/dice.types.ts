@@ -1,4 +1,4 @@
-export type DiceSystem = 'duality' | 'yze' | 'step' | '2d20'
+export type DiceSystem = 'agnostic' | 'duality' | 'yze' | 'step' | '2d20'
 export type RollModifier = 'advantage' | 'disadvantage' | 'none'
 
 export interface RollOptions {

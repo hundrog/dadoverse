@@ -35,7 +35,7 @@ type JustDice = {
   amount: number
 }
 
-const justDiceValues = ref([
+const justDiceValues: Ref<JustDice[]> = ref([
   { label: 'D4', value: 4, amount: 0 },
   { label: 'D6', value: 6, amount: 0 },
   { label: 'D8', value: 8, amount: 0 },
@@ -204,7 +204,10 @@ const rollModiphius = (level: number = 1) => {
 }
 
 const handleRoll = () => {
-  if (sessionStore.system_type === 'step') {
+  if (sessionStore.agnosticRoll) {
+    rollJustDice(justDiceValues.value)
+    return
+  } else if (sessionStore.system_type === 'step') {
     rollStep(bonus.value)
   } else if (sessionStore.system_type === 'duality') {
     rollDuality(rollMod.value, bonus.value)

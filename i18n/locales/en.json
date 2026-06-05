@@ -170,6 +170,9 @@
       "sessionLeft": "has left the session"
     },
     "rollOutcome": {
+      "agnostic": {
+        "total": "Total"
+      },
       "duality": {
         "critical": "Critical",
         "withHope": "With Hope",
