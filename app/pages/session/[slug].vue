@@ -415,7 +415,7 @@ onUnmounted(async () => {
             </template>
 
             <template #body>
-              <SessionThreeStateToggle v-model="rollMod" />
+              <SessionThreeStateToggle v-model="rollMod" :disabled="sessionStore.agnosticRoll" />
               {{ t('session.room.bonus') }}: {{ bonus > 0 ? '+' + bonus : bonus }}
               <USlider
                 v-model="bonus"
@@ -442,6 +442,7 @@ onUnmounted(async () => {
                   variant="card"
                   :ui="{ fieldset: 'w-full', item: 'flex-1 justify-center' }"
                   :items="stepDiceValues"
+                  :disabled="sessionStore.agnosticRoll"
                 />
                 <URadioGroup
                   v-model="stepDice.dice2"
@@ -450,6 +451,7 @@ onUnmounted(async () => {
                   variant="card"
                   :ui="{ fieldset: 'w-full', item: 'flex-1 justify-center' }"
                   :items="stepDiceValues"
+                  :disabled="sessionStore.agnosticRoll"
                 />
               </div>
               {{ t('session.room.bonus') }}: {{ bonus > 0 ? '+' + bonus : bonus }}
@@ -458,6 +460,7 @@ onUnmounted(async () => {
                 :min="-10"
                 :max="10"
                 :default-value="0"
+                :disabled="sessionStore.agnosticRoll"
               />
             </template>
           </UPageCard>
@@ -475,6 +478,7 @@ onUnmounted(async () => {
                 :min="0"
                 :max="5"
                 :default-value="2"
+                :disabled="sessionStore.agnosticRoll"
               />
               {{ t('session.room.targetNumber') }}: {{ tn }}
               <USlider
@@ -482,6 +486,7 @@ onUnmounted(async () => {
                 :min="6"
                 :max="20"
                 :default-value="10"
+                :disabled="sessionStore.agnosticRoll"
               />
             </template>
           </UPageCard>
