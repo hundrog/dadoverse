@@ -142,11 +142,13 @@
       "modifiers": "Modifiers",
       "history": "History",
       "rollDice": "Roll Dice",
+      "clear": "Clear",
       "critical": "Critical!",
       "rollingDualityDice": "Rolling Duality Dice",
       "rollingYZE": "Rolling Year Zero Engine",
       "rollingModiphius2D20": "Rolling Modiphius 2D20",
       "rollingStepDice": "Rolling Step Dice",
+      "rollingJustDice": "System Agnostic Dice Roll",
       "bonus": "Bonus",
       "moreDice": "More Dice",
       "numberOfDice": "Number of Dice",
@@ -168,6 +170,9 @@
       "sessionLeft": "has left the session"
     },
     "rollOutcome": {
+      "agnostic": {
+        "total": "Total"
+      },
       "duality": {
         "critical": "Critical",
         "withHope": "With Hope",

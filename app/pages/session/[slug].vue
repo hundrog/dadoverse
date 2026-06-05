@@ -29,6 +29,38 @@ const stepDiceValues = [
   { label: 'D12', value: 12 }
 ]
 
+type JustDice = {
+  label: string
+  value: number
+  amount: number
+}
+
+const justDiceValues: Ref<JustDice[]> = ref([
+  { label: 'D4', value: 4, amount: 0 },
+  { label: 'D6', value: 6, amount: 0 },
+  { label: 'D8', value: 8, amount: 0 },
+  { label: 'D10', value: 10, amount: 0 },
+  { label: 'D12', value: 12, amount: 0 },
+  { label: 'D20', value: 20, amount: 0 },
+  { label: 'D100', value: 100, amount: 0 }
+])
+
+const incrementDice = (dice: JustDice) => {
+  dice.amount++
+}
+
+const decrementDice = (dice: JustDice) => {
+  if (dice.amount > 0) {
+    dice.amount--
+  }
+}
+
+const clearDice = () => {
+  justDiceValues.value.forEach((dice: JustDice) => {
+    dice.amount = 0
+  })
+}
+
 const yzeDice = ref({
   attr: 2,
   skill: 2,
@@ -113,6 +145,18 @@ const shareSession = () => {
   toast.add({ title: t('session.room.linkCopied'), icon: 'i-lucide-clipboard-check' })
 }
 
+const rollJustDice = (justDiceValues: JustDice[]) => {
+  const diceConfig = justDiceValues
+    .filter(dice => dice.amount > 0)
+    .map(dice => ({
+      qty: dice.amount,
+      sides: dice.value,
+      themeColor: COLORS.hope
+    }))
+
+  diceStore.executeRoll(diceConfig)
+}
+
 const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
   const diceConfig = [
     { qty: 1, sides: 12, themeColor: COLORS.hope },
@@ -160,7 +204,10 @@ const rollModiphius = (level: number = 1) => {
 }
 
 const handleRoll = () => {
-  if (sessionStore.system_type === 'step') {
+  if (sessionStore.agnosticRoll) {
+    rollJustDice(justDiceValues.value)
+    return
+  } else if (sessionStore.system_type === 'step') {
     rollStep(bonus.value)
   } else if (sessionStore.system_type === 'duality') {
     rollDuality(rollMod.value, bonus.value)
@@ -368,13 +415,14 @@ onUnmounted(async () => {
             </template>
 
             <template #body>
-              <SessionThreeStateToggle v-model="rollMod" />
+              <SessionThreeStateToggle v-model="rollMod" :disabled="sessionStore.agnosticRoll" />
               {{ t('session.room.bonus') }}: {{ bonus > 0 ? '+' + bonus : bonus }}
               <USlider
                 v-model="bonus"
                 :min="-10"
                 :max="10"
                 :default-value="0"
+                :disabled="sessionStore.agnosticRoll"
               />
             </template>
           </UPageCard>
@@ -394,6 +442,7 @@ onUnmounted(async () => {
                   variant="card"
                   :ui="{ fieldset: 'w-full', item: 'flex-1 justify-center' }"
                   :items="stepDiceValues"
+                  :disabled="sessionStore.agnosticRoll"
                 />
                 <URadioGroup
                   v-model="stepDice.dice2"
@@ -402,6 +451,7 @@ onUnmounted(async () => {
                   variant="card"
                   :ui="{ fieldset: 'w-full', item: 'flex-1 justify-center' }"
                   :items="stepDiceValues"
+                  :disabled="sessionStore.agnosticRoll"
                 />
               </div>
               {{ t('session.room.bonus') }}: {{ bonus > 0 ? '+' + bonus : bonus }}
@@ -410,6 +460,7 @@ onUnmounted(async () => {
                 :min="-10"
                 :max="10"
                 :default-value="0"
+                :disabled="sessionStore.agnosticRoll"
               />
             </template>
           </UPageCard>
@@ -427,6 +478,7 @@ onUnmounted(async () => {
                 :min="0"
                 :max="5"
                 :default-value="2"
+                :disabled="sessionStore.agnosticRoll"
               />
               {{ t('session.room.targetNumber') }}: {{ tn }}
               <USlider
@@ -434,7 +486,35 @@ onUnmounted(async () => {
                 :min="6"
                 :max="20"
                 :default-value="10"
+                :disabled="sessionStore.agnosticRoll"
               />
+            </template>
+          </UPageCard>
+          <UPageCard
+            v-else-if="sessionStore.system_type === 'yze'"
+            :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }"
+          >
+            <template #header>
+              <span class="text-bold">{{ t('session.room.YZE') }}</span>
+            </template>
+          </UPageCard>
+          <UPageCard :ui="{ root: 'my-4', body: 'flex flex-col gap-4 w-full', footer: 'w-full', header: 'flex-col w-full px-4' }">
+            <template #header>
+              <div class="flex justify-between items-center">
+                <span class="text-bold">{{ t('session.room.rollingJustDice') }}</span>
+                <USwitch v-model="sessionStore.agnosticRoll" />
+              </div>
+            </template>
+            <template #body>
+              <div class="grid grid-cols-7 gap-4 my-4">
+                <div v-for="dice in justDiceValues" :key="dice.value" class="flex flex-col col-span-1 justify-center items-center mb-4">
+                  <span class="mb-4">{{ dice.amount }}</span>
+                  <UButton icon="i-lucide-plus" size="md" color="primary" variant="solid" :disabled="!sessionStore.agnosticRoll" @click="incrementDice(dice)" />
+                  <span class="my-2">{{ dice.label }}</span>
+                  <UButton icon="i-lucide-minus" size="md" color="primary" variant="solid" :disabled="!sessionStore.agnosticRoll" @click="decrementDice(dice)" />
+                </div>
+                <UButton class="block col-span-7" :disabled="!sessionStore.agnosticRoll" @click="clearDice">{{ t('session.room.clear') }}</UButton>
+              </div>
             </template>
           </UPageCard>
         </template>

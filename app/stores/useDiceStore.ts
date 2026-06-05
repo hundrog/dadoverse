@@ -105,7 +105,8 @@ export const useDiceStore = defineStore('dice', () => {
       const rawValues = boxResults.map((d: any) => d.value)
 
       // 2. Lógica: Interpretar según el sistema de la sesión
-      const interpreted = parseRoll(session.system_type, rawValues, options)
+      const system = session.agnosticRoll ? 'agnostic' : session.system_type
+      const interpreted = parseRoll(system, rawValues, options)
 
       // 3. Enriquecer: Añadimos metadata de la sesión
       const enrichedRoll = {
