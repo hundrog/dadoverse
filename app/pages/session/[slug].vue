@@ -29,6 +29,38 @@ const stepDiceValues = [
   { label: 'D12', value: 12 }
 ]
 
+type JustDice = {
+  label: string
+  value: number
+  amount: number
+}
+
+const justDiceValues = ref([
+  { label: 'D4', value: 4, amount: 0 },
+  { label: 'D6', value: 6, amount: 0 },
+  { label: 'D8', value: 8, amount: 0 },
+  { label: 'D10', value: 10, amount: 0 },
+  { label: 'D12', value: 12, amount: 0 },
+  { label: 'D20', value: 20, amount: 0 },
+  { label: 'D100', value: 100, amount: 0 }
+])
+
+const incrementDice = (dice: JustDice) => {
+  dice.amount++
+}
+
+const decrementDice = (dice: JustDice) => {
+  if (dice.amount > 0) {
+    dice.amount--
+  }
+}
+
+const clearDice = () => {
+  justDiceValues.value.forEach((dice: JustDice) => {
+    dice.amount = 0
+  })
+}
+
 const yzeDice = ref({
   attr: 2,
   skill: 2,
@@ -111,6 +143,18 @@ const shareSession = () => {
 
   copy(sessionUrl)
   toast.add({ title: t('session.room.linkCopied'), icon: 'i-lucide-clipboard-check' })
+}
+
+const rollJustDice = (justDiceValues: JustDice[]) => {
+  const diceConfig = justDiceValues
+    .filter(dice => dice.amount > 0)
+    .map(dice => ({
+      qty: dice.amount,
+      sides: dice.value,
+      themeColor: COLORS.hope
+    }))
+
+  diceStore.executeRoll(diceConfig)
 }
 
 const rollDuality = (mod: RollModifier = 'none', bonus: number = 0) => {
@@ -435,6 +479,30 @@ onUnmounted(async () => {
                 :max="20"
                 :default-value="10"
               />
+            </template>
+          </UPageCard>
+          <UPageCard
+            v-else-if="sessionStore.system_type === 'yze'"
+            :ui="{ body: 'flex flex-col gap-4 w-full', footer: 'w-full' }"
+          >
+            <template #header>
+              <span class="text-bold">{{ t('session.room.YZE') }}</span>
+            </template>
+          </UPageCard>
+          <UPageCard :ui="{ root: 'my-4', body: 'flex flex-col gap-4 w-full', footer: 'w-full' }">
+            <template #header>
+              <span class="text-bold">{{ t('session.room.rollingJustDice') }}</span>
+            </template>
+            <template #body>
+              <div class="grid grid-cols-7 gap-4 my-4">
+                <div v-for="dice in justDiceValues" :key="dice.value" class="flex flex-col col-span-1 justify-center items-center mb-4">
+                  <span class="mb-4">{{ dice.amount }}</span>
+                  <UButton icon="i-lucide-plus" size="md" color="primary" variant="solid" @click="incrementDice(dice)" />
+                  <span class="my-2">{{ dice.label }}</span>
+                  <UButton icon="i-lucide-minus" size="md" color="primary" variant="solid" @click="decrementDice(dice)" />
+                </div>
+                <UButton class="block col-span-7" @click="clearDice">{{ t('session.room.clear') }}</UButton>
+              </div>
             </template>
           </UPageCard>
         </template>
